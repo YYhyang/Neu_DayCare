@@ -44,6 +44,21 @@
         <table tableName="student" domainObjectName="StudentDO">
             <property name="useActualColumnNames" value="true"/>
         </table>
+        <table tableName="teacher" domainObjectName="TeacherDO">
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+        <table tableName="classroom" domainObjectName="ClassroomDO">
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+        <table tableName="group" domainObjectName="GroupDO">
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+        <table tableName="immunization" domainObjectName="ImmunizationDO">
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+        <table tableName="vaccination" domainObjectName="VaccinationDO">
+            <property name="useActualColumnNames" value="true"/>
+        </table>
 
     </context>
 </generatorConfiguration>
