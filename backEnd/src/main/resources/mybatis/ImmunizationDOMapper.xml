@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.neu.csye6200.dao.ImmunizationDOMapper">
+  <resultMap id="BaseResultMap" type="edu.neu.csye6200.entity.dbobj.ImmunizationDO">
+    <id column="immunizationId" jdbcType="INTEGER" property="immunizationId" />
+    <result column="targetAge" jdbcType="INTEGER" property="targetAge" />
+    <result column="dose" jdbcType="INTEGER" property="dose" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    immunizationId, targetAge, dose, description
+  </sql>
+  <select id="selectByExample" parameterType="edu.neu.csye6200.entity.dbobj.ImmunizationDOCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from immunization
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from immunization
+    where immunizationId = #{immunizationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from immunization
+    where immunizationId = #{immunizationId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.neu.csye6200.entity.dbobj.ImmunizationDOCriteria">
+    delete from immunization
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.neu.csye6200.entity.dbobj.ImmunizationDO">
+    insert into immunization (immunizationId, targetAge, dose, 
+      description)
+    values (#{immunizationId,jdbcType=INTEGER}, #{targetAge,jdbcType=INTEGER}, #{dose,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.neu.csye6200.entity.dbobj.ImmunizationDO">
+    insert into immunization
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="immunizationId != null">
+        immunizationId,
+      </if>
+      <if test="targetAge != null">
+        targetAge,
+      </if>
+      <if test="dose != null">
+        dose,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="immunizationId != null">
+        #{immunizationId,jdbcType=INTEGER},
+      </if>
+      <if test="targetAge != null">
+        #{targetAge,jdbcType=INTEGER},
+      </if>
+      <if test="dose != null">
+        #{dose,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.neu.csye6200.entity.dbobj.ImmunizationDOCriteria" resultType="java.lang.Long">
+    select count(*) from immunization
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update immunization
+    <set>
+      <if test="record.immunizationId != null">
+        immunizationId = #{record.immunizationId,jdbcType=INTEGER},
+      </if>
+      <if test="record.targetAge != null">
+        targetAge = #{record.targetAge,jdbcType=INTEGER},
+      </if>
+      <if test="record.dose != null">
+        dose = #{record.dose,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update immunization
+    set immunizationId = #{record.immunizationId,jdbcType=INTEGER},
+      targetAge = #{record.targetAge,jdbcType=INTEGER},
+      dose = #{record.dose,jdbcType=INTEGER},
+      description = #{record.description,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.neu.csye6200.entity.dbobj.ImmunizationDO">
+    update immunization
+    <set>
+      <if test="targetAge != null">
+        targetAge = #{targetAge,jdbcType=INTEGER},
+      </if>
+      <if test="dose != null">
+        dose = #{dose,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where immunizationId = #{immunizationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.neu.csye6200.entity.dbobj.ImmunizationDO">
+    update immunization
+    set targetAge = #{targetAge,jdbcType=INTEGER},
+      dose = #{dose,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR}
+    where immunizationId = #{immunizationId,jdbcType=INTEGER}
+  </update>
+</mapper>
