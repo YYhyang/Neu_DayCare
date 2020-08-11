@@ -1,0 +1,32 @@
+mybatis:
+  configuration:
+    default-fetch-size: 100
+    default-statement-timeout: 30
+    map-underscore-to-camel-case: true
+  mapperLocations: classpath:mybatis/*Mapper.xml
+pagehelper:
+  helperDialect: mysql
+  page-size-zero: true
+  params: count=countSql
+  reasonable: true
+  supportMethodsArguments: true
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      max-lifetime: 30000
+    password: csye6200
+    url: jdbc:mysql://39.108.233.164:3308/daycare?useUnicode=true&character_set_server=utf8mb4&useSSL=false
+    username: neu
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  resources:
+    static-locations: classpath:/static/,classpath:/templates/
+
+mybatis-plus:
+  configuration:
+    mapUnderscoreToCamelCase: false

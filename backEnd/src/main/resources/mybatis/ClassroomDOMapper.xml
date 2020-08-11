@@ -1,196 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.neu.csye6200.dao.ClassroomDOMapper">
-  <resultMap id="BaseResultMap" type="edu.neu.csye6200.entity.dbobj.ClassroomDO">
-    <id column="classroomId" jdbcType="INTEGER" property="classroomId" />
-    <result column="ageState" jdbcType="INTEGER" property="ageState" />
-    <result column="groupNum" jdbcType="INTEGER" property="groupNum" />
-    <result column="isFull" jdbcType="SMALLINT" property="isFull" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+    <resultMap id="BaseResultMap" type="edu.neu.csye6200.entity.dto.ClassroomDto">
+        <id column="classroomId" jdbcType="INTEGER" property="classroomId"/>
+        <result column="ageState" jdbcType="INTEGER" property="ageState"/>
+        <result column="groupNum" jdbcType="INTEGER" property="groupNum"/>
+        <result column="isFull" jdbcType="SMALLINT" property="isFull"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        classroomId, ageState, groupNum, isFull
+    </sql>
+    <select id="selectByExample" parameterType="edu.neu.csye6200.entity.dto.ClassroomDOCriteria"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
         </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    classroomId, ageState, groupNum, isFull
-  </sql>
-  <select id="selectByExample" parameterType="edu.neu.csye6200.entity.dbobj.ClassroomDOCriteria" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from classroom
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from classroom
-    where classroomId = #{classroomId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from classroom
-    where classroomId = #{classroomId,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="edu.neu.csye6200.entity.dbobj.ClassroomDOCriteria">
-    delete from classroom
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="edu.neu.csye6200.entity.dbobj.ClassroomDO">
-    insert into classroom (classroomId, ageState, groupNum, 
-      isFull)
-    values (#{classroomId,jdbcType=INTEGER}, #{ageState,jdbcType=INTEGER}, #{groupNum,jdbcType=INTEGER}, 
-      #{isFull,jdbcType=SMALLINT})
-  </insert>
-  <insert id="insertSelective" parameterType="edu.neu.csye6200.entity.dbobj.ClassroomDO">
-    insert into classroom
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="classroomId != null">
-        classroomId,
-      </if>
-      <if test="ageState != null">
-        ageState,
-      </if>
-      <if test="groupNum != null">
-        groupNum,
-      </if>
-      <if test="isFull != null">
-        isFull,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="classroomId != null">
-        #{classroomId,jdbcType=INTEGER},
-      </if>
-      <if test="ageState != null">
-        #{ageState,jdbcType=INTEGER},
-      </if>
-      <if test="groupNum != null">
-        #{groupNum,jdbcType=INTEGER},
-      </if>
-      <if test="isFull != null">
-        #{isFull,jdbcType=SMALLINT},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="edu.neu.csye6200.entity.dbobj.ClassroomDOCriteria" resultType="java.lang.Long">
-    select count(*) from classroom
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update classroom
-    <set>
-      <if test="record.classroomId != null">
-        classroomId = #{record.classroomId,jdbcType=INTEGER},
-      </if>
-      <if test="record.ageState != null">
+        <include refid="Base_Column_List"/>
+        from classroom
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from classroom
+        where classroomId = #{classroomId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from classroom
+        where classroomId = #{classroomId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="edu.neu.csye6200.entity.dto.ClassroomDOCriteria">
+        delete from classroom
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="edu.neu.csye6200.entity.dto.ClassroomDto">
+        insert into classroom (classroomId, ageState, groupNum,
+                               isFull)
+        values (#{classroomId,jdbcType=INTEGER}, #{ageState,jdbcType=INTEGER}, #{groupNum,jdbcType=INTEGER},
+                #{isFull,jdbcType=SMALLINT})
+    </insert>
+    <insert id="insertSelective" parameterType="edu.neu.csye6200.entity.dto.ClassroomDto">
+        insert into classroom
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classroomId != null">
+                classroomId,
+            </if>
+            <if test="ageState != null">
+                ageState,
+            </if>
+            <if test="groupNum != null">
+                groupNum,
+            </if>
+            <if test="isFull != null">
+                isFull,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classroomId != null">
+                #{classroomId,jdbcType=INTEGER},
+            </if>
+            <if test="ageState != null">
+                #{ageState,jdbcType=INTEGER},
+            </if>
+            <if test="groupNum != null">
+                #{groupNum,jdbcType=INTEGER},
+            </if>
+            <if test="isFull != null">
+                #{isFull,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="edu.neu.csye6200.entity.dto.ClassroomDOCriteria"
+            resultType="java.lang.Long">
+        select count(*) from classroom
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update classroom
+        <set>
+            <if test="record.classroomId != null">
+                classroomId = #{record.classroomId,jdbcType=INTEGER},
+            </if>
+            <if test="record.ageState != null">
+                ageState = #{record.ageState,jdbcType=INTEGER},
+            </if>
+            <if test="record.groupNum != null">
+                groupNum = #{record.groupNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.isFull != null">
+                isFull = #{record.isFull,jdbcType=SMALLINT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update classroom
+        set classroomId = #{record.classroomId,jdbcType=INTEGER},
         ageState = #{record.ageState,jdbcType=INTEGER},
-      </if>
-      <if test="record.groupNum != null">
         groupNum = #{record.groupNum,jdbcType=INTEGER},
-      </if>
-      <if test="record.isFull != null">
-        isFull = #{record.isFull,jdbcType=SMALLINT},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update classroom
-    set classroomId = #{record.classroomId,jdbcType=INTEGER},
-      ageState = #{record.ageState,jdbcType=INTEGER},
-      groupNum = #{record.groupNum,jdbcType=INTEGER},
-      isFull = #{record.isFull,jdbcType=SMALLINT}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.neu.csye6200.entity.dbobj.ClassroomDO">
-    update classroom
-    <set>
-      <if test="ageState != null">
-        ageState = #{ageState,jdbcType=INTEGER},
-      </if>
-      <if test="groupNum != null">
-        groupNum = #{groupNum,jdbcType=INTEGER},
-      </if>
-      <if test="isFull != null">
-        isFull = #{isFull,jdbcType=SMALLINT},
-      </if>
-    </set>
-    where classroomId = #{classroomId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="edu.neu.csye6200.entity.dbobj.ClassroomDO">
-    update classroom
-    set ageState = #{ageState,jdbcType=INTEGER},
-      groupNum = #{groupNum,jdbcType=INTEGER},
-      isFull = #{isFull,jdbcType=SMALLINT}
-    where classroomId = #{classroomId,jdbcType=INTEGER}
-  </update>
+        isFull = #{record.isFull,jdbcType=SMALLINT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.neu.csye6200.entity.dto.ClassroomDto">
+        update classroom
+        <set>
+            <if test="ageState != null">
+                ageState = #{ageState,jdbcType=INTEGER},
+            </if>
+            <if test="groupNum != null">
+                groupNum = #{groupNum,jdbcType=INTEGER},
+            </if>
+            <if test="isFull != null">
+                isFull = #{isFull,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where classroomId = #{classroomId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="edu.neu.csye6200.entity.dto.ClassroomDto">
+        update classroom
+        set ageState = #{ageState,jdbcType=INTEGER},
+            groupNum = #{groupNum,jdbcType=INTEGER},
+            isFull   = #{isFull,jdbcType=SMALLINT}
+        where classroomId = #{classroomId,jdbcType=INTEGER}
+    </update>
 </mapper>
