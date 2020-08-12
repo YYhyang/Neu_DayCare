@@ -3,17 +3,14 @@ package edu.neu.csye6200.web;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import edu.neu.csye6200.base.convertor.StudentConverter;
 import edu.neu.csye6200.base.enums.DayCareResultCodeEnum;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
-import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.entity.vo.StudentVO;
 import edu.neu.csye6200.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +35,7 @@ public class StudentController extends BaseController {
     return protectController(request, () -> {
       Result<Object> result = new Result<>();
       StudentDO studentDO = new StudentDO();
-      BeanUtils.copyProperties(studentVO, studentDO, new String[]{"studentId"});
+      studentDO = StudentConverter.vo2Do(studentVO);
       boolean insertOpereate = studentService.save(studentDO);
       result.setResultCode(insertOpereate?DayCareResultCodeEnum.SUCCESS.getCode():DayCareResultCodeEnum.ERROR.getCode());
       return result;
@@ -49,8 +46,8 @@ public class StudentController extends BaseController {
   public Result<Object> queryStudentByAgeState(@RequestParam int ageState, HttpServletRequest request) {
     return protectController(request, () -> {
       Result<Object> result = new Result<>();
-       List<StudentVO> studentVOS = studentService.queryByAgeState(ageState);
-       result.setResultObj(studentVOS);
+       List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
+       result.setResultObj(studentVOList);
       return result;
     }, BaseControllerEnum.IGNORE_VERIFY.getCode());
   }

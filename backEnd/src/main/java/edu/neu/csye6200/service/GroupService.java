@@ -1,11 +1,8 @@
 package edu.neu.csye6200.service;
 
 import edu.neu.csye6200.base.BaseService;
-import edu.neu.csye6200.entity.Group;
 import edu.neu.csye6200.entity.dto.GroupDO;
 import edu.neu.csye6200.entity.vo.GroupVO;
-
-import java.util.List;
 
 /**
  * @author Caspar

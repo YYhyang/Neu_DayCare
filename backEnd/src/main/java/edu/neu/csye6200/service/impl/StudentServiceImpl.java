@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import edu.neu.csye6200.base.convertor.StudentConverter;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -22,19 +22,15 @@ import edu.neu.csye6200.service.StudentService;
  * @author arronshentu
  */
 @Service
-public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO> implements StudentService {
+public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, edu.neu.csye6200.entity.dto.StudentDO> implements StudentService {
 
   @Resource
   private StudentMapper studentMapper;
 
   @Override
   public List<StudentVO> queryByAgeState(int ageState) {
-    List<StudentDO> studentDOS = studentMapper.selectList(Wrappers.<StudentDO>query().eq("ageState", ageState));
-    return studentDOS.stream().map(ele -> {
-      StudentVO vo = new StudentVO();
-      BeanUtils.copyProperties(ele, vo);
-      return vo;
-    }).collect(Collectors.toList());
+    List<StudentDO> studentDOList = studentMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("ageState", ageState));
+    return StudentConverter.batchDo2Vo(studentDOList);
   }
 
   @Override
@@ -46,12 +42,9 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
   }
 
   public List<Student> getListStudentsByAgeState(int ageState) {
-    List<StudentDO> studentDOS = studentMapper.selectList(Wrappers.<StudentDO>query().eq("ageState", ageState));
-    return studentDOS.stream().map(ele->{
-                Student student = new Student();
-                BeanUtils.copyProperties(ele, student);
-                return student;
-            }).collect(Collectors.toList());
+    List<StudentDO> studentDOList = studentMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("ageState", ageState));
+    return StudentConverter.batchDo2Model(studentDOList);
+
   }
 
 }

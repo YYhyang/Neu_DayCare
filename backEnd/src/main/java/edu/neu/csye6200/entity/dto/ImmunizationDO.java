@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+
 @Data
 @EqualsAndHashCode
 @TableName(value = "daycare.immunization")
