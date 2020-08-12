@@ -2,7 +2,9 @@ package edu.neu.csye6200.entity;
 
 import java.util.Date;
 
+import edu.neu.csye6200.service.StudentService;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @Author Caspar
@@ -12,6 +14,9 @@ import lombok.Data;
 
 @Data
 public class Student extends AbstractStudent{
+  @Autowired
+  StudentService studentService;
+
 
   private Integer studentId;
 

@@ -96,7 +96,6 @@ public class StudentConverter {
             StudentVO studentVO = do2Vo(ele);
             return studentVO;
         }).collect(Collectors.toList());
-
     }
 
     public static List<Student> batchDo2Model(List<StudentDO> studentDOList) {
