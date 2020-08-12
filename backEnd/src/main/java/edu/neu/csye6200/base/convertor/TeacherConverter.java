@@ -1,8 +1,15 @@
 package edu.neu.csye6200.base.convertor;
 
-import edu.neu.csye6200.entity.dbobj.TeacherDO;
-import edu.neu.csye6200.entity.dto.Teacher;
+
+import com.fasterxml.jackson.databind.util.BeanUtil;
+import edu.neu.csye6200.entity.Teacher;
+import edu.neu.csye6200.entity.dto.TeacherDO;
+import edu.neu.csye6200.entity.vo.StudentVO;
 import edu.neu.csye6200.entity.vo.TeacherVO;
+import org.springframework.beans.BeanUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TeacherConverter {
     public static Teacher Vo2Model(TeacherVO teacherVO){
@@ -12,15 +19,7 @@ public class TeacherConverter {
         }
         else{
             Teacher teacher=new Teacher();
-            teacher.setTeacherId(teacherVO.getTeacherId());
-            teacher.setCredits(teacherVO.getCredits());
-            teacher.setName(teacherVO.getName());
-            teacher.setRatio(teacherVO.getRatio());
-            teacher.setGroupId(teacherVO.getGroupId());
-            teacher.setClassroomId(teacherVO.getClassroomId());
-            teacher.setBirthday(teacherVO.getBirthday());
-            teacher.setTargetAgeState(teacherVO.getTargetAgeState());
-
+            BeanUtils.copyProperties(teacherVO,teacher);
             return teacher;
         }
     }
@@ -31,15 +30,41 @@ public class TeacherConverter {
         }
         else{
             TeacherDO teacherDO=new TeacherDO();
-            teacherDO.setTeacherId(teacher.getTeacherId());
-            teacherDO.setCredits(teacher.getCredits());
-            teacherDO.setName(teacher.getName());
-            teacherDO.setRatio(teacher.getRatio());
-            teacherDO.setGroupId(teacher.getGroupId());
-            teacherDO.setClassroomId(teacher.getClassroomId());
-            teacherDO.setBirthday(teacher.getBirthday());
-            teacherDO.setTargetAgeState(teacher.getTargetAgeState());
+            BeanUtils.copyProperties(teacher,teacherDO);
             return teacherDO;
         }
+    }
+
+    public static TeacherDO Vo2Do(TeacherVO teacherVO) {
+        if(teacherVO==null){
+            return null;
+        }
+        else{
+            TeacherDO teacherDO=new TeacherDO();
+            BeanUtils.copyProperties(teacherVO,teacherDO);
+            return teacherDO;
+        }
+    }
+
+    public static TeacherVO Do2Vo(TeacherDO teacherDO){
+        if(teacherDO==null){
+            return null;
+        }
+        else {
+            TeacherVO teacherVO=new TeacherVO();
+            BeanUtils.copyProperties(teacherDO,teacherVO);
+            return teacherVO;
+        }
+    }
+
+    public static List<TeacherVO> listDo2Vo(List<TeacherDO> teacherDOList){
+        if(teacherDOList==null||teacherDOList.isEmpty()){
+            return null;
+        }
+        return teacherDOList.stream().map(ele -> {
+                TeacherVO teacherVO = Do2Vo(ele);
+                return teacherVO;
+            }).collect(Collectors.toList());
+
     }
 }
