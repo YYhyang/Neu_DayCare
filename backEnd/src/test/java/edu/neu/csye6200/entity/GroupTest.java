@@ -14,13 +14,13 @@ import java.util.Vector;
  */
 public class GroupTest extends TestCase {
 
-    @Test
-    public void testConvertToVO() {
-        List<Student> students = new Vector<>();
-        Group group = new Group(3, 6);
-        GroupVO groupVO = group.convertToVO();
-
-    }
+//    @Test
+//    public void testConvertToVO() {
+//        List<Student> students = new Vector<>();
+//        Group group = new Group(3, 6);
+//        GroupVO groupVO = group.convertToVO();
+//
+//    }
 
     @Override
     public void run(TestResult result) {

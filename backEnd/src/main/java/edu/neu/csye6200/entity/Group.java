@@ -1,5 +1,6 @@
 package edu.neu.csye6200.entity;
 
+import edu.neu.csye6200.base.convertor.StudentConverter;
 import edu.neu.csye6200.entity.vo.GroupVO;
 import edu.neu.csye6200.entity.vo.StudentVO;
 import lombok.Data;
@@ -14,8 +15,7 @@ import java.util.Vector;
  * @date 2020/8/12 09:25
  */
 @Data
-public class Group {
-
+public class Group extends AbstractGroup{
     private Integer groupId;
 
     private Integer classroomId;
@@ -61,6 +61,7 @@ public class Group {
         return teacher.getTargetAgeState().equals(getAgeState());
     }
 
+    @Override
     public void assignTeacher(Teacher teacher) {
         if (verifyStateRegulation(teacher)) {
             setTeacher(teacher);
@@ -68,12 +69,14 @@ public class Group {
         }
     }
 
-    public void addStudent(Student student) {
+    @Override
+    public boolean addStudent(Student student) {
+        boolean success = false;
         if (!getIsFull()) {
-            studentList.add(student);
+            success = studentList.add(student);
             setStudentCount(studentList.size());
         }
-
+        return success;
     }
 
     public void updateStudentCount() {
@@ -83,11 +86,15 @@ public class Group {
         }
     }
 
-    public void removeStudent(Student student) {
-        studentList.remove(student);
+    @Override
+    public boolean removeStudent(Student student) {
+        boolean success = false;
+        success = studentList.remove(student);
         updateStudentCount();
+        return success;
     }
 
+    @Override
     public Student findStudentByStudentId(int studentId) {
         Student student = null;
         for (Iterator<Student> iterator=studentList.iterator();iterator.hasNext();) {
@@ -99,21 +106,21 @@ public class Group {
         return student;
     }
 
+    @Override
+    public void save() {
+        // todo
+        // Persist the Group object
+
+    }
+
     public void removeStudentByStudentId(int studentId) {
         studentList.remove(findStudentByStudentId(studentId));
     }
 
-    public GroupVO convertToVO() {
-        GroupVO groupVO = new GroupVO();
-        try {
-            BeanUtils.copyProperties(this, groupVO);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-        return groupVO;
-    }
+//    public GroupVO convertToVO() {
+//        GroupVO groupVO = GroupConverter.model2Vo(this)
+//        return groupVO;
+//    }
 
 
     

@@ -1,5 +1,6 @@
 package edu.neu.csye6200.base.convertor;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.vo.StudentVO;
@@ -77,7 +78,7 @@ public class StudentConverter {
     }
 
     public static List<StudentDO> batchVo2Do(List<StudentVO> studentVOList) {
-        if (studentVOList==null||studentVOList.isEmpty()) {
+        if (CollectionUtils.isEmpty(studentVOList)) {
             return null;
         }
         return studentVOList.stream().map(ele->{
@@ -88,8 +89,7 @@ public class StudentConverter {
     }
 
     public static List<StudentVO> batchDo2Vo(List<StudentDO> studentDOList) {
-        List<StudentVO> studentVOList = new Vector<>();
-        if (studentDOList==null||studentDOList.isEmpty()) {
+        if (CollectionUtils.isEmpty(studentDOList)) {
             return null;
         }
         return studentDOList.stream().map(ele->{
@@ -100,7 +100,7 @@ public class StudentConverter {
     }
 
     public static List<Student> batchDo2Model(List<StudentDO> studentDOList) {
-        if (studentDOList==null||studentDOList.isEmpty()) {
+        if (CollectionUtils.isEmpty(studentDOList)) {
             return null;
         }
         return studentDOList.stream().map(ele->{

@@ -44,7 +44,9 @@ public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> impl
     @Override
     public GroupVO selectGroupVOByGroupId(int groupId) {
         Group group = selectGroupByGroupId(groupId);
-        return group.convertToVO();
+        //todo
+//        return group.convertToVO();
+        return null;
     }
 
     public List<Student> getStudentListByGroupId(int groupId) {

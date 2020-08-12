@@ -11,7 +11,7 @@ import lombok.Data;
  */
 
 @Data
-public class Student {
+public class Student extends AbstractStudent{
 
   private Integer studentId;
 
@@ -32,4 +32,9 @@ public class Student {
   private Date birthday;
 
   private Integer ageState;
+
+  @Override
+  public void save() {
+    // todo
+  }
 }
