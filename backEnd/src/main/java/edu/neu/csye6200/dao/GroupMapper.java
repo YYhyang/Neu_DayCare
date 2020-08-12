@@ -4,6 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import edu.neu.csye6200.entity.dto.GroupDO;
 
-public interface GroupDOMapper extends BaseMapper<GroupDO> {
+public interface GroupMapper extends BaseMapper<GroupDO> {
 
 }

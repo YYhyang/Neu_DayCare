@@ -3,11 +3,13 @@ package edu.neu.csye6200.entity.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode
+@TableName(value = "daycare.teacher")
 public class TeacherDO implements Serializable {
 
   private Integer teacherId;

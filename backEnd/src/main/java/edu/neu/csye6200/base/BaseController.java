@@ -20,7 +20,11 @@ public class BaseController {
    * 鉴权类型枚举
    */
   protected enum BaseControllerEnum {
-    IGNORE_VERIFY("IGNORE_VERIFY", "无需鉴权"), MANAGEMENT_OPERATION("MANAGEMENT_OPERATION", "管理人员权限"),
+    /** 无需鉴权 */
+    IGNORE_VERIFY("IGNORE_VERIFY", "无需鉴权"),
+    /** 管理人员权限 */
+    MANAGEMENT_OPERATION("MANAGEMENT_OPERATION", "管理人员权限"),
+    /** 后台管理入口 */
     BACK_MANAGE("BACK_MANAGE", "后台管理入口"),;
 
     /** 枚举编码 */

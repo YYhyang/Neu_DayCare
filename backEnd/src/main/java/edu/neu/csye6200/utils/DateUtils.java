@@ -15,9 +15,9 @@ import edu.neu.csye6200.base.exceptions.DayCareException;
 
 public class DateUtils {
 
-  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-  private static final SimpleDateFormat dateFormatWithSeconds = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  private static final SimpleDateFormat DATE_FORMAT_WITH_SECONDS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   /**
    * 获取合适的格式日期类
@@ -28,9 +28,9 @@ public class DateUtils {
    */
   public static SimpleDateFormat getDateFormat(boolean withSeconds) {
     if (withSeconds) {
-      return dateFormatWithSeconds;
+      return DATE_FORMAT_WITH_SECONDS;
     } else {
-      return dateFormat;
+      return DATE_FORMAT;
     }
   }
 
