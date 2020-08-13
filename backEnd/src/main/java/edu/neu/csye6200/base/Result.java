@@ -28,24 +28,7 @@ public class Result<T> implements Serializable {
    * 请求结果
    */
   private boolean success = true;
-
-  /**
-   * 响应code
-   */
   private String resultCode;
-
-  /**
-   * 响应描述
-   */
-  private String resultDesc;
-
-  /**
-   * 结果实体
-   */
-  private T resultObj;
-
-  /** 本次需求，temporary */
-  private int code;
   private String[] msg;
   private int count;
   private T data;
