@@ -16,4 +16,7 @@ public interface HealthManager {
 
     public void addVaccinationRecord(int studentId, String immunationName);
 
+    public void checkVaccinationStatus(Student student);
+
+    public void addVaccomationRecord(Student student, Vaccination vaccination);
 }

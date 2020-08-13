@@ -51,5 +51,15 @@ public class HealthManagerImpl implements HealthManager {
 
     }
 
+    @Override
+    public void checkVaccinationStatus(Student student) {
+        student.getVaccinationList();
+    }
+
+    @Override
+    public void addVaccomationRecord(Student student, Vaccination vaccination) {
+        student.addVaccination(vaccination);
+    }
+
 
 }
