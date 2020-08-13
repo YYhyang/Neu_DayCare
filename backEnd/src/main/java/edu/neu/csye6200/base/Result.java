@@ -2,11 +2,20 @@ package edu.neu.csye6200.base;
 
 import java.io.Serializable;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
 /**
  * @Author Caspar
  * @CreateTime 2020/8/10 19:21
  * @Description:
  */
+@Data
+@ToString
+@NoArgsConstructor
+@Accessors(chain = true)
 public class Result<T> implements Serializable {
 
   /**
@@ -34,150 +43,18 @@ public class Result<T> implements Serializable {
    */
   private T resultObj;
 
-  public boolean isSuccess() {
-    return success;
-  }
-
   /** 本次需求，temporary */
   private int code;
   private String msg;
   private int count;
   private T data;
 
-  public void setSuccess(boolean success) {
-    this.success = success;
+  public static <T> Result<T> buildData(T data) {
+    return new Result<>(data);
   }
 
-  /**
-   * Get the value of resultCode
-   *
-   * @return the value of resultCode
-   */
-  public String getResultCode() {
-    return resultCode;
-  }
-
-  /**
-   * Set the resultCode
-   *
-   * @param resultCode
-   *          resultCode
-   */
-  public void setResultCode(String resultCode) {
-    this.resultCode = resultCode;
-  }
-
-  /**
-   * Get the value of resultDesc
-   *
-   * @return the value of resultDesc
-   */
-  public String getResultDesc() {
-    return resultDesc;
-  }
-
-  /**
-   * Set the resultDesc
-   *
-   * @param resultDesc
-   *          resultDesc
-   */
-  public void setResultDesc(String resultDesc) {
-    this.resultDesc = resultDesc;
-  }
-
-  /**
-   * Get the value of resultObj
-   *
-   * @return the value of resultObj
-   */
-  public T getResultObj() {
-    return resultObj;
-  }
-
-  /**
-   * Set the resultObj
-   *
-   * @param resultObj
-   *          resultObj
-   */
-  public void setResultObj(T resultObj) {
-    this.resultObj = resultObj;
-  }
-
-  /**
-   * Get the value of code
-   *
-   * @return the value of code
-   */
-  public int getCode() {
-    return code;
-  }
-
-  /**
-   * Set the code
-   *
-   * @param code
-   *          code
-   */
-  public void setCode(int code) {
-    this.code = code;
-  }
-
-  /**
-   * Get the value of msg
-   *
-   * @return the value of msg
-   */
-  public String getMsg() {
-    return msg;
-  }
-
-  /**
-   * Set the msg
-   *
-   * @param msg
-   *          msg
-   */
-  public void setMsg(String msg) {
-    this.msg = msg;
-  }
-
-  /**
-   * Get the value of count
-   *
-   * @return the value of count
-   */
-  public int getCount() {
-    return count;
-  }
-
-  /**
-   * Set the count
-   *
-   * @param count
-   *          count
-   */
-  public void setCount(int count) {
-    this.count = count;
-  }
-
-  /**
-   * Get the value of data
-   *
-   * @return the value of data
-   */
-  public T getData() {
-    return data;
-  }
-
-  /**
-   * Set the data
-   *
-   * @param data
-   *          data
-   */
-  public void setData(T data) {
+  public Result(T data) {
     this.data = data;
   }
+
 }

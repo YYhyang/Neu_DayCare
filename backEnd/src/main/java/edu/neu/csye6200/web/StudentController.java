@@ -35,14 +35,12 @@ public class StudentController extends BaseController {
   @PostMapping("insertStudent")
   public String insertDemand(@RequestBody String jsonString, HttpServletRequest request) {
     Result<Object> res = protectController(request, () -> {
-      Result<Object> result = new Result<>();
       JSONObject jsonObject = JSON.parseObject(jsonString);
       StudentVO studentVO = jsonObject.getObject("student", StudentVO.class);
       Student student = new Student();
       BeanUtils.copyProperties(studentVO, student);
       boolean studentId = studentService.save(student);
-      result.setResultObj("studentId" + studentId);
-      return result;
+      return Result.buildData("studentId" + studentId);
     }, BaseControllerEnum.IGNORE_VERIFY.getCode());
 
     return JSON.toJSONString(res);
