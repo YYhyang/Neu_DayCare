@@ -3,15 +3,14 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 30
   mapperLocations: classpath:mybatis/*Mapper.xml
-pagehelper:
-  helperDialect: mysql
-  page-size-zero: true
-  params: count=countSql
-  reasonable: true
-  supportMethodsArguments: true
+
 server:
   port: 8080
+
 spring:
+  application:
+    name:
+      DayCare
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -25,6 +24,7 @@ spring:
       suffix: .jsp
   resources:
     static-locations: classpath:/static/,classpath:/templates/
+
 mybatis-plus:
   configuration:
     mapUnderscoreToCamelCase: false

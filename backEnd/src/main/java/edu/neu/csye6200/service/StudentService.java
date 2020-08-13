@@ -10,8 +10,8 @@ import edu.neu.csye6200.entity.vo.StudentVO;
  */
 public interface StudentService extends BaseService<edu.neu.csye6200.entity.dto.StudentDO> {
 
-  public List<StudentVO> queryByAgeState(int ageState);
+  List<StudentVO> queryByAgeState(int ageState);
 
-  public StudentVO selectOneById(int studentId);
+  StudentVO selectOneById(int studentId);
 
 }

@@ -1,21 +1,20 @@
 package edu.neu.csye6200.web;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import edu.neu.csye6200.base.convertor.StudentConverter;
-import edu.neu.csye6200.base.enums.DayCareResultCodeEnum;
-import edu.neu.csye6200.entity.dto.StudentDO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
+import edu.neu.csye6200.base.annotation.LogOperate;
+import edu.neu.csye6200.base.convertor.StudentConverter;
+import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.vo.StudentVO;
 import edu.neu.csye6200.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 /**
  * @Author Caspar
@@ -30,41 +29,34 @@ public class StudentController extends BaseController {
   @Resource
   private StudentService studentService;
 
-  @RequestMapping(value = "/add",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+  @PostMapping(value = "")
   public Result<Object> add(@RequestBody StudentVO studentVO, HttpServletRequest request) {
     return protectController(request, () -> {
-      Result<Object> result = new Result<>();
-      StudentDO studentDO = new StudentDO();
-      studentDO = StudentConverter.vo2Do(studentVO);
-      boolean insertOpereate = studentService.save(studentDO);
-      result.setResultCode(insertOpereate?DayCareResultCodeEnum.SUCCESS.getCode():DayCareResultCodeEnum.ERROR.getCode());
-      return result;
+      StudentDO studentDO = StudentConverter.vo2Do(studentVO);
+      boolean insert = studentService.save(studentDO);
+      if (insert) {
+        return Result.buildOkData(studentDO);
+      }
+      return Result.buildFailData(studentDO);
     }, BaseControllerEnum.IGNORE_VERIFY.getCode());
   }
 
-  @RequestMapping(value="/listByAgeState",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-  public Result<Object> queryStudentByAgeState(@RequestParam int ageState, HttpServletRequest request) {
-    return protectController(request, () -> {
-      Result<Object> result = new Result<>();
-       List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
-       result.setResultObj(studentVOList);
-      return result;
-    }, BaseControllerEnum.IGNORE_VERIFY.getCode());
+  @GetMapping(value = "/state/{ageState}")
+  public Result<Object> queryStudentByAgeState(@PathVariable int ageState) {
+    List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
+    return Result.buildOkData(studentVOList);
   }
 
-  @RequestMapping(value="/detail",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-  public Result<Object> detail(@RequestParam int studentId, HttpServletRequest request) {
-    return protectController(request, () -> {
-      Result<Object> result = new Result<>();
-      StudentVO studentVO = studentService.selectOneById(studentId);
-      result.setResultObj(studentVO);
-      return result;
-    }, BaseControllerEnum.IGNORE_VERIFY.getCode());
+  @GetMapping(value = "/id/{id}")
+  @LogOperate(value = "获取详情")
+  public Result<Object> detail(@PathVariable int id) {
+    StudentVO studentVO = studentService.selectOneById(id);
+    return Result.buildOkData(studentVO);
   }
 
   @PostMapping("/update")
   public Result update(StudentVO studentVO) {
-    //todo
+    // todo
     return null;
   }
 
