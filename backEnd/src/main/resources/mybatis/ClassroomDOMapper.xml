@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.neu.csye6200.dao.ClassroomDOMapper">
-    <resultMap id="BaseResultMap" type="edu.neu.csye6200.entity.dto.ClassroomDto">
+<mapper namespace="edu.neu.csye6200.dao.ClassroomMapper">
+    <resultMap id="BaseResultMap" type="edu.neu.csye6200.entity.dto.ClassroomDO">
         <id column="classroomId" jdbcType="INTEGER" property="classroomId"/>
         <result column="ageState" jdbcType="INTEGER" property="ageState"/>
         <result column="groupNum" jdbcType="INTEGER" property="groupNum"/>
@@ -102,13 +102,13 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="edu.neu.csye6200.entity.dto.ClassroomDto">
+    <insert id="insert" parameterType="edu.neu.csye6200.entity.dto.ClassroomDO">
         insert into classroom (classroomId, ageState, groupNum,
                                isFull)
         values (#{classroomId,jdbcType=INTEGER}, #{ageState,jdbcType=INTEGER}, #{groupNum,jdbcType=INTEGER},
                 #{isFull,jdbcType=SMALLINT})
     </insert>
-    <insert id="insertSelective" parameterType="edu.neu.csye6200.entity.dto.ClassroomDto">
+    <insert id="insertSelective" parameterType="edu.neu.csye6200.entity.dto.ClassroomDO">
         insert into classroom
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="classroomId != null">
@@ -176,7 +176,7 @@
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByPrimaryKeySelective" parameterType="edu.neu.csye6200.entity.dto.ClassroomDto">
+    <update id="updateByPrimaryKeySelective" parameterType="edu.neu.csye6200.entity.dto.ClassroomDO">
         update classroom
         <set>
             <if test="ageState != null">
@@ -191,7 +191,7 @@
         </set>
         where classroomId = #{classroomId,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="edu.neu.csye6200.entity.dto.ClassroomDto">
+    <update id="updateByPrimaryKey" parameterType="edu.neu.csye6200.entity.dto.ClassroomDO">
         update classroom
         set ageState = #{ageState,jdbcType=INTEGER},
             groupNum = #{groupNum,jdbcType=INTEGER},

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.neu.csye6200.dao.ImmunizationDOMapper">
+<mapper namespace="edu.neu.csye6200.dao.ImmunizationMapper">
     <resultMap id="BaseResultMap" type="edu.neu.csye6200.entity.dto.ImmunizationDO">
         <id column="immunizationId" jdbcType="INTEGER" property="immunizationId"/>
         <result column="targetAge" jdbcType="INTEGER" property="targetAge"/>

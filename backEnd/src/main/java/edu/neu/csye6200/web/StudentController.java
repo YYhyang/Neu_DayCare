@@ -3,21 +3,19 @@ package edu.neu.csye6200.web;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import edu.neu.csye6200.base.convertor.StudentConverter;
+import edu.neu.csye6200.base.enums.DayCareResultCodeEnum;
+import edu.neu.csye6200.entity.dto.StudentDO;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import org.springframework.web.bind.annotation.*;
 
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
-import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.entity.vo.StudentVO;
 import edu.neu.csye6200.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 /**
  * @Author Caspar
@@ -25,37 +23,49 @@ import lombok.extern.slf4j.Slf4j;
  * @Description:
  */
 @RestController
-@RequestMapping("student")
+@RequestMapping("/v1/students")
 @Slf4j
 public class StudentController extends BaseController {
 
   @Resource
   private StudentService studentService;
 
-  @PostMapping("insertStudent")
-  public String insertDemand(@RequestBody String jsonString, HttpServletRequest request) {
-    Result<Object> res = protectController(request, () -> {
-      JSONObject jsonObject = JSON.parseObject(jsonString);
-      StudentVO studentVO = jsonObject.getObject("student", StudentVO.class);
-      Student student = new Student();
-      BeanUtils.copyProperties(studentVO, student);
-      boolean studentId = studentService.save(student);
-      return Result.buildData("studentId" + studentId);
-    }, BaseControllerEnum.IGNORE_VERIFY.getCode());
-
-    return JSON.toJSONString(res);
-  }
-
-  @RequestMapping("queryStudentByAgeState")
-  public Result<Object> queryStudentByAgeState(@RequestBody String jsonString, HttpServletRequest request) {
+  @RequestMapping(value = "/add",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+  public Result<Object> add(@RequestBody StudentVO studentVO, HttpServletRequest request) {
     return protectController(request, () -> {
       Result<Object> result = new Result<>();
-      JSONObject jsonObject = JSON.parseObject(jsonString);
-      int ageState = jsonObject.getObject("ageState", Integer.class);
-      // List<StudentVO> studentVOS = studentService.queryByAgeState(ageState); // todo
-      // result.setResultObj(studentVOS);
+      StudentDO studentDO = new StudentDO();
+      studentDO = StudentConverter.vo2Do(studentVO);
+      boolean insertOpereate = studentService.save(studentDO);
+      result.setResultCode(insertOpereate?DayCareResultCodeEnum.SUCCESS.getCode():DayCareResultCodeEnum.ERROR.getCode());
       return result;
     }, BaseControllerEnum.IGNORE_VERIFY.getCode());
+  }
+
+  @RequestMapping(value="/listByAgeState",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+  public Result<Object> queryStudentByAgeState(@RequestParam int ageState, HttpServletRequest request) {
+    return protectController(request, () -> {
+      Result<Object> result = new Result<>();
+       List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
+       result.setResultObj(studentVOList);
+      return result;
+    }, BaseControllerEnum.IGNORE_VERIFY.getCode());
+  }
+
+  @RequestMapping(value="/detail",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+  public Result<Object> detail(@RequestParam int studentId, HttpServletRequest request) {
+    return protectController(request, () -> {
+      Result<Object> result = new Result<>();
+      StudentVO studentVO = studentService.selectOneById(studentId);
+      result.setResultObj(studentVO);
+      return result;
+    }, BaseControllerEnum.IGNORE_VERIFY.getCode());
+  }
+
+  @PostMapping("/update")
+  public Result update(StudentVO studentVO) {
+    //todo
+    return null;
   }
 
 }

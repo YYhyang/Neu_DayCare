@@ -1,9 +1,0 @@
-package edu.neu.csye6200.dao;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import edu.neu.csye6200.entity.dto.ClassroomDto;
-
-public interface ClassroomDOMapper extends BaseMapper<ClassroomDto> {
-
-}
