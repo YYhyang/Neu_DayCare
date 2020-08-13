@@ -6,10 +6,8 @@ import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.vo.StudentVO;
 import edu.neu.csye6200.utils.DateUtils;
 import org.springframework.beans.BeanUtils;
-import sun.jvm.hotspot.utilities.Assert;
 
 import java.util.List;
-import java.util.Vector;
 import java.util.stream.Collectors;
 
 /**

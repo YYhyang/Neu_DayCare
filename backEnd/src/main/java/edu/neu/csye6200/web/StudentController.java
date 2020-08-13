@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import edu.neu.csye6200.base.convertor.StudentConverter;
 import edu.neu.csye6200.base.enums.DayCareResultCodeEnum;
 import edu.neu.csye6200.entity.dto.StudentDO;
+import edu.neu.csye6200.utils.ConverterUtils;
+import edu.neu.csye6200.utils.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import edu.neu.csye6200.entity.vo.StudentVO;
 import edu.neu.csye6200.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,7 +38,12 @@ public class StudentController extends BaseController {
     return protectController(request, () -> {
       Result<Object> result = new Result<>();
       StudentDO studentDO = new StudentDO();
-      studentDO = StudentConverter.vo2Do(studentVO);
+//      studentDO = StudentConverter.vo2Do(studentVO);
+
+      ConverterUtils.convert(studentVO, studentDO);
+      studentDO.setAgeState(StudentConverter.getAgeState(DateUtils.calculateAge(studentVO.getBirthday())));
+      studentDO.setRegistrationDate(new Date());
+
       boolean insertOpereate = studentService.save(studentDO);
       result.setResultCode(insertOpereate?DayCareResultCodeEnum.SUCCESS.getCode():DayCareResultCodeEnum.ERROR.getCode());
       return result;

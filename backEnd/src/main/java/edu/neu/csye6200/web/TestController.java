@@ -5,6 +5,7 @@ import edu.neu.csye6200.base.Result;
 import edu.neu.csye6200.entity.Group;
 import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.entity.vo.StudentVO;
+import edu.neu.csye6200.service.GroupManager;
 import edu.neu.csye6200.service.GroupService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +27,23 @@ import javax.servlet.http.HttpServletRequest;
 public class TestController extends BaseController {
     @Resource
     GroupService groupService;
+    @Resource
+    GroupManager groupManager;
 
     @GetMapping("/testGroup")
     public Result testGroup(@Param("groupId") Integer groupId, HttpServletRequest request) {
         return protectController(request, () -> {
             Result<Object> result = new Result<>();
             result.setResultObj(groupService.selectGroupVOByGroupId(groupId));
+            return result;
+        }, BaseControllerEnum.IGNORE_VERIFY.getCode());
+    }
+
+    @GetMapping("/testGroupManager")
+    public Result testGroupManager(@Param("groupId") Integer groupId,HttpServletRequest request) {
+        return protectController(request, () -> {
+            Result<Object> result = new Result<>();
+            result.setResultObj(groupManager.getGroup(groupId));
             return result;
         }, BaseControllerEnum.IGNORE_VERIFY.getCode());
     }

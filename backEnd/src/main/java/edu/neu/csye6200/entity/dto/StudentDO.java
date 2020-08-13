@@ -37,5 +37,4 @@ public class StudentDO implements Serializable {
 
   private static final long serialVersionUID = 6671234794689756522L;
 
-
 }

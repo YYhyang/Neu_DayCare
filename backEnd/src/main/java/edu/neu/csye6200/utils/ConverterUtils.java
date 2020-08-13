@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,8 +15,58 @@ import java.util.stream.Collectors;
  * @date 2020/8/13 12:17
  */
 public class ConverterUtils {
-
+    /**
+     * Cast an Object source with first Class to another Object target with anther Class
+     * @param source T
+     * @param target T
+     * @param <T> Class
+     *
+     */
     public static <T> void convert(T source, T target){
+
+        if (source==null) {
+            return;
+        }
+
+        Method[] arrSourceMethods =  source.getClass().getMethods();
+        Method[] arrTargetMethods = target.getClass().getMethods();
+        Field[] arrSourceFields = source.getClass().getDeclaredFields();
+
+        List<String> sourceMethodName = Arrays.stream(arrSourceMethods).map(ele -> ele.getName().toLowerCase())
+                .collect(Collectors.toList());
+        List<String> targetMethodNames = Arrays.stream(arrTargetMethods).map(ele -> ele.getName().toLowerCase())
+                .collect(Collectors.toList());
+        List<String> fields = Arrays.stream(arrSourceFields).map(ele -> ele.getName().toLowerCase())
+                .collect(Collectors.toList());
+
+        try {
+            for(int i=0;i<fields.size();i++) {
+
+                StringBuffer setterSb = new StringBuffer("set").append(fields.get(i));
+                StringBuffer getterSb = new StringBuffer("get").append(fields.get(i));
+
+                int indexGetter = sourceMethodName.indexOf(getterSb.toString());
+                Object value = null;
+
+                if (indexGetter!=-1) {
+                    Method getter = arrSourceMethods[indexGetter];
+                    value = getter.invoke(source);
+                    if (value != null) {
+                        int indexSetter = targetMethodNames.indexOf(setterSb.toString());
+                        if (indexSetter!=-1) {
+                            Method setter = arrTargetMethods[indexSetter];
+                            invoke(setter, value, target);
+                        }
+                    }
+                }
+            }
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static <T> void convert2(T source, T target){
 
         if (source==null) {
             return;
@@ -47,7 +98,7 @@ public class ConverterUtils {
                         int indexSetter = targetMethodNames.indexOf(setterSb.toString());
                         if (indexSetter!=-1) {
                             Method setter = arrTargetMethods[indexSetter];
-                            CsvUtils.invoke(setter, value, target);
+                            invoke(setter, value, target);
                         }
                     }
                 }
@@ -97,7 +148,7 @@ public class ConverterUtils {
                             int indexSetter = targetMethodNames.indexOf(setterSb.toString());
                             if (indexSetter!=-1) {
                                 Method setter = arrTargetMethods[indexSetter];
-                                CsvUtils.invoke(setter, value, instance);
+                                invoke(setter, value, instance);
                                 targetArr[j] = instance;
                             }
                         }
@@ -113,17 +164,54 @@ public class ConverterUtils {
 
 
     }
+    public static void invoke(Method setter, Object value, Object instance)
+            throws IllegalAccessException, InvocationTargetException {
+        if (instance == null || value == null || setter == null) {
+            return;
+        }
+        if (setter.getParameterCount() != 1) {
+            return;
+        }
+        if (!(value instanceof String) && !(value instanceof Integer) && !(value instanceof Double)
+                && !(value instanceof Date) && !(value instanceof Boolean) ) {
+            return;
+        }
 
+        String type = setter.getParameters()[0].getType().getTypeName();
+        switch (type) {
+            case "java.lang.String":
+                value = value.toString();
+                break;
+            case "int":
+                value = Integer.parseInt(String.valueOf(value));
+                break;
+            case "double":
+                value = Double.parseDouble(String.valueOf(value));
+                break;
+            case "boolean":
+                value = Boolean.parseBoolean(String.valueOf(value));
+                break;
+            case "java.util.Date":
+//                value = DateUtils.string2Date(value.toString(), false);
+                value = (Date) value;
+                break;
+            default:
+                break;
+        }
+        setter.invoke(instance, value);
+    }
 
     /**
+     * Cast an List containing Objects of first Class to another List containing Objects with anther Class
      * @param sourceList source list
-     * @param clzTarget target class
+     * @param targetList target list
+     * @param clzTarget target Class
      * @param <T>
      * @return List<T>
      */
-    public static <T> List<T> convertList(List<? extends T> sourceList, Class clzTarget) {
+    public static <T> void convertList(List<? extends T> sourceList, List targetList, Class clzTarget) {
         if (CollectionUtils.isEmpty(sourceList)) {
-            return null;
+            return;
         }
         try {
 
@@ -138,11 +226,10 @@ public class ConverterUtils {
             List<String> fields = Arrays.stream(arrSourceFields).map(ele -> ele.getName().toLowerCase())
                     .collect(Collectors.toList());
 
-            List targetlist = sourceList.getClass().newInstance();
             for (int j=0;j<sourceList.size();j++) {
 
                 T instance = (T) clzTarget.newInstance();
-                targetlist.add(instance);
+                targetList.add(instance);
                 for(int i=0;i<fields.size();i++) {
                     StringBuffer setterSb = new StringBuffer("set").append(fields.get(i));
                     StringBuffer getterSb = new StringBuffer("get").append(fields.get(i));
@@ -156,71 +243,19 @@ public class ConverterUtils {
                             int indexSetter = targetMethodNames.indexOf(setterSb.toString());
                             if (indexSetter!=-1) {
                                 Method setter = arrTargetMethods[indexSetter];
-                                CsvUtils.invoke(setter, value, instance);
+                                invoke(setter, value, instance);
                             }
                         }
                     }
                 }
-            }
-            return targetlist;
 
+
+            }
+            targetList.stream().map(ele->clzTarget.cast(ele));
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 
-//    public static <T> void convertList(List<? extends T> sourceList, List<? extends T> targetList) {
-//        // todo
-//        //  List<? extends T>类型不允许插入元素
-//        if (CollectionUtils.isEmpty(sourceList)) {
-//            return;
-//        }
-//        // targetList中放入一个目标转化类的对象，以确认转化对象的类，获取类信息之后将其删除
-//        Class targetClz = targetList.get(0).getClass();
-//        targetList.remove(0);
-//
-//        try {
-//
-//            Method[] arrSourceMethods =  sourceList.get(0).getClass().getMethods();
-//            Method[] arrTargetMethods = targetClz.getMethods();
-//            Field[] arrSourceFields = sourceList.get(0).getClass().getDeclaredFields();
-//
-//            List<String> sourceMethodName = Arrays.stream(arrSourceMethods).map(ele -> ele.getName().toLowerCase())
-//                    .collect(Collectors.toList());
-//            List<String> targetMethodNames = Arrays.stream(arrTargetMethods).map(ele -> ele.getName().toLowerCase())
-//                    .collect(Collectors.toList());
-//            List<String> fields = Arrays.stream(arrSourceFields).map(ele -> ele.getName().toLowerCase())
-//                    .collect(Collectors.toList());
-//
-//            for (int j=0;j<sourceList.size();j++) {
-//
-//                Object instance =  targetClz.newInstance();
-//                targetList.add(instance);
-//                for(int i=0;i<fields.size();i++) {
-//                    StringBuffer setterSb = new StringBuffer("set").append(fields.get(i));
-//                    StringBuffer getterSb = new StringBuffer("get").append(fields.get(i));
-//
-//                    int indexGetter = sourceMethodName.indexOf(getterSb.toString());
-//                    Object value = null;
-//                    if (indexGetter!=-1) {
-//                        Method getter = arrSourceMethods[indexGetter];
-//                        value = getter.invoke(sourceList.get(j));
-//                        if (value != null) {
-//                            int indexSetter = targetMethodNames.indexOf(setterSb.toString());
-//                            if (indexSetter!=-1) {
-//                                Method setter = arrTargetMethods[indexSetter];
-//                                CsvUtils.invoke(setter, value, instance);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 }

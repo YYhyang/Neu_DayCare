@@ -1,22 +1,22 @@
 package edu.neu.csye6200.entity;
 
 import java.util.Date;
+import java.util.Vector;
 
-import edu.neu.csye6200.service.StudentService;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @Author Caspar
- * @CreateTime 2020/8/10 19:03
- * @Description:
+ * @author Caspar
+ * @since  2020/8/10 19:03
+ *
+ * functions to implement
+ *  * 1. operate vaccination List, add, remove vaccination record
+ *  * 2. checkVaccineRecord() Check to see if vaccines are needed,
+ *  * 3. constructor to create a new classroom
  */
 
 @Data
-public class Student extends AbstractStudent{
-  @Autowired
-  StudentService studentService;
-
+public class Student {
 
   private Integer studentId;
 
@@ -38,8 +38,6 @@ public class Student extends AbstractStudent{
 
   private Integer ageState;
 
-  @Override
-  public void save() {
-    // todo
-  }
+  private Vector<Vaccination> vaccinationList;
+
 }

@@ -1,12 +1,8 @@
 package edu.neu.csye6200.entity;
 
-import edu.neu.csye6200.base.convertor.StudentConverter;
-import edu.neu.csye6200.entity.vo.GroupVO;
-import edu.neu.csye6200.entity.vo.StudentVO;
-import lombok.Data;
-import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
+import lombok.Data;
+
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -15,7 +11,7 @@ import java.util.Vector;
  * @date 2020/8/12 09:25
  */
 @Data
-public class Group extends AbstractGroup{
+public class Group {
     private Integer groupId;
 
     private Integer classroomId;
@@ -61,7 +57,7 @@ public class Group extends AbstractGroup{
         return teacher.getTargetAgeState().equals(getAgeState());
     }
 
-    @Override
+
     public void assignTeacher(Teacher teacher) {
         if (verifyStateRegulation(teacher)) {
             setTeacher(teacher);
@@ -69,7 +65,6 @@ public class Group extends AbstractGroup{
         }
     }
 
-    @Override
     public boolean addStudent(Student student) {
         boolean success = false;
         if (!getIsFull()) {
@@ -86,7 +81,6 @@ public class Group extends AbstractGroup{
         }
     }
 
-    @Override
     public boolean removeStudent(Student student) {
         boolean success = false;
         success = studentList.remove(student);
@@ -94,7 +88,6 @@ public class Group extends AbstractGroup{
         return success;
     }
 
-    @Override
     public Student findStudentByStudentId(int studentId) {
         Student student = null;
         for (Iterator<Student> iterator=studentList.iterator();iterator.hasNext();) {
@@ -106,22 +99,9 @@ public class Group extends AbstractGroup{
         return student;
     }
 
-    @Override
-    public void save() {
-        // todo
-        // Persist the Group object
-
-    }
-
     public void removeStudentByStudentId(int studentId) {
         studentList.remove(findStudentByStudentId(studentId));
     }
-
-//    public GroupVO convertToVO() {
-//        GroupVO groupVO = GroupConverter.model2Vo(this)
-//        return groupVO;
-//    }
-
 
     
 }

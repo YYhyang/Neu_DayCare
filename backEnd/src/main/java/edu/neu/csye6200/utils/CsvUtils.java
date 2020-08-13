@@ -17,7 +17,7 @@ public class CsvUtils {
   private static final String COMMA = ",";
   private static final String SEPARATOR = System.getProperty("line.separator");
 
-  public static void invoke(Method setter, Object value, Object instance)
+  private static void invoke(Method setter, Object value, Object instance)
     throws IllegalAccessException, InvocationTargetException {
     if (instance == null || value == null || setter == null) {
       return;

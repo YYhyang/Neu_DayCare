@@ -10,6 +10,7 @@ import edu.neu.csye6200.entity.dto.GroupDO;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.vo.GroupVO;
 import edu.neu.csye6200.service.GroupService;
+import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -44,18 +45,17 @@ public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> impl
     @Override
     public GroupVO selectGroupVOByGroupId(int groupId) {
         Group group = selectGroupByGroupId(groupId);
-        //todo
-//        return group.convertToVO();
-        return null;
+        GroupVO groupVO = new GroupVO();
+        ConverterUtils.convert(group, groupVO);
+        return groupVO;
     }
 
     public List<Student> getStudentListByGroupId(int groupId) {
         List<StudentDO> studentDOS = studentMapper.selectList(Wrappers.<StudentDO>query().eq("groupId", groupId));
-        return studentDOS.stream().map(ele->{
-            Student student = new Student();
-            BeanUtils.copyProperties(ele, student);
-            return student;
-        }).collect(Collectors.toList());
+        List<Student> studentList = new Vector<>();
+        ConverterUtils.convertList(studentDOS, studentList, Student.class);
+
+        return studentList;
     }
 
 

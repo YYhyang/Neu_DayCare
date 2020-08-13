@@ -1,5 +1,7 @@
 package edu.neu.csye6200.entity.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +14,7 @@ import java.util.Date;
 @TableName(value = "daycare.teacher")
 public class TeacherDO implements Serializable {
 
+  @TableId(value = "teacherId", type = IdType.INPUT)
   private Integer teacherId;
 
   private Integer credits;
