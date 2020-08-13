@@ -19,7 +19,6 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import edu.neu.csye6200.dao.StudentMapper;
-import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.service.StudentService;
 
 @RunWith(SpringRunner.class)

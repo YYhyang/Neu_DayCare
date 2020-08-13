@@ -21,6 +21,8 @@ public class ImmunizationDO implements Serializable {
 
   private Integer dose;
 
+  private String cycle;
+
   private String description;
 
 

@@ -15,6 +15,8 @@ public class Immunization {
 
     private Integer dose;
 
+    private String cycle;
+
     private String description;
 
 }

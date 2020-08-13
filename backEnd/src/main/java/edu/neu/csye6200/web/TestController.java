@@ -2,15 +2,10 @@ package edu.neu.csye6200.web;
 
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
-import edu.neu.csye6200.entity.Group;
-import edu.neu.csye6200.entity.Student;
-import edu.neu.csye6200.entity.vo.StudentVO;
-import edu.neu.csye6200.service.GroupManager;
+import edu.neu.csye6200.manager.EnrollmentManager;
 import edu.neu.csye6200.service.GroupService;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,7 +23,7 @@ public class TestController extends BaseController {
     @Resource
     GroupService groupService;
     @Resource
-    GroupManager groupManager;
+    EnrollmentManager enrollmentManager;
 
     @GetMapping("/testGroup")
     public Result testGroup(@Param("groupId") Integer groupId, HttpServletRequest request) {
@@ -43,7 +38,7 @@ public class TestController extends BaseController {
     public Result testGroupManager(@Param("groupId") Integer groupId,HttpServletRequest request) {
         return protectController(request, () -> {
             Result<Object> result = new Result<>();
-            result.setResultObj(groupManager.getGroup(groupId));
+            result.setResultObj(groupService.getById(groupId));
             return result;
         }, BaseControllerEnum.IGNORE_VERIFY.getCode());
     }

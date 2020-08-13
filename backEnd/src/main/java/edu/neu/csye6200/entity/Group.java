@@ -69,7 +69,7 @@ public class Group {
         boolean success = false;
         if (!getIsFull()) {
             success = studentList.add(student);
-            setStudentCount(studentList.size());
+            updateStudentCount();
         }
         return success;
     }

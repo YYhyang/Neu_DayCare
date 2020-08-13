@@ -40,4 +40,8 @@ public class Student {
 
   private Vector<Vaccination> vaccinationList;
 
+  private void addVaccination(Vaccination vaccination) {
+    vaccinationList.add(vaccination);
+  }
+
 }
