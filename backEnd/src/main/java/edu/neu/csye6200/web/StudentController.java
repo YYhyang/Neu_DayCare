@@ -30,15 +30,14 @@ public class StudentController extends BaseController {
   private StudentService studentService;
 
   @PostMapping(value = "")
+  @LogOperate(value = "增")
   public Result<Object> add(@RequestBody StudentVO studentVO, HttpServletRequest request) {
-    return protectController(request, () -> {
-      StudentDO studentDO = StudentConverter.vo2Do(studentVO);
-      boolean insert = studentService.save(studentDO);
-      if (insert) {
-        return Result.buildOkData(studentDO);
-      }
-      return Result.buildFailData(studentDO);
-    }, BaseControllerEnum.IGNORE_VERIFY.getCode());
+    StudentDO studentDO = StudentConverter.vo2Do(studentVO);
+    boolean insert = studentService.save(studentDO);
+    if (insert) {
+      return Result.buildOkData(studentDO);
+    }
+    return Result.buildFailData(studentDO);
   }
 
   @GetMapping(value = "/state/{ageState}")
