@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
  * @CreateTime 2020/8/10 19:25
  * @Description:
  */
-public enum DayCareResultCodeEnum {
+public enum ResultCodeEnum {
   /** ---------- web 相关操作码 ---------- */
   /** 操作成功 */
   SUCCESS("SUCCESS", "操作成功"),
@@ -60,7 +60,7 @@ public enum DayCareResultCodeEnum {
    * @param description
    *          描述
    */
-  DayCareResultCodeEnum(String code, String description) {
+  ResultCodeEnum(String code, String description) {
     this.code = code;
     this.description = description;
   }
@@ -72,10 +72,10 @@ public enum DayCareResultCodeEnum {
    *          枚举code
    * @return 有则返回对应枚举，无则返回null
    */
-  public DayCareResultCodeEnum getEnumByCode(String code) {
-    for (DayCareResultCodeEnum dayCareResultCodeEnum : DayCareResultCodeEnum.values()) {
-      if (StringUtils.equals(code, dayCareResultCodeEnum.getCode())) {
-        return dayCareResultCodeEnum;
+  public ResultCodeEnum getEnumByCode(String code) {
+    for (ResultCodeEnum resultCodeEnum : ResultCodeEnum.values()) {
+      if (StringUtils.equals(code, resultCodeEnum.getCode())) {
+        return resultCodeEnum;
       }
     }
     return null;

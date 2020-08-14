@@ -3,7 +3,7 @@ package edu.neu.csye6200.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import edu.neu.csye6200.base.enums.DayCareResultCodeEnum;
+import edu.neu.csye6200.base.enums.ResultCodeEnum;
 import edu.neu.csye6200.base.exceptions.DayCareException;
 
 /**
@@ -47,7 +47,7 @@ public class DateUtils {
     try {
       return getDateFormat(withSeconds).parse(dates);
     } catch (Exception e) {
-      throw new DayCareException("时间解析错误", DayCareResultCodeEnum.DATE_FORMAT_ERROR);
+      throw new DayCareException("时间解析错误", ResultCodeEnum.DATE_FORMAT_ERROR);
     }
   }
 
@@ -82,7 +82,7 @@ public class DateUtils {
     try {
       return getDateFormat(withSeconds).format(date);
     } catch (Exception e) {
-      throw new DayCareException("时间对象转换错误", DayCareResultCodeEnum.DATE_FORMAT_ERROR);
+      throw new DayCareException("时间对象转换错误", ResultCodeEnum.DATE_FORMAT_ERROR);
     }
   }
 
@@ -99,7 +99,7 @@ public class DateUtils {
       Date now = new Date();
       return (int)((now.getTime() - birthday.getTime()) / (24 * 60 * 60 * 1000)) / 30;
     } catch (Exception e) {
-      throw new DayCareException("calculate age error", DayCareResultCodeEnum.INVALID_DATE);
+      throw new DayCareException("calculate age error", ResultCodeEnum.INVALID_DATE);
     }
   }
 

@@ -1,2 +1,3 @@
 /.idea/
 *.log
+/web-fe/node_modules
