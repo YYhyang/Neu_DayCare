@@ -15,6 +15,6 @@ public interface TeacherService extends BaseService<TeacherDO> {
      * @param targetAge
      * @return List<TeacherVO></>
      */
-    List<TeacherVO> listByTargetAge(Integer targetAge);
+    List<TeacherVO> listByTargetAge(String targetAge);
     TeacherVO selectById(Integer teacherId);
 }

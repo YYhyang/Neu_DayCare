@@ -1,11 +1,9 @@
 package edu.neu.csye6200.entity;
 
-import edu.neu.csye6200.entity.vo.GroupVO;
-import edu.neu.csye6200.entity.vo.StudentVO;
-import lombok.Data;
-import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
+import edu.neu.csye6200.base.enums.GroupStateEnum;
+import lombok.Data;
+
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -15,7 +13,6 @@ import java.util.Vector;
  */
 @Data
 public class Group {
-
     private Integer groupId;
 
     private Integer classroomId;
@@ -28,7 +25,7 @@ public class Group {
 
     private Integer ratio;
 
-    private Boolean isFull;
+    private String fullState;
 
     private Vector<Student> studentList;
 
@@ -42,15 +39,14 @@ public class Group {
         setTeacherId(-1);
         setStudentCount(0);
         setRatio(4);
-        setIsFull(Boolean.FALSE);
+        setFullState(GroupStateEnum.NOT_FULL.getCode());
         setStudentList(new Vector<>());
     }
 
     public Group(int ageState, int ratio) {
         setAgeState(ageState);
         setRatio(ratio);
-
-        setIsFull(false);
+        setFullState(GroupStateEnum.NOT_FULL.getCode());
         setClassroomId(-1);
         setTeacherId(-1);
         setStudentCount(0);
@@ -61,6 +57,7 @@ public class Group {
         return teacher.getTargetAgeState().equals(getAgeState());
     }
 
+
     public void assignTeacher(Teacher teacher) {
         if (verifyStateRegulation(teacher)) {
             setTeacher(teacher);
@@ -68,24 +65,27 @@ public class Group {
         }
     }
 
-    public void addStudent(Student student) {
-        if (!getIsFull()) {
-            studentList.add(student);
-            setStudentCount(studentList.size());
+    public boolean addStudent(Student student) {
+        boolean success = false;
+        if (getFullState().equals(GroupStateEnum.NOT_FULL.getCode())) {
+            success = studentList.add(student);
+            updateStudentCount();
         }
-
+        return success;
     }
 
     public void updateStudentCount() {
         setStudentCount(studentList.size());
         if (getStudentCount()>=getRatio()) {
-            setIsFull(Boolean.TRUE);
+            setFullState(GroupStateEnum.FULL.getCode());
         }
     }
 
-    public void removeStudent(Student student) {
-        studentList.remove(student);
+    public boolean removeStudent(Student student) {
+        boolean success = false;
+        success = studentList.remove(student);
         updateStudentCount();
+        return success;
     }
 
     public Student findStudentByStudentId(int studentId) {
@@ -102,19 +102,6 @@ public class Group {
     public void removeStudentByStudentId(int studentId) {
         studentList.remove(findStudentByStudentId(studentId));
     }
-
-    public GroupVO convertToVO() {
-        GroupVO groupVO = new GroupVO();
-        try {
-            BeanUtils.copyProperties(this, groupVO);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-        return groupVO;
-    }
-
 
     
 }

@@ -1,16 +1,6 @@
 package edu.neu.csye6200.service.impl;
 
-import java.util.List;
-import java.util.Vector;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-
 import edu.neu.csye6200.base.BaseServiceImpl;
 import edu.neu.csye6200.dao.GroupMapper;
 import edu.neu.csye6200.dao.StudentMapper;
@@ -20,6 +10,14 @@ import edu.neu.csye6200.entity.dto.GroupDO;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.vo.GroupVO;
 import edu.neu.csye6200.service.GroupService;
+import edu.neu.csye6200.utils.ConverterUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Vector;
+import java.util.stream.Collectors;
 
 /**
  * @author Caspar
@@ -44,19 +42,21 @@ public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> impl
 
   }
 
-  @Override
-  public GroupVO selectGroupVOByGroupId(int groupId) {
-    Group group = selectGroupByGroupId(groupId);
-    return group.convertToVO();
-  }
+    @Override
+    public GroupVO selectGroupVOByGroupId(int groupId) {
+        Group group = selectGroupByGroupId(groupId);
+        GroupVO groupVO = new GroupVO();
+        ConverterUtils.convert(group, groupVO);
+        return groupVO;
+    }
 
-  public List<Student> getStudentListByGroupId(int groupId) {
-    List<StudentDO> studentDOS = studentMapper.selectList(Wrappers.<StudentDO>query().eq("groupId", groupId));
-    return studentDOS.stream().map(ele -> {
-      Student student = new Student();
-      BeanUtils.copyProperties(ele, student);
-      return student;
-    }).collect(Collectors.toList());
-  }
+    public List<Student> getStudentListByGroupId(int groupId) {
+        List<StudentDO> studentDOS = studentMapper.selectList(Wrappers.<StudentDO>query().eq("groupId", groupId));
+        List<Student> studentList = new Vector<>();
+        ConverterUtils.convertList(studentDOS, studentList, Student.class);
+
+        return studentList;
+    }
+
 
 }

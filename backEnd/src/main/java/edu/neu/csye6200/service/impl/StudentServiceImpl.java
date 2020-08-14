@@ -1,12 +1,14 @@
 package edu.neu.csye6200.service.impl;
 
 import java.util.List;
+import java.util.Vector;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
 import edu.neu.csye6200.base.convertor.StudentConverter;
 import edu.neu.csye6200.entity.dto.StudentDO;
+import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ import edu.neu.csye6200.service.StudentService;
  * @author arronshentu
  */
 @Service
-public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, edu.neu.csye6200.entity.dto.StudentDO> implements StudentService {
+public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO> implements StudentService {
 
   @Resource
   private StudentMapper studentMapper;
@@ -30,20 +32,40 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, edu.neu.c
   @Override
   public List<StudentVO> queryByAgeState(int ageState) {
     List<StudentDO> studentDOList = studentMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("ageState", ageState));
-    return StudentConverter.batchDo2Vo(studentDOList);
+    List<StudentVO> studentVOList = new Vector<>();
+    ConverterUtils.convertList(studentDOList, studentVOList, StudentVO.class);
+    return studentVOList;
+  }
+
+  @Override
+  public List<StudentVO> queryByGroupId(int groupId) {
+    List<StudentDO> studentDOList = studentMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("groupId", groupId));
+    List<StudentVO> studentVOList = new Vector<>();
+    ConverterUtils.convertList(studentDOList, studentVOList, StudentVO.class);
+    return studentVOList;
+  }
+
+  @Override
+  public List<Student> queryStudentByGroupId(int groupId) {
+    List<StudentDO> studentDOList = studentMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("groupId", groupId));
+    List<Student> studentList = new Vector<>();
+    ConverterUtils.convertList(studentDOList, studentList, Student.class);
+    return studentList;
   }
 
   @Override
   public StudentVO selectOneById(int studentId) {
     StudentDO studentDO = studentMapper.selectById(studentId);
     StudentVO studentVO = new StudentVO();
-    BeanUtils.copyProperties(studentDO, studentVO);
+    ConverterUtils.convert(studentDO, studentVO);
     return studentVO;
   }
 
   public List<Student> getListStudentsByAgeState(int ageState) {
     List<StudentDO> studentDOList = studentMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("ageState", ageState));
-    return StudentConverter.batchDo2Model(studentDOList);
+    List<Student> studentList = new Vector<>();
+    ConverterUtils.convertList(studentDOList, studentList, Student.class);
+    return studentList;
 
   }
 

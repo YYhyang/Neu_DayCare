@@ -4,6 +4,8 @@ import lombok.Data;
 
 import java.util.Date;
 
+import lombok.Data;
+
 /**
  * @author Yuhan Yang
  * @CreateTime 2020/8/11 12:12
@@ -25,5 +27,5 @@ public class Teacher {
 
     private Date birthday;
 
-    private Integer targetAgeState;
+    private String targetAgeState;
 }

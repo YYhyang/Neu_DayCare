@@ -37,7 +37,7 @@ public class TeacherController extends BaseController {
   }
 
   @PostMapping(value = "/listByTargetAge")
-  public Result<Object> listByTargetAge(@RequestParam Integer targetAge) {
+  public Result<Object> listByTargetAge(@RequestParam String targetAge) {
     List<TeacherVO> teacherVOs = teacherService.listByTargetAge(targetAge);
     return Result.buildOkData(teacherVOs);
   }

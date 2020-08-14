@@ -1,5 +1,7 @@
 package edu.neu.csye6200.entity.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +15,7 @@ public class GroupDO implements Serializable {
 
   private static final long serialVersionUID = -747286402637666624L;
 
+  @TableId(value = "groupId", type = IdType.AUTO)
   private Integer groupId;
 
   private Integer classroomId;
@@ -25,6 +28,6 @@ public class GroupDO implements Serializable {
 
   private Integer ratio;
 
-  private Boolean isFull;
+  private String fullState;
 
 }

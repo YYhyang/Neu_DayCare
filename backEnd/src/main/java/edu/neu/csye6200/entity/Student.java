@@ -1,13 +1,18 @@
 package edu.neu.csye6200.entity;
 
 import java.util.Date;
+import java.util.Vector;
 
 import lombok.Data;
 
 /**
- * @Author Caspar
- * @CreateTime 2020/8/10 19:03
- * @Description:
+ * @author Caspar
+ * @since  2020/8/10 19:03
+ *
+ * functions to implement
+ *  * 1. operate vaccination List, add, remove vaccination record
+ *  * 2. checkVaccineRecord() Check to see if vaccines are needed,
+ *  * 3. constructor to create a new classroom
  */
 
 @Data
@@ -31,5 +36,12 @@ public class Student {
 
   private Date birthday;
 
-  private Integer ageState;
+  private String ageState;
+
+  private Vector<Vaccination> vaccinationList;
+
+  public void addVaccination(Vaccination vaccination) {
+    vaccinationList.add(vaccination);
+  }
+
 }

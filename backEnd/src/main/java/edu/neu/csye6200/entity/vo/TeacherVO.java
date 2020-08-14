@@ -23,5 +23,5 @@ public class TeacherVO {
 
     private Date birthday;
 
-    private Integer targetAgeState;
+    private String targetAgeState;
 }
