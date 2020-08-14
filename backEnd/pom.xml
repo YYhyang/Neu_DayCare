@@ -111,16 +111,17 @@
             <version>3.9</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.aspectj</groupId>-->
+<!--            <artifactId>aspectjrt</artifactId>-->
+<!--            <version>1.9.5</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
+            <artifactId>aspectjweaver</artifactId>
             <version>1.9.5</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>ma.glasnost.orika</groupId>-->
-<!--            <artifactId>orika-core</artifactId>-->
-<!--            <version>${orika.version}</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>

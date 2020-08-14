@@ -6,9 +6,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import edu.neu.csye6200.base.convertor.StudentConverter;
-import edu.neu.csye6200.base.enums.DayCareResultCodeEnum;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.utils.ConverterUtils;
+import edu.neu.csye6200.utils.DateUtils;
 import org.springframework.web.bind.annotation.*;
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
@@ -38,7 +38,7 @@ public class StudentController extends BaseController {
     StudentDO studentDO = new StudentDO();
     ConverterUtils.convert(studentVO, studentDO);
     // todo 计算 ageState
-//    studentDO.setAgeState(StudentConverter.getAgeState(DateUtils.calculateAge(studentVO.getBirthday())));
+    studentDO.setAgeState(StudentConverter.getAgeState(DateUtils.calculateAge(studentVO.getBirthday())));
     studentDO.setRegistrationDate(new Date());
     boolean insert = studentService.save(studentDO);
     if (insert) {
@@ -48,6 +48,7 @@ public class StudentController extends BaseController {
   }
 
   @GetMapping(value = "/state/{ageState}")
+  @LogOperate(value = "根据年龄段查询")
   public Result<Object> queryStudentByAgeState(@PathVariable int ageState) {
     List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
     return Result.buildOkData(studentVOList);
@@ -61,9 +62,16 @@ public class StudentController extends BaseController {
   }
 
   @PostMapping("/update")
-  public Result update(StudentVO studentVO) {
+  @LogOperate(value = "更新")
+  public Result<Object> update(@RequestBody StudentVO studentVO, HttpServletRequest request) {
     // todo
-    return null;
+    StudentDO studentDO = new StudentDO();
+    ConverterUtils.convert(studentVO, studentDO);
+    boolean update = studentService.updateById(studentDO);
+    if (update) {
+      return Result.buildOkData(studentDO);
+    }
+    return Result.buildFailData(studentDO);
   }
 
 }
