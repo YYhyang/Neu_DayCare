@@ -10,4 +10,8 @@
 # 设计层面
 1. 前后端分离 + rest语义
   - get/ post等对应的路由定义
-2.  
+
+# 参考链接
+1. [restful介绍](http://www.ruanyifeng.com/blog/2014/05/restful_api.html)
+2. [lombok文档](https://projectlombok.org/features/all)
+3. [前后端分离案例](https://juejin.im/post/6844903505312890894)

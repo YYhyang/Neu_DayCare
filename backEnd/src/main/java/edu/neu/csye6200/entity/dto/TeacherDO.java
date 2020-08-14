@@ -9,11 +9,13 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author Yuhan Yang
+ */
 @Data
 @EqualsAndHashCode
 @TableName(value = "daycare.teacher")
 public class TeacherDO implements Serializable {
-
   @TableId(value = "teacherId", type = IdType.INPUT)
   private Integer teacherId;
 

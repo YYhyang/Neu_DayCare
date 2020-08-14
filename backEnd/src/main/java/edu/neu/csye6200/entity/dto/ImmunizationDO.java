@@ -2,11 +2,12 @@ package edu.neu.csye6200.entity.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode
@@ -24,6 +25,5 @@ public class ImmunizationDO implements Serializable {
   private String cycle;
 
   private String description;
-
 
 }

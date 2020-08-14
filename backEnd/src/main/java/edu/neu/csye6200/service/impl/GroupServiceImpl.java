@@ -25,22 +25,22 @@ import java.util.stream.Collectors;
  */
 @Service
 public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> implements GroupService {
-    @Resource
-    GroupMapper groupDOMapper;
-    @Resource
-    StudentMapper studentMapper;
+  @Resource
+  GroupMapper groupDOMapper;
+  @Resource
+  StudentMapper studentMapper;
 
-    public Group selectGroupByGroupId(int groupId) {
-        GroupDO groupDO = groupDOMapper.selectOne(Wrappers.<GroupDO>query().eq("groupId", groupId));
-        List<Student> studentList = getStudentListByGroupId(groupId);
-        Group group = new Group();
-        BeanUtils.copyProperties(groupDO, group);
-        group.setStudentList(new Vector<>(studentList));
-        group.updateStudentCount();
-        //todo Assign Teacher
-        return group;
+  public Group selectGroupByGroupId(int groupId) {
+    GroupDO groupDO = groupDOMapper.selectOne(Wrappers.<GroupDO>query().eq("groupId", groupId));
+    List<Student> studentList = getStudentListByGroupId(groupId);
+    Group group = new Group();
+    BeanUtils.copyProperties(groupDO, group);
+    group.setStudentList(new Vector<>(studentList));
+    group.updateStudentCount();
+    // todo Assign Teacher
+    return group;
 
-    }
+  }
 
     @Override
     public GroupVO selectGroupVOByGroupId(int groupId) {

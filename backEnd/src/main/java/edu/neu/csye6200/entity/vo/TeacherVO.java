@@ -4,9 +4,11 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author Yuhan Yang
+ */
 @Data
 public class TeacherVO {
-
     private Integer teacherId;
 
     private Integer credits;
@@ -22,5 +24,4 @@ public class TeacherVO {
     private Date birthday;
 
     private Integer targetAgeState;
-
 }

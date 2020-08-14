@@ -57,45 +57,36 @@ public class BaseController {
     String... params) {
     Result<Object> result = new Result<>();
     try {
-      log.info("Start request " + request.getRequestURI() + " from " + request.getRemoteAddr() + " | "
-        + request.getHeader("x-forwarded-for"));
-
-      // 1. 前置操作
-      preRequestHandle(request);
 
       // 2. 核心处理逻辑
-      result = logicCallBack.execute();
     } catch (DayCareException dayCareException) {
       log.error(dayCareException.getMessage() + "\n");
       result.setSuccess(false);
       result.setResultCode(dayCareException.getErrorCode().getCode());
-      result.setResultDesc(dayCareException.getMessage());
+//      result.setResultDesc(dayCareException.getMessage());
       // temp
-      result.setCode(-1);
+//      result.setCode(-1);
       return result;
     } catch (Exception e) {
       log.error(e.getMessage() + "\n");
       result.setSuccess(false);
       result.setResultCode(DayCareResultCodeEnum.SYSTEM_ERROR.getCode());
-      result.setResultDesc(DayCareResultCodeEnum.SYSTEM_ERROR.getDescription());
-
+//      result.setResultDesc(DayCareResultCodeEnum.SYSTEM_ERROR.getDescription());
       // temp
-      result.setCode(-1);
-
+//      result.setCode(-1);
       return result;
     }
     result.setSuccess(true);
     result.setResultCode(DayCareResultCodeEnum.SUCCESS.getCode());
-    result.setResultDesc(DayCareResultCodeEnum.SUCCESS.getDescription());
+//    result.setResultDesc(DayCareResultCodeEnum.SUCCESS.getDescription());
 
     // temp
     if (params.length == 2 && StringUtils.equals(BaseControllerEnum.BACK_MANAGE.code, params[1])) {
-      result.setData(result.getResultObj());
-      result.setMsg(result.getResultDesc());
-      result.setResultObj(null);
-      result.setResultDesc(null);
+//      result.setData(result.getResultObj());
+      // result.setMsg(result.getResultDesc());
+//      result.setResultObj(null);
+//      result.setResultDesc(null);
       result.setResultCode(null);
-
     }
 
     log.info("Finish request\n");

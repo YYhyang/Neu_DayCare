@@ -1,5 +1,7 @@
 package edu.neu.csye6200.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 import lombok.Data;
@@ -11,19 +13,19 @@ import lombok.Data;
 
 @Data
 public class Teacher {
-  private Integer teacherId;
+    private Integer teacherId;
 
-  private Integer credits;
+    private Integer credits;
 
-  private String name;
+    private String name;
 
-  private Double ratio;
+    private Double ratio;
 
-  private Integer groupId;
+    private Integer groupId;
 
-  private Integer classroomId;
+    private Integer classroomId;
 
-  private Date birthday;
+    private Date birthday;
 
-  private Integer targetAgeState;
+    private Integer targetAgeState;
 }
