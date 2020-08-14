@@ -1,22 +1,23 @@
 package edu.neu.csye6200.base.enums;
 
 import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Caspar
  * @date 2020/8/12 10:23
  */
 
-public enum GroupCodeEnum {
+public enum ClassroomStateEnum {
 
     /**
-     * Group size equals to a maximum ratio of student number to teacher number
+     * Group size of the classroom is the maximum value
      */
-    GROUP_IS_FULL("FULL", "group is full"),
+    FULL("FULL", "group is full"),
 
     /**
-     * Group is not full
+     * Group size of the classroom is smaller than the maximum value
      */
-    UNDIRECTED("NOT_FULL", "group is not full");
+    NOT_FULL("NOT_FULL", "group is not full");
 
 
     private String code;
@@ -26,7 +27,7 @@ public enum GroupCodeEnum {
      */
     private String description;
 
-    GroupCodeEnum(String code, String description) {
+    ClassroomStateEnum(String code, String description) {
         this.code = code;
         this.description = description;
     }
@@ -36,10 +37,10 @@ public enum GroupCodeEnum {
      * @param code 枚举code
      * @return 有则返回对应枚举，无则返回null
      */
-    public GroupCodeEnum getEnumByCode(String code) {
-        for(GroupCodeEnum groupCodeEnum : GroupCodeEnum.values()) {
-            if(StringUtils.equals(code, groupCodeEnum.getCode())) {
-                return groupCodeEnum;
+    public ClassroomStateEnum getEnumByCode(String code) {
+        for(ClassroomStateEnum classroomEnum : ClassroomStateEnum.values()) {
+            if(StringUtils.equals(code, classroomEnum.getCode())) {
+                return classroomEnum;
             }
         }
         return null;
