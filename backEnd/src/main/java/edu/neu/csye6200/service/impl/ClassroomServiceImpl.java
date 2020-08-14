@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClassroomServiceImpl extends BaseServiceImpl<ClassroomMapper, ClassroomDO> implements ClassroomService {
     @Override
-    public Classroom selectOneClassroomByState(int ageState) {
+    public Classroom selectOneClassroomByState(String ageState) {
         return null;
     }
 }

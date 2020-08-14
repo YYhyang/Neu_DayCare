@@ -15,7 +15,7 @@ public class GroupDO implements Serializable {
 
   private static final long serialVersionUID = -747286402637666624L;
 
-  @TableId(value = "groupId", type = IdType.INPUT)
+  @TableId(value = "groupId", type = IdType.AUTO)
   private Integer groupId;
 
   private Integer classroomId;
@@ -28,6 +28,6 @@ public class GroupDO implements Serializable {
 
   private Integer ratio;
 
-  private Boolean isFull;
+  private String fullState;
 
 }

@@ -29,7 +29,7 @@ public class Classroom {
      * group number is the maximum capacity and all groups are full
      * 0 not full, 1 full
      */
-    private Short isFull;
+    private String fullState;
 
     private Vector<Group> groupList;
 

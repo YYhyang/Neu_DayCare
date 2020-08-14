@@ -118,7 +118,7 @@ public class EnrollmentManagerImpl implements EnrollmentManager {
      * 寻找合适的教室
      */
     public Classroom getAvailableClassroom(Student student) {
-        int ageState = student.getAgeState();
+        String ageState = student.getAgeState();
         Classroom classroom = classroomService.selectOneClassroomByState(ageState);
         return classroom;
     }

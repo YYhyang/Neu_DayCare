@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2020/8/12 10:23
  */
 
-public enum ClassroomEnum {
+public enum GroupStateEnum {
 
     /**
      * Group size of the classroom is the maximum value
@@ -27,7 +27,7 @@ public enum ClassroomEnum {
      */
     private String description;
 
-    ClassroomEnum(String code, String description) {
+    GroupStateEnum(String code, String description) {
         this.code = code;
         this.description = description;
     }
@@ -37,8 +37,8 @@ public enum ClassroomEnum {
      * @param code 枚举code
      * @return 有则返回对应枚举，无则返回null
      */
-    public ClassroomEnum getEnumByCode(String code) {
-        for(ClassroomEnum classroomEnum : ClassroomEnum.values()) {
+    public GroupStateEnum getEnumByCode(String code) {
+        for(GroupStateEnum classroomEnum : GroupStateEnum.values()) {
             if(StringUtils.equals(code, classroomEnum.getCode())) {
                 return classroomEnum;
             }

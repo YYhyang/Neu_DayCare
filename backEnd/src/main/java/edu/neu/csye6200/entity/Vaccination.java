@@ -20,10 +20,9 @@ public class Vaccination {
 
     private Integer requiredNumber;
 
-    /**
-     * 0
-     */
-    private Short isCompleted;
+    private String completeStatus;
+
+    private String immunizationName;
 
     private Immunization immunization;
 

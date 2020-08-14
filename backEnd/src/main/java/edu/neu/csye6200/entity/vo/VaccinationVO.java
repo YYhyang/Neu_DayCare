@@ -21,6 +21,8 @@ public class VaccinationVO {
 
     private Integer requiredNumber;
 
-    private Short isCompleted;
+    private String completeStatus;
+
+    private String immunizationName;
 
 }

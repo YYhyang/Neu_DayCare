@@ -13,7 +13,7 @@ public interface ClassroomService extends BaseService<ClassroomDO> {
      * find am available(whether is full) classroom according to the age state
      * @return
      */
-    public Classroom selectOneClassroomByState(int ageState);
+    public Classroom selectOneClassroomByState(String ageState);
 
 
 }

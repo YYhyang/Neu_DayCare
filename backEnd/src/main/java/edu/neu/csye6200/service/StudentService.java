@@ -16,7 +16,6 @@ public interface StudentService extends BaseService<StudentDO> {
 
   public List<Student> queryStudentByGroupId(int groupId);
 
-
   public StudentVO selectOneById(int studentId);
 
 }

@@ -14,7 +14,7 @@ import java.util.Date;
 @TableName(value = "daycare.vaccination")
 public class VaccinationDO implements Serializable {
 
-  @TableId(value = "id", type = IdType.INPUT)
+  @TableId(value = "id", type = IdType.AUTO)
   private Integer id;
 
   private Integer studentId;

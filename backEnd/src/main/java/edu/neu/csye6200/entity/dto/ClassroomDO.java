@@ -14,12 +14,12 @@ import java.io.Serializable;
 public class ClassroomDO implements Serializable {
   private static final long serialVersionUID = 482350151738760514L;
 
-  @TableId(value = "classroomId", type = IdType.INPUT)
+  @TableId(value = "classroomId", type = IdType.AUTO)
   private Integer classroomId;
 
   private Integer ageState;
 
   private Integer groupNum;
 
-  private Short isFull;
+  private String fullState;
 }

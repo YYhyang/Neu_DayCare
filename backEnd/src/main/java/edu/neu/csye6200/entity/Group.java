@@ -1,6 +1,7 @@
 package edu.neu.csye6200.entity;
 
 
+import edu.neu.csye6200.base.enums.GroupStateEnum;
 import lombok.Data;
 
 import java.util.Iterator;
@@ -24,7 +25,7 @@ public class Group {
 
     private Integer ratio;
 
-    private Boolean isFull;
+    private String fullState;
 
     private Vector<Student> studentList;
 
@@ -38,15 +39,14 @@ public class Group {
         setTeacherId(-1);
         setStudentCount(0);
         setRatio(4);
-        setIsFull(Boolean.FALSE);
+        setFullState(GroupStateEnum.NOT_FULL.getCode());
         setStudentList(new Vector<>());
     }
 
     public Group(int ageState, int ratio) {
         setAgeState(ageState);
         setRatio(ratio);
-
-        setIsFull(false);
+        setFullState(GroupStateEnum.NOT_FULL.getCode());
         setClassroomId(-1);
         setTeacherId(-1);
         setStudentCount(0);
@@ -67,7 +67,7 @@ public class Group {
 
     public boolean addStudent(Student student) {
         boolean success = false;
-        if (!getIsFull()) {
+        if (getFullState().equals(GroupStateEnum.NOT_FULL.getCode())) {
             success = studentList.add(student);
             updateStudentCount();
         }
@@ -77,7 +77,7 @@ public class Group {
     public void updateStudentCount() {
         setStudentCount(studentList.size());
         if (getStudentCount()>=getRatio()) {
-            setIsFull(Boolean.TRUE);
+            setFullState(GroupStateEnum.FULL.getCode());
         }
     }
 

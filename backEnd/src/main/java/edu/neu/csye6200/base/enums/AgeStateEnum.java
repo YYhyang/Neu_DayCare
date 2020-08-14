@@ -1,23 +1,47 @@
 package edu.neu.csye6200.base.enums;
 
 import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Caspar
- * @date 2020/8/12 10:23
+ * @date 2020/8/14 14:43
  */
-
-public enum GroupCodeEnum {
-
-    /**
-     * Group size equals to a maximum ratio of student number to teacher number
-     */
-    GROUP_IS_FULL("FULL", "group is full"),
+public enum AgeStateEnum {
 
     /**
-     * Group is not full
+     * age state 0~5 months
      */
-    UNDIRECTED("NOT_FULL", "group is not full");
+    AGE_STATE_0("AGE_STATE_0", "0~5 months"),
 
+    /**
+     * age state 6~12 months
+     */
+    AGE_STATE_1("AGE_STATE_1", "6~12 months"),
+
+    /**
+     * age state 13~24 months
+     */
+    AGE_STATE_2("AGE_STATE_2", "13~24 months"),
+
+    /**
+     * age state 25-35 months
+     */
+    AGE_STATE_3("AGE_STATE_3", "25-35 months"),
+
+    /**
+     * age state 36~47 months
+     */
+    AGE_STATE_4("AGE_STATE_4", "36~47 months"),
+
+    /**
+     * age state 48~59 months
+     */
+    AGE_STATE_5("AGE_STATE_5", "48~59 months"),
+
+    /**
+     * age state 60 months on up
+     */
+    AGE_STATE_6("AGE_STATE_6", "60 months on up");
 
     private String code;
 
@@ -26,7 +50,7 @@ public enum GroupCodeEnum {
      */
     private String description;
 
-    GroupCodeEnum(String code, String description) {
+    AgeStateEnum(String code, String description) {
         this.code = code;
         this.description = description;
     }
@@ -36,10 +60,10 @@ public enum GroupCodeEnum {
      * @param code 枚举code
      * @return 有则返回对应枚举，无则返回null
      */
-    public GroupCodeEnum getEnumByCode(String code) {
-        for(GroupCodeEnum groupCodeEnum : GroupCodeEnum.values()) {
-            if(StringUtils.equals(code, groupCodeEnum.getCode())) {
-                return groupCodeEnum;
+    public AgeStateEnum getEnumByCode(String code) {
+        for(AgeStateEnum studentEnum : AgeStateEnum.values()) {
+            if(StringUtils.equals(code, studentEnum.getCode())) {
+                return studentEnum;
             }
         }
         return null;

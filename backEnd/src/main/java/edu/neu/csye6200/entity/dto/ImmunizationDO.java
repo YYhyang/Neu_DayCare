@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 public class ImmunizationDO implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  @TableId(value = "immunizationId", type = IdType.INPUT)
+  @TableId(value = "immunizationId", type = IdType.AUTO)
   private Integer immunizationId;
 
   private Integer targetAge;

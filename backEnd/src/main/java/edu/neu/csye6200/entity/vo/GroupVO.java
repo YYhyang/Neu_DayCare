@@ -25,6 +25,6 @@ public class GroupVO {
 
     private Integer ratio;
 
-    private Boolean isFull;
+    private String fullState;
 
 }

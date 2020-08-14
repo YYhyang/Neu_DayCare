@@ -36,7 +36,7 @@ public class Student {
 
   private Date birthday;
 
-  private Integer ageState;
+  private String ageState;
 
   private Vector<Vaccination> vaccinationList;
 

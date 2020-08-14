@@ -14,7 +14,7 @@ import java.util.Date;
 @TableName(value = "daycare.student")
 public class StudentDO implements Serializable {
 
-  @TableId(value = "studentId", type = IdType.INPUT)
+  @TableId(value = "studentId", type = IdType.AUTO)
   private Integer studentId;
 
   private String name;
@@ -33,7 +33,7 @@ public class StudentDO implements Serializable {
 
   private Date birthday;
 
-  private Integer ageState;
+  private String ageState;
 
   private static final long serialVersionUID = 6671234794689756522L;
 

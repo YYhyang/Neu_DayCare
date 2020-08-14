@@ -16,6 +16,6 @@ public class ClassroomVO {
 
     private Integer groupNum;
 
-    private Short isFull;
+    private String fullState;
 
 }

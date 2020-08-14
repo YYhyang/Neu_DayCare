@@ -27,5 +27,5 @@ public class Teacher {
 
     private Date birthday;
 
-    private Integer targetAgeState;
+    private String targetAgeState;
 }

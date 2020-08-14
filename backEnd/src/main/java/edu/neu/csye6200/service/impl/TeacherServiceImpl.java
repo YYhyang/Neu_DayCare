@@ -22,7 +22,7 @@ public class TeacherServiceImpl extends BaseServiceImpl<TeacherMapper, TeacherDO
     TeacherMapper teacherMapper;
 
     @Override
-    public List<TeacherVO> listByTargetAge(Integer targetAge) {
+    public List<TeacherVO> listByTargetAge(String targetAge) {
         List<TeacherDO>teacherDOList=teacherMapper.selectList(Wrappers.<TeacherDO>query().eq("targetAgeState",targetAge));
         return TeacherConverter.listDo2Vo(teacherDOList);
     }

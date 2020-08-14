@@ -1,6 +1,7 @@
 package edu.neu.csye6200.base.convertor;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import edu.neu.csye6200.base.enums.AgeStateEnum;
 import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.vo.StudentVO;
@@ -102,19 +103,19 @@ public class StudentConverter {
     return studentDOList.stream().map(StudentConverter::do2Model).collect(Collectors.toList());
   }
 
-  public static int getAgeState(int month) {
+  public static String getAgeState(int month) {
     if (month < 6) {
-      return 0;
+      return AgeStateEnum.AGE_STATE_0.getCode();
     } else if (month < 13) {
-      return 1;
+      return AgeStateEnum.AGE_STATE_1.getCode();
     } else if (month < 36) {
-      return 2;
+      return AgeStateEnum.AGE_STATE_2.getCode();
     } else if (month < 48) {
-      return 3;
+      return AgeStateEnum.AGE_STATE_3.getCode();
     } else if (month < 60) {
-      return 4;
+      return AgeStateEnum.AGE_STATE_4.getCode();
     } else {
-      return 5;
+      return AgeStateEnum.AGE_STATE_5.getCode();
     }
   }
 

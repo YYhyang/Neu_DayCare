@@ -31,6 +31,6 @@ public class StudentVO {
 
     private Date birthday;
 
-    private Integer ageState;
+    private String ageState;
 
 }
