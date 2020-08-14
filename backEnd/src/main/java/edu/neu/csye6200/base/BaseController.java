@@ -1,11 +1,5 @@
 package edu.neu.csye6200.base;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-
-import edu.neu.csye6200.base.enums.DayCareResultCodeEnum;
-import edu.neu.csye6200.base.exceptions.DayCareException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -41,70 +35,6 @@ public class BaseController {
     public String getCode() {
       return code;
     }
-  }
-
-  /**
-   * 基础controller
-   *
-   * @param request
-   *          请求
-   * @param logicCallBack
-   *          处理逻辑
-   * @param params
-   *          扩展参数
-   */
-  final protected Result<Object> protectController(HttpServletRequest request, DayCareLogicCallBack logicCallBack,
-    String... params) {
-    Result<Object> result = new Result<>();
-    try {
-
-      // 2. 核心处理逻辑
-    } catch (DayCareException dayCareException) {
-      log.error(dayCareException.getMessage() + "\n");
-      result.setSuccess(false);
-      result.setResultCode(dayCareException.getErrorCode().getCode());
-      result.setResultDesc(dayCareException.getMessage());
-      // temp
-      result.setCode(-1);
-      return result;
-    } catch (Exception e) {
-      log.error(e.getMessage() + "\n");
-      result.setSuccess(false);
-      result.setResultCode(DayCareResultCodeEnum.SYSTEM_ERROR.getCode());
-      result.setResultDesc(DayCareResultCodeEnum.SYSTEM_ERROR.getDescription());
-      // temp
-      result.setCode(-1);
-      return result;
-    }
-    result.setSuccess(true);
-    result.setResultCode(DayCareResultCodeEnum.SUCCESS.getCode());
-    result.setResultDesc(DayCareResultCodeEnum.SUCCESS.getDescription());
-
-    // temp
-    if (params.length == 2 && StringUtils.equals(BaseControllerEnum.BACK_MANAGE.code, params[1])) {
-      result.setData(result.getResultObj());
-      // result.setMsg(result.getResultDesc());
-      result.setResultObj(null);
-      result.setResultDesc(null);
-      result.setResultCode(null);
-    }
-
-    log.info("Finish request\n");
-    return result;
-  }
-
-  /**
-   * 前置操作
-   *
-   * @param request
-   *          用户登录检测
-   */
-  private void preRequestHandle(HttpServletRequest request) {
-
-  }
-
-  private void verifyAuth(BaseControllerEnum baseControllerEnum) {
-    // todo 鉴权逻辑
   }
 
 }
