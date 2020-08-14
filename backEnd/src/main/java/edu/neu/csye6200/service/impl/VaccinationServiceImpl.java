@@ -2,7 +2,9 @@ package edu.neu.csye6200.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import edu.neu.csye6200.base.BaseServiceImpl;
+import edu.neu.csye6200.dao.ImmunizationMapper;
 import edu.neu.csye6200.dao.VaccinationMapper;
+import edu.neu.csye6200.entity.Immunization;
 import edu.neu.csye6200.entity.Vaccination;
 import edu.neu.csye6200.entity.dto.VaccinationDO;
 import edu.neu.csye6200.service.VaccinationService;
@@ -21,6 +23,9 @@ import java.util.Vector;
 public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, VaccinationDO> implements VaccinationService {
     @Resource
     VaccinationMapper vaccinationMapper;
+    @Resource
+    ImmunizationMapper immunizationMapper;
+
     @Override
     public List<Vaccination> getListVaccination(int studentId) {
         List<VaccinationDO> vaccinationDOs = vaccinationMapper.selectList(Wrappers.<VaccinationDO>query().eq("studentId", studentId));

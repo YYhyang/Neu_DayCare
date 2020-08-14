@@ -25,6 +25,8 @@ public class VaccinationDO implements Serializable {
 
   private Integer requiredNumber;
 
-  private Short isCompleted;
+  private String completeStatus;
+
+  private String immunizationName;
 
 }

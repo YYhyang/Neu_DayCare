@@ -13,6 +13,7 @@ public class VaccinationController extends BaseController {
     @Autowired
     VaccinationService vaccinationService;
 
+
     /**
      * 1. 查询特定学生的疫苗记录list
      *
