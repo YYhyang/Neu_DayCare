@@ -1,23 +1,23 @@
 package edu.neu.csye6200.web;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import edu.neu.csye6200.base.convertor.StudentConverter;
-import edu.neu.csye6200.entity.dto.StudentDO;
-import edu.neu.csye6200.utils.ConverterUtils;
-import edu.neu.csye6200.utils.DateUtils;
 import org.springframework.web.bind.annotation.*;
+
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
 import edu.neu.csye6200.base.annotation.LogOperate;
+import edu.neu.csye6200.base.convertor.StudentConverter;
+import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.vo.StudentVO;
 import edu.neu.csye6200.service.StudentService;
+import edu.neu.csye6200.utils.ConverterUtils;
+import edu.neu.csye6200.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
-import java.util.Date;
-
 
 /**
  * @Author Caspar
@@ -63,7 +63,7 @@ public class StudentController extends BaseController {
 
   @PostMapping("/update")
   @LogOperate(value = "更新")
-  public Result<Object> update(@RequestBody StudentVO studentVO, HttpServletRequest request) {
+  public Result<Object> update(@RequestBody StudentVO studentVO) {
     // todo
     StudentDO studentDO = new StudentDO();
     ConverterUtils.convert(studentVO, studentDO);
