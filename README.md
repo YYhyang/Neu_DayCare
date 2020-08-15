@@ -156,6 +156,16 @@ export async function queryRule(params?: TableListParams) {
 // 4. 在ProTable的request中写调后端接口的具体实现，如下：
 // request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
 ```
+### 版本控制 
+使用GitHub进行版本控制时，在提交代码时注意以下几点  
+1. 每次编写代码前，从master分支拉下最新的代码到本地  
+2. 提交代码前也需要pull远程代码，解决冲突  
+3. 本地分支push到远程分支，要先提交的一个新建的远程分支上，不要直接push到master(由于没有管理权限，所以所有人都可以直接提交)  
+4. 提交到远程分支后，尝试将自己的远程分支merge到master分支上，这需要我们提交一个PR  
+![提交PR](docs/figures/figure1.png)  
+5. 添加我作为PR，我审阅之后将改动merge到master分支
+![添加Reviewer](docs/figures/figure2.png)  
+6. 代码提交完成  
 
 
 ### Basic Usage
