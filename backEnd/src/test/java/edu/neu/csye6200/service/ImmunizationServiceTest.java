@@ -2,7 +2,6 @@ package edu.neu.csye6200.service;
 
 import edu.neu.csye6200.DayCareApplication;
 import edu.neu.csye6200.DayCareApplicationTests;
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
