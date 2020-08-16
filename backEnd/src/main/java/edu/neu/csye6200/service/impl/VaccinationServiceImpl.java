@@ -102,14 +102,14 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
             // check vaccination complete status
             if (vaccinationDO.getCompleteStatus().equals(VaccinationStatusEnum.NOT_TREATED.getCode())) {
                 // check date for first injection
-                if (immunizationName.equals(ImmunizationNameEnum.HIB.getCode()) &&
-                        immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) &&
+                if (immunizationName.equals(ImmunizationNameEnum.HIB.getCode()) ||
+                        immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) ||
                                 immunizationName.equals(ImmunizationNameEnum.POLIO.getCode())) {
                     vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 2));
                 } else if (immunizationName.equals(ImmunizationNameEnum.HEPATITIS_B.getCode())) {
                     // need to be injected at first day
                     vaccinationDO.setNextTime(new Date());
-                } else if (immunizationName.equals(ImmunizationNameEnum.VERICELLA.getCode()) &&
+                } else if (immunizationName.equals(ImmunizationNameEnum.VERICELLA.getCode()) ||
                     immunizationName.equals(ImmunizationNameEnum.MMR.getCode())) {
                     vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 12));
                 } else if (immunizationName.equals(ImmunizationNameEnum.MENINGOCOCCAL.getCode())) {
@@ -121,13 +121,13 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                 switch (vaccinationDO.getVaccinationNumber()) {
                     case 1:
                         // check for second injection
-                        if (immunizationName.equals(ImmunizationNameEnum.HIB.getCode()) &&
-                                immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) &&
+                        if (immunizationName.equals(ImmunizationNameEnum.HIB.getCode()) ||
+                                immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) ||
                                 immunizationName.equals(ImmunizationNameEnum.POLIO.getCode())) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 4));
                         } else if (immunizationName.equals(ImmunizationNameEnum.HEPATITIS_B.getCode())) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 1));
-                        } else if (immunizationName.equals(ImmunizationNameEnum.VERICELLA.getCode()) &&
+                        } else if (immunizationName.equals(ImmunizationNameEnum.VERICELLA.getCode()) ||
                                 immunizationName.equals(ImmunizationNameEnum.MMR.getCode())) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
                         } else if (immunizationName.equals(ImmunizationNameEnum.MENINGOCOCCAL.getCode())) {
@@ -138,8 +138,8 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                         // check for third injection
                         if (immunizationName.equals(ImmunizationNameEnum.HIB.getCode())) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 12));
-                        } else if (immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) &&
-                                immunizationName.equals(ImmunizationNameEnum.POLIO.getCode()) &&
+                        } else if (immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) ||
+                                immunizationName.equals(ImmunizationNameEnum.POLIO.getCode()) ||
                                 immunizationName.equals(ImmunizationNameEnum.HEPATITIS_B.getCode())) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 6));
                         } else {
