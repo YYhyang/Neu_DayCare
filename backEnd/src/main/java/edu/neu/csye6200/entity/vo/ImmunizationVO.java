@@ -18,4 +18,6 @@ public class ImmunizationVO {
     private String cycle;
 
     private String description;
+
+    private String name;
 }

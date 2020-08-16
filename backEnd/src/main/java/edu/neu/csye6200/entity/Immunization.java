@@ -19,4 +19,6 @@ public class Immunization {
 
     private String description;
 
+    private String name;
+
 }

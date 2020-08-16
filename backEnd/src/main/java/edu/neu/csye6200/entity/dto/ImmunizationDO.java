@@ -26,4 +26,6 @@ public class ImmunizationDO implements Serializable {
 
   private String description;
 
+  private String name;
+
 }

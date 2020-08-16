@@ -30,7 +30,7 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
   private StudentMapper studentMapper;
 
   @Override
-  public List<StudentVO> queryByAgeState(int ageState) {
+  public List<StudentVO> queryByAgeState(String ageState) {
     List<StudentDO> studentDOList = studentMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("ageState", ageState));
     List<StudentVO> studentVOList = new Vector<>();
     ConverterUtils.convertList(studentDOList, studentVOList, StudentVO.class);

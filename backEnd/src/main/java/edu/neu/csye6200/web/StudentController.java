@@ -49,7 +49,7 @@ public class StudentController extends BaseController {
 
   @GetMapping(value = "/state/{ageState}")
   @LogOperate(value = "根据年龄段查询")
-  public Result<Object> queryStudentByAgeState(@PathVariable int ageState) {
+  public Result<Object> queryStudentByAgeState(@PathVariable String ageState) {
     List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
     return Result.buildOkData(studentVOList);
   }
