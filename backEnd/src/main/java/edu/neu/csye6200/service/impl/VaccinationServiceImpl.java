@@ -99,80 +99,84 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
             Date studentBirth = studentDO.getBirthday();
             String immunizationName = vaccinationDO.getImmunizationName();
 
+            String HIB = ImmunizationNameEnum.HIB.getCode();
+            String DTAP = ImmunizationNameEnum.DTAP.getCode();
+            String POLIO = ImmunizationNameEnum.POLIO.getCode();
+            String HEPATITIS_B = ImmunizationNameEnum.HEPATITIS_B.getCode();
+            String MMR = ImmunizationNameEnum.MMR.getCode();
+            String VERICELLA = ImmunizationNameEnum.VERICELLA.getCode();
+            String MENINGOCOCCAL = ImmunizationNameEnum.MENINGOCOCCAL.getCode();
+
+            String COMPLETE = VaccinationStatusEnum.COMPLETED.getCode();
+
             // check vaccination complete status
             if (vaccinationDO.getCompleteStatus().equals(VaccinationStatusEnum.NOT_TREATED.getCode())) {
                 // check date for first injection
-                if (immunizationName.equals(ImmunizationNameEnum.HIB.getCode()) ||
-                        immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) ||
-                                immunizationName.equals(ImmunizationNameEnum.POLIO.getCode())) {
+                if (immunizationName.equals(HIB) || immunizationName.equals(DTAP) || immunizationName.equals(POLIO)) {
                     vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 2));
-                } else if (immunizationName.equals(ImmunizationNameEnum.HEPATITIS_B.getCode())) {
+                } else if (immunizationName.equals(HEPATITIS_B)) {
                     // need to be injected at first day
                     vaccinationDO.setNextTime(new Date());
-                } else if (immunizationName.equals(ImmunizationNameEnum.VERICELLA.getCode()) ||
-                    immunizationName.equals(ImmunizationNameEnum.MMR.getCode())) {
+                } else if (immunizationName.equals(VERICELLA) || immunizationName.equals(MMR)) {
                     vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 12));
-                } else if (immunizationName.equals(ImmunizationNameEnum.MENINGOCOCCAL.getCode())) {
+                } else if (immunizationName.equals(MENINGOCOCCAL)) {
                     vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 11 * 12));
                 }
 
-            } else if(vaccinationDO.getCompleteStatus().equals(VaccinationStatusEnum.UNCOMPLETED.getCode())) {
+            } else if(vaccinationDO.getCompleteStatus().equals(VaccinationStatusEnum.UNCOMPLETED)) {
                 // check date for next injection
                 switch (vaccinationDO.getVaccinationNumber()) {
                     case 1:
                         // check for second injection
-                        if (immunizationName.equals(ImmunizationNameEnum.HIB.getCode()) ||
-                                immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) ||
-                                immunizationName.equals(ImmunizationNameEnum.POLIO.getCode())) {
+                        if (immunizationName.equals(HIB) || immunizationName.equals(DTAP) || immunizationName.equals(POLIO)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 4));
-                        } else if (immunizationName.equals(ImmunizationNameEnum.HEPATITIS_B.getCode())) {
+                        } else if (immunizationName.equals(HEPATITIS_B)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 1));
-                        } else if (immunizationName.equals(ImmunizationNameEnum.VERICELLA.getCode()) ||
-                                immunizationName.equals(ImmunizationNameEnum.MMR.getCode())) {
+                        } else if (immunizationName.equals(VERICELLA) || immunizationName.equals(MMR)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
-                        } else if (immunizationName.equals(ImmunizationNameEnum.MENINGOCOCCAL.getCode())) {
+                        } else if (immunizationName.equals(MENINGOCOCCAL)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 16 * 12));
                         }
                         break;
                     case 2:
                         // check for third injection
-                        if (immunizationName.equals(ImmunizationNameEnum.HIB.getCode())) {
+                        if (immunizationName.equals(HIB)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 12));
-                        } else if (immunizationName.equals(ImmunizationNameEnum.DTAP.getCode()) ||
-                                immunizationName.equals(ImmunizationNameEnum.POLIO.getCode()) ||
-                                immunizationName.equals(ImmunizationNameEnum.HEPATITIS_B.getCode())) {
+                        } else if (immunizationName.equals(DTAP) ||
+                                immunizationName.equals(POLIO) ||
+                                immunizationName.equals(HEPATITIS_B)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 6));
                         } else {
                             // wrong status, do not need more injection
-                            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
+                            vaccinationDO.setCompleteStatus(COMPLETE);
                             vaccinationDO.setNextTime(null);
                         }
                         break;
                     case 3:
                         // check for fourth injection
-                        if (immunizationName.equals(ImmunizationNameEnum.DTAP.getCode())) {
+                        if (immunizationName.equals(DTAP)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 15));
-                        } else if (immunizationName.equals(ImmunizationNameEnum.POLIO.getCode())) {
+                        } else if (immunizationName.equals(POLIO)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
                         } else {
                             // wrong status, do not need more injection
-                            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
+                            vaccinationDO.setCompleteStatus(COMPLETE);
                             vaccinationDO.setNextTime(null);
                         }
                         break;
                     case 4:
                         // check for fifth injection
-                        if (immunizationName.equals(ImmunizationNameEnum.DTAP.getCode())) {
+                        if (immunizationName.equals(DTAP)) {
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
                         } else {
                             // wrong status, do not need more injection
-                            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
+                            vaccinationDO.setCompleteStatus(COMPLETE);
                             vaccinationDO.setNextTime(null);
                         }
                         break;
                     default:
                         // wrong number of vaccination injection
-                        vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
+                        vaccinationDO.setCompleteStatus(COMPLETE);
                         vaccinationDO.setVaccinationNumber(vaccinationDO.getRequiredNumber());
                 }
             } else {
