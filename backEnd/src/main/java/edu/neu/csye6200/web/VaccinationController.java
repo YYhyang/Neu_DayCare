@@ -93,7 +93,8 @@ public class VaccinationController extends BaseController {
     @LogOperate(value = "check for student's vaccination status and next date for injection")
     public Result<Object> checkStatusAndNextDate(@RequestAttribute Integer studentId) {
         List<VaccinationVO> vaccinationVOS= new Vector<>();
-        ConverterUtils.convertList(vaccinationService.checkNextDateforVaccination(studentId),vaccinationVOS,VaccinationVO.class);
+        ConverterUtils.convertList(vaccinationService.checkNextDateforVaccination(studentId),
+                vaccinationVOS,VaccinationVO.class);
         return Result.buildOkData(vaccinationVOS);
     }
 }

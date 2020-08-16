@@ -144,6 +144,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 6));
                         } else {
                             // wrong status, do not need more injection
+                            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
                             vaccinationDO.setNextTime(null);
                         }
                         break;
@@ -155,6 +156,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
                         } else {
                             // wrong status, do not need more injection
+                            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
                             vaccinationDO.setNextTime(null);
                         }
                         break;
@@ -164,12 +166,14 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
                         } else {
                             // wrong status, do not need more injection
+                            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
                             vaccinationDO.setNextTime(null);
                         }
                         break;
                     default:
-                        // do nothing
                         // wrong number of vaccination injection
+                        vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
+                        vaccinationDO.setVaccinationNumber(vaccinationDO.getRequiredNumber());
                 }
             } else {
                 // do not need any more injection
