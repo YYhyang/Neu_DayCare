@@ -1,13 +1,31 @@
 package edu.neu.csye6200.web;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import edu.neu.csye6200.base.BaseController;
+import edu.neu.csye6200.entity.dto.VaccinationDO;
+import edu.neu.csye6200.entity.vo.VaccinationVO;
 import edu.neu.csye6200.service.VaccinationService;
+import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.web.bind.annotation.*;
+import edu.neu.csye6200.base.Result;
+import edu.neu.csye6200.base.annotation.LogOperate;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+import java.util.Vector;
 
 /**
  * @author Caspar
  * @date 2020/8/14 13:36
  */
+@RestController
+@RequestMapping("/vaccination")
+@Slf4j
 public class VaccinationController extends BaseController {
 
     @Autowired
@@ -30,6 +48,48 @@ public class VaccinationController extends BaseController {
      * PS. 在Controller层只调用Service层接口，业务逻辑在Service层调用
      */
 
+    @GetMapping(value = "/listByStudentId/{studentId}")
+    @LogOperate(value = "find by student id")
+    public Result<Object> listByStudentId(@PathVariable Integer studentId){
+        List<VaccinationVO> vaccinationVOS= new Vector<>();
+        ConverterUtils.convertList(vaccinationService.getListVaccination(studentId),vaccinationVOS,VaccinationVO.class);
+        return Result.buildOkData(vaccinationVOS);
+    }
 
+    @GetMapping(value = "/getVaccination/{studentId}/{immunizationName}")
+    @LogOperate(value = "find vaccination by student id and immunization name")
+    public Result<Object> getVaccination(@PathVariable Integer studentId, @PathVariable String immunizationName) {
+        VaccinationVO vaccinationVO = vaccinationService.getVaccination(studentId, immunizationName);
+        return Result.buildOkData(vaccinationVO);
+    }
 
+    @GetMapping(value = "/add")
+    @LogOperate(value = "add new vaccination record")
+    public Result<Object> add(@RequestBody VaccinationVO vaccinationVO) {
+        VaccinationDO vaccinationDO = new VaccinationDO();
+        ConverterUtils.convert(vaccinationVO,vaccinationDO);
+        vaccinationService.addVaccination(vaccinationDO.getId());
+
+        boolean insert = vaccinationService.save(vaccinationDO);
+        if(insert) {
+            return Result.buildOkData(vaccinationDO);
+        } else {
+            return Result.buildFailData(vaccinationDO);
+        }
+    }
+
+    @PostMapping("/update")
+    @LogOperate(value = "update vaccination record")
+    public Result<Object> update(@RequestBody VaccinationVO vaccinationVO) {
+        VaccinationDO vaccinationDO = new VaccinationDO();
+        ConverterUtils.convert(vaccinationVO,vaccinationDO);
+        vaccinationService.updateVaccination(vaccinationDO.getId());
+
+        boolean update = vaccinationService.updateById(vaccinationDO);
+        if(update) {
+            return Result.buildOkData(vaccinationDO);
+        } else {
+            return Result.buildFailData(vaccinationDO);
+        }
+    }
 }
