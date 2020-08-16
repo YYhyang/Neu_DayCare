@@ -14,7 +14,21 @@ import java.util.List;
  */
 public interface VaccinationService extends BaseService<VaccinationDO> {
 
-    public List<Vaccination> getListVaccination(int studentId);
+    /**	
+     * return list of vaccination records by student id;	    public List<Vaccination> getListVaccination(int studentId);
+     * @param studentId	
+     * @return	    public VaccinationVO getVaccination(int studentId, String immunizationName);
+     */	
+    public List<Vaccination> getListVaccination(int studentId);	    public void addVaccination(int id);
+
+
+    /**	    public void updateVaccination(int id);
+     * return a vaccination record by student id and immunization name	
+     * @param studentId	    public Date checkDateforVaccination(int studentId);
+     * @param immunizationNumber	
+     * @return	
+     */	
+    public Vaccination getVaccination(int studentId,String immunizationNumber);
 
     public VaccinationVO getVaccination(int studentId, String immunizationName);
 
