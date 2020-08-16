@@ -8,6 +8,7 @@ import edu.neu.csye6200.entity.vo.VaccinationVO;
 import edu.neu.csye6200.service.VaccinationService;
 import edu.neu.csye6200.utils.ConverterUtils;
 
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * @author Caspar Yuhan Yang
+ * @author Caspar, Yuhan Yang, Yue Fang
  * @date 2020/8/14 13:36
  */
 @RestController
@@ -26,7 +27,6 @@ public class VaccinationController extends BaseController {
 
     @Autowired
     VaccinationService vaccinationService;
-
 
     /**
      * 1. 查询特定学生的疫苗记录list
@@ -87,5 +87,13 @@ public class VaccinationController extends BaseController {
         } else {
             return Result.buildFailData(vaccinationDO);
         }
+    }
+
+    @PostMapping("/checkStatusAndNextDate/{studentId}")
+    @LogOperate(value = "check for student's vaccination status and next date for injection")
+    public Result<Object> checkStatusAndNextDate(@RequestAttribute Integer studentId) {
+        List<VaccinationVO> vaccinationVOS= new Vector<>();
+        ConverterUtils.convertList(vaccinationService.checkNextDateforVaccination(studentId),vaccinationVOS,VaccinationVO.class);
+        return Result.buildOkData(vaccinationVOS);
     }
 }
