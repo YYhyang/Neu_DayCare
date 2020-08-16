@@ -19,17 +19,14 @@ public interface VaccinationService extends BaseService<VaccinationDO> {
      * @param studentId	
      * @return	    public VaccinationVO getVaccination(int studentId, String immunizationName);
      */	
-    public List<Vaccination> getListVaccination(int studentId);	    public void addVaccination(int id);
-
+    public List<Vaccination> getListVaccination(int studentId);
 
     /**	   
      * return a vaccination record by student id and immunization name	
      * @param studentId	    public Date checkDateforVaccination(int studentId);
-     * @param immunizationNumber	
+     * @param immunizationName String
      * @return	
-     */	
-    public Vaccination getVaccination(int studentId,String immunizationNumber);
-
+     */
     public VaccinationVO getVaccination(int studentId, String immunizationName);
 
     public void addVaccination(int id);
