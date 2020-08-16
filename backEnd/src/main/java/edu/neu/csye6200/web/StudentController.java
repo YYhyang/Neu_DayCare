@@ -34,7 +34,7 @@ public class StudentController extends BaseController {
 
   @PostMapping(value = "")
   @LogOperate(value = "增")
-  public Result<Object> add(@RequestBody StudentVO studentVO, HttpServletRequest request) {
+  public Result<Object> add(@RequestBody StudentVO studentVO) {
     StudentDO studentDO = new StudentDO();
     ConverterUtils.convert(studentVO, studentDO);
     // todo 计算 ageState

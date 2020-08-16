@@ -7,6 +7,7 @@ import edu.neu.csye6200.dao.VaccinationMapper;
 import edu.neu.csye6200.entity.Immunization;
 import edu.neu.csye6200.entity.Vaccination;
 import edu.neu.csye6200.entity.dto.VaccinationDO;
+import edu.neu.csye6200.entity.vo.VaccinationVO;
 import edu.neu.csye6200.service.VaccinationService;
 import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,16 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
         ConverterUtils.convertList(vaccinationDOs, list, Vaccination.class);
         return list;
     }
+
+    @Override
+    public Vaccination getVaccination(int studentId, String immunizationName) {
+        VaccinationDO vaccinationDO= vaccinationMapper.selectOne(Wrappers.<VaccinationDO>query()
+                                                                        .eq("studentId",studentId)
+                                                                        .eq("immunizationName",immunizationName));
+        Vaccination vaccination= new Vaccination();
+        ConverterUtils.convert(vaccinationDO,vaccination);
+        return vaccination;
+    }
+
+
 }

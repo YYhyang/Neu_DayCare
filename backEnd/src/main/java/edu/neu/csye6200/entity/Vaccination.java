@@ -26,9 +26,6 @@ public class Vaccination {
 
     private Immunization immunization;
 
-    public Vaccination(int studentId, Date recordDate, int vaccinationNumber) {
-
-    }
 
 
 
