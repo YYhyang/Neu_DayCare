@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class ImmunizationVO {
+
     private Integer immunizationId;
 
     private Integer targetAge;
@@ -18,4 +19,6 @@ public class ImmunizationVO {
     private String cycle;
 
     private String description;
+
+    private String name;
 }

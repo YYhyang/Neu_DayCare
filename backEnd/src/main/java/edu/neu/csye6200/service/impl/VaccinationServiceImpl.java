@@ -12,7 +12,6 @@ import edu.neu.csye6200.entity.vo.VaccinationVO;
 import edu.neu.csye6200.service.VaccinationService;
 import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.stereotype.Service;
-import edu.neu.csye6200.base.enums.VaccinationStatusEnum;
 
 import javax.annotation.Resource;
 import java.util.Date;

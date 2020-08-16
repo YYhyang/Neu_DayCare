@@ -1,26 +1,22 @@
 package edu.neu.csye6200.web;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import edu.neu.csye6200.base.BaseController;
+import edu.neu.csye6200.base.Result;
+import edu.neu.csye6200.base.annotation.LogOperate;
 import edu.neu.csye6200.entity.dto.VaccinationDO;
 import edu.neu.csye6200.entity.vo.VaccinationVO;
 import edu.neu.csye6200.service.VaccinationService;
 import edu.neu.csye6200.utils.ConverterUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.web.bind.annotation.*;
-import edu.neu.csye6200.base.Result;
-import edu.neu.csye6200.base.annotation.LogOperate;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Vector;
 
 /**
- * @author Caspar
+ * @author Caspar Yuhan Yang
  * @date 2020/8/14 13:36
  */
 @RestController

@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author Caspar
+ * @author Caspar Yuhan Yang
  * @date 2020/8/13 20:34
  */
 public interface VaccinationService extends BaseService<VaccinationDO> {
