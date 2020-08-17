@@ -36,14 +36,6 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
     @Resource
     private StudentMapper studentMapper;
 
-    private final String HIB = ImmunizationNameEnum.HIB.getCode();
-    private final String DTAP = ImmunizationNameEnum.DTAP.getCode();
-    private final String POLIO = ImmunizationNameEnum.POLIO.getCode();
-    private final String HEPATITIS_B = ImmunizationNameEnum.HEPATITIS_B.getCode();
-    private final String MMR = ImmunizationNameEnum.MMR.getCode();
-    private final String VERICELLA = ImmunizationNameEnum.VERICELLA.getCode();
-    private final String MENINGOCOCCAL = ImmunizationNameEnum.MENINGOCOCCAL.getCode();
-
     private final String NOT_TREATED = VaccinationStatusEnum.NOT_TREATED.getCode();
     private final String UNCOMPLETED = VaccinationStatusEnum.UNCOMPLETED.getCode();
     private final String COMPLETED = VaccinationStatusEnum.COMPLETED.getCode();
@@ -112,8 +104,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
     }
 
     @Override
-    public void addVaccination(int id) {
-        VaccinationDO vaccinationDO = vaccinationMapper.selectById(id);
+    public void addVaccination(VaccinationDO vaccinationDO) {
         ImmunizationDO immunizationDO = immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query()
                 .eq("name", vaccinationDO.getImmunizationName()));
 
@@ -137,13 +128,13 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
     }
 
     @Override
-    public void updateVaccination(int id) {
-        VaccinationDO vaccinationDO = vaccinationMapper.selectById(id);
+    public void updateVaccination(VaccinationDO vaccinationDO) {
         ImmunizationDO immunizationDO = immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query()
                 .eq("name", vaccinationDO.getImmunizationName()));
 
         int vaccinationNum = vaccinationDO.getVaccinationNumber();
         int requiredNum = immunizationDO.getDose();
+        vaccinationDO.setRequiredNumber(requiredNum);
 
         if (vaccinationNum > requiredNum) {
             vaccinationDO.setVaccinationNumber(requiredNum);
@@ -171,7 +162,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
             VaccinationVO vaccinationVO = getVaccinationLast(studentId, nameEnum.getCode());
             if (null != vaccinationVO){
                 VaccinationDO vaccinationDO = new VaccinationDO();
-                ConverterUtils.convert(vaccinationDO, vaccinationVO);
+                ConverterUtils.convert(vaccinationVO, vaccinationDO);
                 vaccinationDOs.add(vaccinationDO);
             }
         }
@@ -186,19 +177,19 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
             // check vaccination complete status
             if (vaccinationDO.getCompleteStatus().equals(NOT_TREATED)) {
                 // check date for first injection
-                vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("1")));
+                vaccinationDO.setNextTime(DateUtils.addMonthOrCurrentDate(studentBirth, jsonImmunizationCycle.getIntValue("1")));
 
             } else if(vaccinationDO.getCompleteStatus().equals(UNCOMPLETED)) {
                 // check date for next injection
                 switch (vaccinationDO.getVaccinationNumber()) {
                     case 1:
                         // check for second injection
-                        vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("2")));
+                        vaccinationDO.setNextTime(DateUtils.addMonthOrCurrentDate(studentBirth, jsonImmunizationCycle.getIntValue("2")));
                         break;
                     case 2:
                         // check for third injection
                         if (jsonImmunizationCycle.containsKey("3")) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("3")));
+                            vaccinationDO.setNextTime(DateUtils.addMonthOrCurrentDate(studentBirth, jsonImmunizationCycle.getIntValue("3")));
                         } else {
                         // wrong status, do not need more injection
                         vaccinationDO.setCompleteStatus(COMPLETED);
@@ -208,7 +199,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                     case 3:
                         // check for fourth injection
                         if (jsonImmunizationCycle.containsKey("4")) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("4")));
+                            vaccinationDO.setNextTime(DateUtils.addMonthOrCurrentDate(studentBirth, jsonImmunizationCycle.getIntValue("4")));
                         } else {
                             // wrong status, do not need more injection
                             vaccinationDO.setCompleteStatus(COMPLETED);
@@ -218,7 +209,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                     case 4:
                         // check for fifth injection
                         if (jsonImmunizationCycle.containsKey("5")) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("5")));
+                            vaccinationDO.setNextTime(DateUtils.addMonthOrCurrentDate(studentBirth, jsonImmunizationCycle.getIntValue("5")));
                         } else {
                             // wrong status, do not need more injection
                             vaccinationDO.setCompleteStatus(COMPLETED);

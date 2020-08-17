@@ -105,7 +105,7 @@ public class DateUtils {
   }
 
   /**
-   * Calculate the date by adding months
+   * Calculate the date by adding months, if the result is out of date return the date of today
    *
    * @param inputDate
    *          Date to Calculate
@@ -113,13 +113,17 @@ public class DateUtils {
    *          Month to add to the input date
    * @return Date
    */
-  public static Date addMonth(Date inputDate, int monthToAdd) {
+  public static Date addMonthOrCurrentDate(Date inputDate, int monthToAdd) {
+    Date today = new Date();
     try {
       Calendar calendar = Calendar.getInstance();
       calendar.setTime(inputDate);
       calendar.add(Calendar.MONTH, monthToAdd);
       Date resultDate = calendar.getTime();
 
+      if (1 == compareDate(today, resultDate)) {
+        return today;
+      }
       return resultDate;
     } catch (Exception e) {
       throw new DayCareException("add month to date error", ResultCodeEnum.INVALID_DATE);

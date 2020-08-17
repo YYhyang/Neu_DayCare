@@ -66,12 +66,12 @@ public class VaccinationController extends BaseController {
         return Result.buildOkData(vaccinationVO);
     }
 
-    @GetMapping(value = "/add")
+    @PostMapping(value = "/add")
     @LogOperate(value = "add new vaccination record")
     public Result<Object> add(@RequestBody VaccinationVO vaccinationVO) {
         VaccinationDO vaccinationDO = new VaccinationDO();
         ConverterUtils.convert(vaccinationVO,vaccinationDO);
-        vaccinationService.addVaccination(vaccinationDO.getId());
+        vaccinationService.addVaccination(vaccinationDO);
 
         boolean insert = vaccinationService.save(vaccinationDO);
         if(insert) {
@@ -86,7 +86,7 @@ public class VaccinationController extends BaseController {
     public Result<Object> update(@RequestBody VaccinationVO vaccinationVO) {
         VaccinationDO vaccinationDO = new VaccinationDO();
         ConverterUtils.convert(vaccinationVO,vaccinationDO);
-        vaccinationService.updateVaccination(vaccinationDO.getId());
+        vaccinationService.updateVaccination(vaccinationDO);
 
         boolean update = vaccinationService.updateById(vaccinationDO);
         if(update) {
@@ -98,11 +98,11 @@ public class VaccinationController extends BaseController {
 
     @PostMapping("/checkStatusAndNextDate/{studentId}")
     @LogOperate(value = "check for student's vaccination status and next date for injection")
-    public Result<Object> checkStatusAndNextDate(@RequestAttribute Integer studentId) {
+    public Result<Object> checkStatusAndNextDate(@PathVariable Integer studentId) {
         List<Vaccination> list = vaccinationService.checkNextDateforVaccination(studentId);
         List<VaccinationVO> vaccinationVOs = new Vector<>();
         List<VaccinationDO> vaccinationDOs = new Vector<>();
-        ConverterUtils.convertList(vaccinationDOs, list,VaccinationDO.class);
+        ConverterUtils.convertList(list, vaccinationDOs, VaccinationDO.class);
 
         boolean update = vaccinationService.updateBatchById(vaccinationDOs);
         if (update) {

@@ -39,16 +39,16 @@ public interface VaccinationService extends BaseService<VaccinationDO> {
     /**
      * add new record of vaccination
      *
-     * @param id
+     * @param vaccinationDO
      */
-    public void addVaccination(int id);
+    public void addVaccination(VaccinationDO vaccinationDO);
 
     /**
      * update vaccination record
      *
-     * @param id
+     * @param vaccinationDO
      */
-    public void updateVaccination(int id);
+    public void updateVaccination(VaccinationDO vaccinationDO);
 
     /**
      * check the complete status of vaccination and the next date for injection as required
