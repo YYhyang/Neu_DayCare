@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2020/8/12 10:23
  */
 
-public enum ImmunizationEnum {
+public enum ImmunizationNameEnum {
 
     /**
      * Hib  PedvaxHIB specifically
@@ -81,7 +81,7 @@ public enum ImmunizationEnum {
      */
     private String description;
 
-    ImmunizationEnum(String code, String description) {
+    ImmunizationNameEnum(String code, String description) {
         this.code = code;
         this.description = description;
     }
@@ -91,8 +91,8 @@ public enum ImmunizationEnum {
      * @param code 枚举code
      * @return 有则返回对应枚举，无则返回null
      */
-    public ImmunizationEnum getEnumByCode(String code) {
-        for(ImmunizationEnum classroomEnum : ImmunizationEnum.values()) {
+    public ImmunizationNameEnum getEnumByCode(String code) {
+        for(ImmunizationNameEnum classroomEnum : ImmunizationNameEnum.values()) {
             if(StringUtils.equals(code, classroomEnum.getCode())) {
                 return classroomEnum;
             }
