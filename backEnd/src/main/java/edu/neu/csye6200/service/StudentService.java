@@ -24,5 +24,5 @@ public interface StudentService extends BaseService<StudentDO> {
 
   public IPage<StudentDO> queryByPage(int pageNo, int pageSize);
 
-
+  IPage<StudentVO> PageSelectStudentByGroupId(int pageNo,int pageSize,int groupId);
 }

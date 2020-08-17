@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import edu.neu.csye6200.base.Result;
 import edu.neu.csye6200.base.convertor.StudentConverter;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.dto.TeacherDO;
@@ -70,6 +71,16 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
 
     IPage<StudentDO> studentDOs=studentMapper.selectPage(new Page<>(pageNo,pageSize),null);
     return studentDOs;
+  }
+
+  @Override
+  public IPage<StudentVO> PageSelectStudentByGroupId(int pageNo, int pageSize, int groupId) {
+    IPage<StudentDO>studentDOIPage=studentMapper.selectPage(new Page<>(pageNo,pageSize),Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("groupId", groupId));
+    IPage<StudentVO> studentVOIPage=studentDOIPage.convert(ele->{
+      StudentVO studentVO=new StudentVO();
+      return (StudentVO)ConverterUtils.convertAndReturn(ele,studentVO);
+    });
+    return studentVOIPage;
   }
 
   public List<Student> getListStudentsByAgeState(int ageState) {
