@@ -2,7 +2,7 @@ package edu.neu.csye6200.base;
 
 import java.io.Serializable;
 
-import edu.neu.csye6200.base.enums.DayCareResultCodeEnum;
+import edu.neu.csye6200.base.enums.ResultCodeEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -51,7 +51,7 @@ public class Result<T> implements Serializable {
   }
 
   public static <T> Result<T> buildOkData(T data, String... messages) {
-    return new Result<>(data, messages).setResultCode(DayCareResultCodeEnum.SUCCESS.getCode());
+    return new Result<>(data, messages).setResultCode(ResultCodeEnum.SUCCESS.getCode());
   }
 
   public static <T> Result<T> buildOkData(T data) {
@@ -59,7 +59,7 @@ public class Result<T> implements Serializable {
   }
 
   public static <T> Result<T> buildFailData(T data) {
-    return new Result<>(data).setResultCode(DayCareResultCodeEnum.ERROR.getCode());
+    return new Result<>(data).setResultCode(ResultCodeEnum.ERROR.getCode());
   }
 
   public static <T> Result<T> buildFail(String... messages) {

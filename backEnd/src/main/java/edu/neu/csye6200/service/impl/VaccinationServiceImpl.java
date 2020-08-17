@@ -6,12 +6,16 @@ import edu.neu.csye6200.dao.ImmunizationMapper;
 import edu.neu.csye6200.dao.VaccinationMapper;
 import edu.neu.csye6200.entity.Immunization;
 import edu.neu.csye6200.entity.Vaccination;
+import edu.neu.csye6200.entity.dto.ImmunizationDO;
 import edu.neu.csye6200.entity.dto.VaccinationDO;
+import edu.neu.csye6200.entity.vo.VaccinationVO;
 import edu.neu.csye6200.service.VaccinationService;
 import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -32,5 +36,52 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
         List<Vaccination> list = new Vector<>();
         ConverterUtils.convertList(vaccinationDOs, list, Vaccination.class);
         return list;
+    }
+
+    @Override
+    public VaccinationVO getVaccination(int studentId, String immunizationName) {
+        VaccinationDO vaccinationDO = vaccinationMapper.selectOne(Wrappers.<VaccinationDO>query()
+                .eq("studentId", studentId).eq("immunizationName", immunizationName));
+        VaccinationVO vaccinationVO = new VaccinationVO();
+        ConverterUtils.convert(vaccinationDO, vaccinationVO);
+        return vaccinationVO;
+    }
+
+    @Override
+    public void addVaccination(int id) {
+        VaccinationDO vaccinationDO = vaccinationMapper.selectById(id);
+        ImmunizationDO immunizationDO = immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query()
+                .eq("name", vaccinationDO.getImmunizationName()));
+
+        vaccinationDO.setRecordDate(new Date());
+
+        int vaccinationNum = vaccinationDO.getVaccinationNumber();
+        int requiredNum = immunizationDO.getDose();
+        vaccinationDO.setRequiredNumber(requiredNum);
+
+        if (vaccinationNum == 0) {
+            vaccinationDO.setCompleteStatus("NOT_TREATED");
+        } else if(vaccinationNum > 0 && vaccinationNum < requiredNum) {
+            vaccinationDO.setCompleteStatus("UNCOMPLETED");
+        } else {
+            vaccinationDO.setCompleteStatus("COMPLETED");
+        }
+    }
+
+    @Override
+    public void updateVaccination(int id) {
+        VaccinationDO vaccinationDO = vaccinationMapper.selectById(id);
+        vaccinationDO.setVaccinationNumber(vaccinationDO.getVaccinationNumber() + 1);
+
+        if (vaccinationDO.getRequiredNumber() == vaccinationDO.getVaccinationNumber()) {
+            vaccinationDO.setCompleteStatus("COMPLETED");
+        } else {
+            vaccinationDO.setCompleteStatus("UNCOMPLETED");
+        }
+    }
+
+    @Override
+    public Date checkDateforVaccination(int studentId) {
+        return null;
     }
 }
