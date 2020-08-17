@@ -53,7 +53,12 @@ public class TeacherController extends BaseController {
   @PostMapping(value = "/page")
   public Result<Object> pageAllTeacher(@RequestParam Integer pageNumber,@RequestParam Integer pageSize){
     IPage<TeacherDO> teacherDOS=teacherService.pageAllTeacher(pageNumber,pageSize);
-    return Result.buildOkData(teacherDOS);
+    IPage<TeacherVO> teacherVOIPage=teacherDOS.convert((ele)->{
+      TeacherVO teacherVO=new TeacherVO();
+      return (TeacherVO) ConverterUtils.convertAndReturn(ele,teacherVO);
+            }
+            );
+    return Result.buildOkData(teacherVOIPage);
   }
 
   @PostMapping(value = "/update")
