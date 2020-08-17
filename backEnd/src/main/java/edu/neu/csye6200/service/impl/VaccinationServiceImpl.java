@@ -7,7 +7,6 @@ import edu.neu.csye6200.base.enums.VaccinationStatusEnum;
 import edu.neu.csye6200.dao.ImmunizationMapper;
 import edu.neu.csye6200.dao.StudentMapper;
 import edu.neu.csye6200.dao.VaccinationMapper;
-import edu.neu.csye6200.entity.Immunization;
 import edu.neu.csye6200.entity.Vaccination;
 import edu.neu.csye6200.entity.dto.ImmunizationDO;
 import edu.neu.csye6200.entity.dto.StudentDO;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -37,6 +35,18 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
     @Resource
     private StudentMapper studentMapper;
 
+    private final String HIB = ImmunizationNameEnum.HIB.getCode();
+    private final String DTAP = ImmunizationNameEnum.DTAP.getCode();
+    private final String POLIO = ImmunizationNameEnum.POLIO.getCode();
+    private final String HEPATITIS_B = ImmunizationNameEnum.HEPATITIS_B.getCode();
+    private final String MMR = ImmunizationNameEnum.MMR.getCode();
+    private final String VERICELLA = ImmunizationNameEnum.VERICELLA.getCode();
+    private final String MENINGOCOCCAL = ImmunizationNameEnum.MENINGOCOCCAL.getCode();
+
+    private final String NOT_TREATED = VaccinationStatusEnum.NOT_TREATED.getCode();
+    private final String UNCOMPLETED = VaccinationStatusEnum.UNCOMPLETED.getCode();
+    private final String COMPLETED = VaccinationStatusEnum.COMPLETED.getCode();
+
     @Override
     public List<Vaccination> getListVaccination(int studentId) {
         List<VaccinationDO> vaccinationDOs = vaccinationMapper.selectList(Wrappers.<VaccinationDO>query().eq("studentId", studentId));
@@ -46,11 +56,57 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
     }
 
     @Override
-    public VaccinationVO getVaccination(int studentId, String immunizationName) {
-        VaccinationDO vaccinationDO = vaccinationMapper.selectOne(Wrappers.<VaccinationDO>query()
+    public List<VaccinationVO> getVaccination(int studentId, String immunizationName) {
+        List<VaccinationDO> vaccinationDOs = vaccinationMapper.selectList(Wrappers.<VaccinationDO>query()
                 .eq("studentId", studentId).eq("immunizationName", immunizationName));
+        List<VaccinationVO> list = new Vector<>();
+        ConverterUtils.convertList(vaccinationDOs, list, VaccinationVO.class);
+        return list;
+    }
+
+    @Override
+    public VaccinationVO getVaccinationLast(int studentId, String immunizationName) {
+        List<VaccinationDO> vaccinationDOs = vaccinationMapper.selectList(Wrappers.<VaccinationDO>query()
+                .eq("studentId", studentId).eq("immunizationName", immunizationName));
+        ImmunizationDO immunizationDO = immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query()
+                .eq("name", immunizationName));
         VaccinationVO vaccinationVO = new VaccinationVO();
-        ConverterUtils.convert(vaccinationDO, vaccinationVO);
+
+        // find the newest record for the immunization
+        int maxVaccinationNum = 0;
+        int id = 0;
+        int requiredNum = immunizationDO.getDose();
+        Date recordDateLast = null;
+
+        if (vaccinationDOs.isEmpty()) {
+            return null;
+        }
+
+        for (VaccinationDO vaccinationDO : vaccinationDOs) {
+            Date recordDate = vaccinationDO.getRecordDate();
+            int vaccinationNum = vaccinationDO.getVaccinationNumber();
+
+            if (vaccinationNum < 0 || vaccinationNum > requiredNum) {
+                // wrong record of vaccination number
+            }
+
+            if (null == recordDateLast) {
+                id = vaccinationDO.getId();
+                recordDateLast = recordDate;
+                maxVaccinationNum = vaccinationNum;
+            } else if (1 == DateUtils.compareDate(recordDate, recordDateLast)) {
+                id = vaccinationDO.getId();
+                recordDateLast = recordDate;
+                maxVaccinationNum = vaccinationNum;
+            } else if (0 == DateUtils.compareDate(recordDate, recordDateLast)) {
+                if (vaccinationNum > maxVaccinationNum) {
+                    id = vaccinationDO.getId();
+                    maxVaccinationNum = vaccinationNum;
+                }
+            }
+        }
+
+        ConverterUtils.convert(vaccinationMapper.selectById(id), vaccinationVO);
         return vaccinationVO;
     }
 
@@ -66,51 +122,64 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
         int requiredNum = immunizationDO.getDose();
         vaccinationDO.setRequiredNumber(requiredNum);
 
+        if (vaccinationNum > requiredNum) {
+            vaccinationDO.setVaccinationNumber(requiredNum);
+        }
+
         if (vaccinationNum == 0) {
-            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.NOT_TREATED.getCode());
+            vaccinationDO.setCompleteStatus(NOT_TREATED);
         } else if(vaccinationNum > 0 && vaccinationNum < requiredNum) {
-            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.UNCOMPLETED.getCode());
+            vaccinationDO.setCompleteStatus(UNCOMPLETED);
         } else {
-            vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
+            vaccinationDO.setCompleteStatus(COMPLETED);
         }
     }
 
     @Override
     public void updateVaccination(int id) {
         VaccinationDO vaccinationDO = vaccinationMapper.selectById(id);
-        vaccinationDO.setVaccinationNumber(vaccinationDO.getVaccinationNumber() + 1);
+        ImmunizationDO immunizationDO = immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query()
+                .eq("name", vaccinationDO.getImmunizationName()));
 
-        if (vaccinationDO.getCompleteStatus().equals(VaccinationStatusEnum.COMPLETED.getCode())) {
-            if (vaccinationDO.getRequiredNumber() == vaccinationDO.getVaccinationNumber()) {
-                vaccinationDO.setCompleteStatus(VaccinationStatusEnum.COMPLETED.getCode());
-            } else {
-                vaccinationDO.setCompleteStatus(VaccinationStatusEnum.UNCOMPLETED.getCode());
-            }
+        int vaccinationNum = vaccinationDO.getVaccinationNumber();
+        int requiredNum = immunizationDO.getDose();
+
+        if (vaccinationNum > requiredNum) {
+            vaccinationDO.setVaccinationNumber(requiredNum);
+        }
+
+        if (vaccinationNum == 0) {
+            vaccinationDO.setCompleteStatus(NOT_TREATED);
+        } else if(vaccinationNum > 0 && vaccinationNum < requiredNum) {
+            vaccinationDO.setCompleteStatus(UNCOMPLETED);
+        } else {
+            vaccinationDO.setCompleteStatus(COMPLETED);
         }
     }
 
     @Override
     public List<Vaccination> checkNextDateforVaccination(int studentId) {
-        List<VaccinationDO> vaccinationDOs = vaccinationMapper.selectList(Wrappers.<VaccinationDO>query().eq("studentId", studentId));
+        List<VaccinationDO> vaccinationDOs = new Vector<>();
         List<Vaccination> list = new Vector<>();
         StudentDO studentDO = studentMapper.selectById(studentId);
+        Date studentBirth = studentDO.getBirthday();
+
+        // get the list with newest immunization record of the student
+        ImmunizationNameEnum[] immunizationNameEnum = ImmunizationNameEnum.values();
+        for (ImmunizationNameEnum nameEnum : immunizationNameEnum) {
+            VaccinationVO vaccinationVO = getVaccinationLast(studentId, nameEnum.getCode());
+            if (null != vaccinationVO){
+                VaccinationDO vaccinationDO = new VaccinationDO();
+                ConverterUtils.convert(vaccinationDO, vaccinationVO);
+                vaccinationDOs.add(vaccinationDO);
+            }
+        }
 
         for (VaccinationDO vaccinationDO : vaccinationDOs) {
-            Date studentBirth = studentDO.getBirthday();
             String immunizationName = vaccinationDO.getImmunizationName();
 
-            String HIB = ImmunizationNameEnum.HIB.getCode();
-            String DTAP = ImmunizationNameEnum.DTAP.getCode();
-            String POLIO = ImmunizationNameEnum.POLIO.getCode();
-            String HEPATITIS_B = ImmunizationNameEnum.HEPATITIS_B.getCode();
-            String MMR = ImmunizationNameEnum.MMR.getCode();
-            String VERICELLA = ImmunizationNameEnum.VERICELLA.getCode();
-            String MENINGOCOCCAL = ImmunizationNameEnum.MENINGOCOCCAL.getCode();
-
-            String COMPLETE = VaccinationStatusEnum.COMPLETED.getCode();
-
             // check vaccination complete status
-            if (vaccinationDO.getCompleteStatus().equals(VaccinationStatusEnum.NOT_TREATED.getCode())) {
+            if (vaccinationDO.getCompleteStatus().equals(NOT_TREATED)) {
                 // check date for first injection
                 if (immunizationName.equals(HIB) || immunizationName.equals(DTAP) || immunizationName.equals(POLIO)) {
                     vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 2));
@@ -123,7 +192,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                     vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 11 * 12));
                 }
 
-            } else if(vaccinationDO.getCompleteStatus().equals(VaccinationStatusEnum.UNCOMPLETED)) {
+            } else if(vaccinationDO.getCompleteStatus().equals(UNCOMPLETED)) {
                 // check date for next injection
                 switch (vaccinationDO.getVaccinationNumber()) {
                     case 1:
@@ -148,7 +217,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 6));
                         } else {
                             // wrong status, do not need more injection
-                            vaccinationDO.setCompleteStatus(COMPLETE);
+                            vaccinationDO.setCompleteStatus(COMPLETED);
                             vaccinationDO.setNextTime(null);
                         }
                         break;
@@ -160,7 +229,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
                         } else {
                             // wrong status, do not need more injection
-                            vaccinationDO.setCompleteStatus(COMPLETE);
+                            vaccinationDO.setCompleteStatus(COMPLETED);
                             vaccinationDO.setNextTime(null);
                         }
                         break;
@@ -170,13 +239,13 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                             vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
                         } else {
                             // wrong status, do not need more injection
-                            vaccinationDO.setCompleteStatus(COMPLETE);
+                            vaccinationDO.setCompleteStatus(COMPLETED);
                             vaccinationDO.setNextTime(null);
                         }
                         break;
                     default:
                         // wrong number of vaccination injection
-                        vaccinationDO.setCompleteStatus(COMPLETE);
+                        vaccinationDO.setCompleteStatus(COMPLETED);
                         vaccinationDO.setVaccinationNumber(vaccinationDO.getRequiredNumber());
                 }
             } else {

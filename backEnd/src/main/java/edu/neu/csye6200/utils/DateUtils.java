@@ -125,4 +125,24 @@ public class DateUtils {
       throw new DayCareException("add month to date error", ResultCodeEnum.INVALID_DATE);
     }
   }
+
+  /**
+   * Compare two date
+   *
+   * @param d1
+   *          date to compare
+   * @param d2
+   *          date to compare
+   * @return boolen
+   *          return true 1 if d1 > d2, 0 if d1 == d2, -1 if d1 < d2
+   */
+  public static int compareDate(Date d1, Date d2) {
+    if (d1.getTime() > d2.getTime()) {
+      return 1;
+    } else if (d1.getTime() == d2.getTime()) {
+      return 0;
+    } else {
+      return -1;
+    }
+  }
 }

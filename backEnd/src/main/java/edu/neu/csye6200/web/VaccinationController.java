@@ -8,7 +8,6 @@ import edu.neu.csye6200.entity.vo.VaccinationVO;
 import edu.neu.csye6200.service.VaccinationService;
 import edu.neu.csye6200.utils.ConverterUtils;
 
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +54,14 @@ public class VaccinationController extends BaseController {
     @GetMapping(value = "/getVaccination/{studentId}/{immunizationName}")
     @LogOperate(value = "find vaccination by student id and immunization name")
     public Result<Object> getVaccination(@PathVariable Integer studentId, @PathVariable String immunizationName) {
-        VaccinationVO vaccinationVO = vaccinationService.getVaccination(studentId, immunizationName);
+        List<VaccinationVO> vaccinationVOs = vaccinationService.getVaccination(studentId, immunizationName);
+        return Result.buildOkData(vaccinationVOs);
+    }
+
+    @GetMapping(value = "/getVaccinationLast/{studentId}/{immunizationName}")
+    @LogOperate(value = "find newest vaccination by student id and immunization name")
+    public Result<Object> getVaccinationLast(@PathVariable Integer studentId, @PathVariable String immunizationName) {
+        VaccinationVO vaccinationVO = vaccinationService.getVaccinationLast(studentId, immunizationName);
         return Result.buildOkData(vaccinationVO);
     }
 
