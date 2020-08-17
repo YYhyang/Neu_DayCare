@@ -1,3 +1,4 @@
 /.idea/
 *.log
 /web-fe/node_modules
+/web-fe/tests
