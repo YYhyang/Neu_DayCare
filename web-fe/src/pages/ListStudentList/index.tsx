@@ -11,6 +11,8 @@ import CreateForm from "@/pages/components/CreateForm";
 
 
 import EditForm from "@/pages/components/EditForm";
+// import {addRule} from "@/pages/ListTableList/service";
+// import {TableListItem} from "@/pages/ListTableList/data";
 
 const TableList: React.FC = () => {
 
