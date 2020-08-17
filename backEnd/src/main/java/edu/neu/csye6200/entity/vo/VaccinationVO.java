@@ -25,4 +25,5 @@ public class VaccinationVO {
 
     private String immunizationName;
 
+    private Date nextTime;
 }
