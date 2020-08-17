@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @RestController
-@RequestMapping("teacher")
+@RequestMapping("/teacher")
 @Slf4j
 public class TeacherController extends BaseController {
   @Resource
@@ -31,9 +31,9 @@ public class TeacherController extends BaseController {
     TeacherDO teacherDO = TeacherConverter.Vo2Do(teacherVO);
     boolean insert = teacherService.save(teacherDO);
     if (insert) {
-      return Result.buildOkData(null);
+      return Result.buildOkData(teacherDO);
     }
-    return Result.buildFail();
+    return Result.buildFailData(teacherDO);
   }
 
   @PostMapping(value = "/listByTargetAge")

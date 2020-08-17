@@ -11,7 +11,7 @@ import lombok.Data;
 public class ImmunizationVO {
     private Integer immunizationId;
 
-    private Integer targetAge;
+    private String targetAge;
 
     private Integer dose;
 
