@@ -16,8 +16,4 @@ public class MybatisPlusConfig {
         PaginationInterceptor paginationInterceptor=new PaginationInterceptor();
         return  paginationInterceptor;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master_rebuild
