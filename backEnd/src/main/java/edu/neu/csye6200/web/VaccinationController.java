@@ -3,6 +3,7 @@ package edu.neu.csye6200.web;
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
 import edu.neu.csye6200.base.annotation.LogOperate;
+import edu.neu.csye6200.entity.Vaccination;
 import edu.neu.csye6200.entity.dto.VaccinationDO;
 import edu.neu.csye6200.entity.vo.VaccinationVO;
 import edu.neu.csye6200.service.VaccinationService;
@@ -46,9 +47,9 @@ public class VaccinationController extends BaseController {
     @GetMapping(value = "/listByStudentId/{studentId}")
     @LogOperate(value = "find by student id")
     public Result<Object> listByStudentId(@PathVariable Integer studentId){
-        List<VaccinationVO> vaccinationVOS= new Vector<>();
-        ConverterUtils.convertList(vaccinationService.getListVaccination(studentId),vaccinationVOS,VaccinationVO.class);
-        return Result.buildOkData(vaccinationVOS);
+        List<VaccinationVO> vaccinationVOs = new Vector<>();
+        ConverterUtils.convertList(vaccinationService.getListVaccination(studentId),vaccinationVOs,VaccinationVO.class);
+        return Result.buildOkData(vaccinationVOs);
     }
 
     @GetMapping(value = "/getVaccination/{studentId}/{immunizationName}")
@@ -98,9 +99,17 @@ public class VaccinationController extends BaseController {
     @PostMapping("/checkStatusAndNextDate/{studentId}")
     @LogOperate(value = "check for student's vaccination status and next date for injection")
     public Result<Object> checkStatusAndNextDate(@RequestAttribute Integer studentId) {
-        List<VaccinationVO> vaccinationVOS= new Vector<>();
-        ConverterUtils.convertList(vaccinationService.checkNextDateforVaccination(studentId),
-                vaccinationVOS,VaccinationVO.class);
-        return Result.buildOkData(vaccinationVOS);
+        List<Vaccination> list = vaccinationService.checkNextDateforVaccination(studentId);
+        List<VaccinationVO> vaccinationVOs = new Vector<>();
+        List<VaccinationDO> vaccinationDOs = new Vector<>();
+        ConverterUtils.convertList(vaccinationDOs, list,VaccinationDO.class);
+
+        boolean update = vaccinationService.updateBatchById(vaccinationDOs);
+        if (update) {
+            ConverterUtils.convertList(list, vaccinationVOs, VaccinationVO.class);
+            return Result.buildOkData(vaccinationVOs);
+        } else {
+            return Result.buildFailData(vaccinationVOs);
+        }
     }
 }

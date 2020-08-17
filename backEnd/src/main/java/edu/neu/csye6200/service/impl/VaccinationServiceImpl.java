@@ -1,5 +1,6 @@
 package edu.neu.csye6200.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import edu.neu.csye6200.base.BaseServiceImpl;
 import edu.neu.csye6200.base.enums.ImmunizationNameEnum;
@@ -177,56 +178,37 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
 
         for (VaccinationDO vaccinationDO : vaccinationDOs) {
             String immunizationName = vaccinationDO.getImmunizationName();
+            ImmunizationDO immunizationDO = immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query()
+                    .eq("name", immunizationName));
+            String immunizationCycle = immunizationDO.getCycle();
+            JSONObject jsonImmunizationCycle = JSONObject.parseObject(immunizationCycle);
 
             // check vaccination complete status
             if (vaccinationDO.getCompleteStatus().equals(NOT_TREATED)) {
                 // check date for first injection
-                if (immunizationName.equals(HIB) || immunizationName.equals(DTAP) || immunizationName.equals(POLIO)) {
-                    vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 2));
-                } else if (immunizationName.equals(HEPATITIS_B)) {
-                    // need to be injected at first day
-                    vaccinationDO.setNextTime(new Date());
-                } else if (immunizationName.equals(VERICELLA) || immunizationName.equals(MMR)) {
-                    vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 12));
-                } else if (immunizationName.equals(MENINGOCOCCAL)) {
-                    vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 11 * 12));
-                }
+                vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("1")));
 
             } else if(vaccinationDO.getCompleteStatus().equals(UNCOMPLETED)) {
                 // check date for next injection
                 switch (vaccinationDO.getVaccinationNumber()) {
                     case 1:
                         // check for second injection
-                        if (immunizationName.equals(HIB) || immunizationName.equals(DTAP) || immunizationName.equals(POLIO)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 4));
-                        } else if (immunizationName.equals(HEPATITIS_B)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 1));
-                        } else if (immunizationName.equals(VERICELLA) || immunizationName.equals(MMR)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
-                        } else if (immunizationName.equals(MENINGOCOCCAL)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 16 * 12));
-                        }
+                        vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("2")));
                         break;
                     case 2:
                         // check for third injection
-                        if (immunizationName.equals(HIB)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 12));
-                        } else if (immunizationName.equals(DTAP) ||
-                                immunizationName.equals(POLIO) ||
-                                immunizationName.equals(HEPATITIS_B)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 6));
+                        if (jsonImmunizationCycle.containsKey("3")) {
+                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("3")));
                         } else {
-                            // wrong status, do not need more injection
-                            vaccinationDO.setCompleteStatus(COMPLETED);
-                            vaccinationDO.setNextTime(null);
+                        // wrong status, do not need more injection
+                        vaccinationDO.setCompleteStatus(COMPLETED);
+                        vaccinationDO.setNextTime(null);
                         }
                         break;
                     case 3:
                         // check for fourth injection
-                        if (immunizationName.equals(DTAP)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 15));
-                        } else if (immunizationName.equals(POLIO)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
+                        if (jsonImmunizationCycle.containsKey("4")) {
+                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("4")));
                         } else {
                             // wrong status, do not need more injection
                             vaccinationDO.setCompleteStatus(COMPLETED);
@@ -235,8 +217,8 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
                         break;
                     case 4:
                         // check for fifth injection
-                        if (immunizationName.equals(DTAP)) {
-                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, 48));
+                        if (jsonImmunizationCycle.containsKey("5")) {
+                            vaccinationDO.setNextTime(DateUtils.addMonth(studentBirth, jsonImmunizationCycle.getIntValue("5")));
                         } else {
                             // wrong status, do not need more injection
                             vaccinationDO.setCompleteStatus(COMPLETED);
