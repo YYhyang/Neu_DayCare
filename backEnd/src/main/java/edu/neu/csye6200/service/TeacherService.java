@@ -1,5 +1,6 @@
 package edu.neu.csye6200.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import edu.neu.csye6200.base.BaseService;
 import edu.neu.csye6200.entity.dto.TeacherDO;
 import edu.neu.csye6200.entity.vo.TeacherVO;
@@ -16,5 +17,17 @@ public interface TeacherService extends BaseService<TeacherDO> {
      * @return List<TeacherVO></>
      */
     List<TeacherVO> listByTargetAge(String targetAge);
+
+    /**
+     * get one teacher by id
+     * @param teacherId
+     * @return
+     */
     TeacherVO selectById(Integer teacherId);
+
+    /**page select all teachers
+     * @param pageNumber
+     * @return
+     */
+    IPage<TeacherDO> pageAllTeacher(Integer pageNumber);
 }

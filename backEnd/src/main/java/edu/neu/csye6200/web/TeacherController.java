@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.web.bind.annotation.*;
 
 import edu.neu.csye6200.base.BaseController;
@@ -46,6 +47,12 @@ public class TeacherController extends BaseController {
   public Result<Object> selectById(@RequestParam Integer teacherId) {
     TeacherVO teacherVO = teacherService.selectById(teacherId);
     return Result.buildOkData(teacherVO);
+  }
+
+  @GetMapping(value = "/page/{pageNumber}")
+  public Result<Object> pageAllTeacher(@PathVariable Integer pageNumber){
+    IPage<TeacherDO> teacherDOS=teacherService.pageAllTeacher(pageNumber);
+    return Result.buildOkData(teacherDOS);
   }
 
 }
