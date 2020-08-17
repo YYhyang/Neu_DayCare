@@ -49,9 +49,9 @@ public class TeacherController extends BaseController {
     return Result.buildOkData(teacherVO);
   }
 
-  @GetMapping(value = "/page/{pageNumber}")
-  public Result<Object> pageAllTeacher(@PathVariable Integer pageNumber){
-    IPage<TeacherDO> teacherDOS=teacherService.pageAllTeacher(pageNumber);
+  @PostMapping(value = "/page")
+  public Result<Object> pageAllTeacher(@RequestParam Integer pageNumber,@RequestParam Integer pageSize){
+    IPage<TeacherDO> teacherDOS=teacherService.pageAllTeacher(pageNumber,pageSize);
     return Result.buildOkData(teacherDOS);
   }
 

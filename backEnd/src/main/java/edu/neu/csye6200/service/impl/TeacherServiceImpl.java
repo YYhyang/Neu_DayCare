@@ -38,8 +38,8 @@ public class TeacherServiceImpl extends BaseServiceImpl<TeacherMapper, TeacherDO
     }
 
     @Override
-    public IPage<TeacherDO> pageAllTeacher(Integer pageNumber) {
-        IPage<TeacherDO> teacherDOS=teacherMapper.selectPage(new Page<>(pageNumber,2),null);
+    public IPage<TeacherDO> pageAllTeacher(Integer pageNumber, Integer pageSize) {
+        IPage<TeacherDO> teacherDOS=teacherMapper.selectPage(new Page<>(pageNumber,pageSize),null);
         return teacherDOS;
     }
 }

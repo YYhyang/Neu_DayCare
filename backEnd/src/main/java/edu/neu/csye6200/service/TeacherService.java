@@ -27,7 +27,8 @@ public interface TeacherService extends BaseService<TeacherDO> {
 
     /**page select all teachers
      * @param pageNumber
+     * @param pageSize
      * @return
      */
-    IPage<TeacherDO> pageAllTeacher(Integer pageNumber);
+    IPage<TeacherDO> pageAllTeacher(Integer pageNumber, Integer pageSize);
 }
