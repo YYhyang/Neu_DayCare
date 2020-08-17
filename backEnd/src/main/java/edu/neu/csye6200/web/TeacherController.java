@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.web.bind.annotation.*;
 
 import edu.neu.csye6200.base.BaseController;
@@ -55,4 +56,16 @@ public class TeacherController extends BaseController {
     return Result.buildOkData(teacherDOS);
   }
 
+  @PostMapping(value = "/update")
+  public Result<Object> updateTeacher(@RequestBody TeacherVO teacherVO){
+    TeacherDO teacherDO=new TeacherDO();
+    ConverterUtils.convert(teacherVO,teacherDO);
+    boolean update=teacherService.updateById(teacherDO);
+    if(update){
+      return Result.buildOkData(teacherDO);
+    }
+    else {
+      return Result.buildFailData(teacherDO);
+    }
+  }
 }
