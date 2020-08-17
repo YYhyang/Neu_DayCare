@@ -156,6 +156,16 @@ export async function queryRule(params?: TableListParams) {
 // 4. 在ProTable的request中写调后端接口的具体实现，如下：
 // request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
 ```
+
+
+#### 前端demo
+0. 在src/pages下新建一个文件夹，表示以表格形式展示的页面，命名暂时参官网案例List{实体名}List。并新建data.d.ts, index.tsx, service.ts三个文件
+1. 选定某个实体（或数据库中的表），如Student。到Java中找StudentVO，把字段复制下来，粘贴到data.d.ts，并参照data.d.ts声明声明出四个接口，分别对应分页查询参数、表实体、分页查询响应体、~~分页体~~(可有可无)
+2. 在service.ts中声明后端的接口，此处因为后端接口无统一规范，所以每个接口自己与后端接口对齐即可
+3. 去另一个文件夹下的index.tsx中复制，粘贴到自己的index.tsx中。需要做以下工作 1. 重新定义表的结构体 2. 引入service方法并实现对应的功能
+
+
+
 ### 版本控制 
 使用GitHub进行版本控制时，在提交代码时注意以下几点  
 1. 每次编写代码前，从master分支拉下最新的代码到本地  
