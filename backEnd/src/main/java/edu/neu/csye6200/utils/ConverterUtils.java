@@ -5,6 +5,7 @@ import org.springframework.util.CollectionUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -257,5 +258,16 @@ public class ConverterUtils {
         }
     }
 
+    public static <T> List convertListAndReturn(List<? extends T> sourceList, Class clzTarget) {
+        List targetList = new ArrayList();
+        convertList(sourceList, targetList, clzTarget);
+        return targetList;
+    }
+
+    public static <T> T convertAndReturn(T source, T target) {
+        List targetList = new ArrayList();
+        convert(source, target);
+        return target;
+    }
 
 }

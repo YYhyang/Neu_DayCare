@@ -3,6 +3,9 @@ package edu.neu.csye6200.service;
 import edu.neu.csye6200.base.BaseService;
 import edu.neu.csye6200.entity.Classroom;
 import edu.neu.csye6200.entity.dto.ClassroomDO;
+import edu.neu.csye6200.entity.vo.ClassroomVO;
+
+import java.util.List;
 
 /**
  * @author Caspar
@@ -13,7 +16,8 @@ public interface ClassroomService extends BaseService<ClassroomDO> {
      * find am available(whether is full) classroom according to the age state
      * @return
      */
-    public Classroom selectOneClassroomByState(String ageState);
+//    public Classroom selectOneClassroomByState(String ageState);
+    public List<Classroom> queryClassroomByAgeState(String ageState);
 
 
 }

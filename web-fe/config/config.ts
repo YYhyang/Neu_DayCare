@@ -59,6 +59,12 @@ export default defineConfig({
       component: './ListStudentList'
     },
     {
+      path: '/group',
+      name: 'group',
+      icon: 'smile',
+      component: './GroupInfo'
+    },
+    {
       name: 'list.table-list',
       icon: 'table',
       path: '/list',

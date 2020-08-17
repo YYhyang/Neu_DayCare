@@ -13,7 +13,6 @@ import edu.neu.csye6200.base.exceptions.DayCareException;
  * @author flm, Yue Fang
  * @since 2019/8/23 15:39
  */
-
 public class DateUtils {
 
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
