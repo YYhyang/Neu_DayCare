@@ -4,8 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.web.bind.annotation.*;
 
 import edu.neu.csye6200.base.BaseController;
@@ -52,6 +51,17 @@ public class StudentController extends BaseController {
   public Result<Object> queryStudentByAgeState(@PathVariable String ageState) {
     List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
     return Result.buildOkData(studentVOList);
+  }
+
+  @GetMapping(value = "/pageNo/{pageNo}/pageSize/{pageSize}")
+  @LogOperate(value = "查询分页学生")
+  public Result<Object> queryStudentByPage(@PathVariable int pageNo, @PathVariable int pageSize) {
+    IPage<StudentDO> iPage = studentService.queryByPage(pageNo, pageSize);
+    IPage<StudentVO> iPageStudentVO = iPage.convert((ele)->{
+      StudentVO studentVO = new StudentVO();
+      return (StudentVO)ConverterUtils.convertAndReturn(ele, studentVO);
+    });
+    return Result.buildOkData(iPageStudentVO);
   }
 
   @GetMapping(value = "/id/{id}")

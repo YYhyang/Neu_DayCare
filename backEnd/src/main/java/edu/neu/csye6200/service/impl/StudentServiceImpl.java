@@ -1,13 +1,17 @@
 package edu.neu.csye6200.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import edu.neu.csye6200.base.convertor.StudentConverter;
 import edu.neu.csye6200.entity.dto.StudentDO;
+import edu.neu.csye6200.entity.dto.TeacherDO;
 import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -59,6 +63,13 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
     StudentVO studentVO = new StudentVO();
     ConverterUtils.convert(studentDO, studentVO);
     return studentVO;
+  }
+
+  @Override
+  public IPage<StudentDO> queryByPage(int pageNo, int pageSize) {
+
+    IPage<StudentDO> studentDOs=studentMapper.selectPage(new Page<>(pageNo,pageSize),null);
+    return studentDOs;
   }
 
   public List<Student> getListStudentsByAgeState(int ageState) {
