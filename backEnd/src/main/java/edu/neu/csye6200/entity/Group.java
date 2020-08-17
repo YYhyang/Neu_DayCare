@@ -1,9 +1,11 @@
 package edu.neu.csye6200.entity;
 
 
+import edu.neu.csye6200.base.enums.ClassroomStateEnum;
 import edu.neu.csye6200.base.enums.GroupStateEnum;
 import lombok.Data;
 
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -17,7 +19,7 @@ public class Group {
 
     private Integer classroomId;
 
-    private Integer ageState;
+    private String ageState;
 
     private Integer teacherId;
 
@@ -31,19 +33,22 @@ public class Group {
 
     private Teacher teacher;
 
+    private Hashtable<String, Integer> ageRatioTable;
+
     public Group() {
         super();
         setGroupId(-1);
         setClassroomId(-1);
-        setAgeState(0);
+        setAgeState("");
         setTeacherId(-1);
         setStudentCount(0);
         setRatio(4);
         setFullState(GroupStateEnum.NOT_FULL.getCode());
         setStudentList(new Vector<>());
+        populateAgeRatioTable();
     }
 
-    public Group(int ageState, int ratio) {
+    public Group(String ageState, int ratio) {
         setAgeState(ageState);
         setRatio(ratio);
         setFullState(GroupStateEnum.NOT_FULL.getCode());
@@ -51,6 +56,18 @@ public class Group {
         setTeacherId(-1);
         setStudentCount(0);
         setStudentList(new Vector<>());
+        populateAgeRatioTable();
+    }
+
+    public void populateAgeRatioTable(){
+        ageRatioTable.put("AGE_STATE_0", 4);
+        ageRatioTable.put("AGE_STATE_1", 4);
+        ageRatioTable.put("AGE_STATE_2", 5);
+        ageRatioTable.put("AGE_STATE_3", 6);
+        ageRatioTable.put("AGE_STATE_4", 8);
+        ageRatioTable.put("AGE_STATE_5", 12);
+        ageRatioTable.put("AGE_STATE_6", 15);
+
     }
 
     public boolean verifyStateRegulation(Teacher teacher) {
