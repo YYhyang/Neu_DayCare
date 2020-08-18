@@ -1,5 +1,6 @@
 package edu.neu.csye6200.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -25,4 +26,8 @@ public interface StudentService extends BaseService<StudentDO> {
   public IPage<StudentDO> queryByPage(int pageNo, int pageSize);
 
   IPage<StudentVO> PageSelectStudentByGroupId(int pageNo,int pageSize,int groupId);
+
+  List<StudentDO> checkStatus(Date registrationDate);
+
+  void addStudent(StudentDO studentDO);
 }

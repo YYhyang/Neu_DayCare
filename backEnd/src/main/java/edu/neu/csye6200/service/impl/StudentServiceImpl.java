@@ -1,8 +1,6 @@
 package edu.neu.csye6200.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -13,7 +11,9 @@ import edu.neu.csye6200.base.Result;
 import edu.neu.csye6200.base.convertor.StudentConverter;
 import edu.neu.csye6200.entity.dto.StudentDO;
 import edu.neu.csye6200.entity.dto.TeacherDO;
+import edu.neu.csye6200.manager.EnrollmentManager;
 import edu.neu.csye6200.utils.ConverterUtils;
+import edu.neu.csye6200.utils.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +33,8 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
 
   @Resource
   private StudentMapper studentMapper;
+  @Resource
+  private EnrollmentManager enrollmentManager;
 
   @Override
   public List<StudentVO> queryByAgeState(String ageState) {
@@ -81,6 +83,26 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
       return (StudentVO)ConverterUtils.convertAndReturn(ele,studentVO);
     });
     return studentVOIPage;
+  }
+
+  @Override
+  public List<StudentDO> checkStatus(Date registrationDate) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(registrationDate);
+    calendar.add(Calendar.MONTH, -1);
+    Date resultDate = calendar.getTime();
+    List<StudentDO>studentDOS=studentMapper.selectList(Wrappers.<StudentDO>query().between("registrationDate",resultDate,registrationDate));
+    return studentDOS;
+  }
+
+  @Override
+  public void addStudent(StudentDO studentDO) {
+    studentDO.setAgeState(StudentConverter.getAgeState(DateUtils.calculateAge(studentDO.getBirthday())));
+    studentDO.setRegistrationDate(new Date());
+    Student student=new Student();
+    ConverterUtils.convert(studentDO,student);
+    enrollmentManager.enroll(student);
+    studentDO.setGroupId(student.getGroupId());
   }
 
   public List<Student> getListStudentsByAgeState(int ageState) {

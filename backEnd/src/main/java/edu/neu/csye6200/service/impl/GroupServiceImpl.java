@@ -53,7 +53,7 @@ public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> impl
 
     @Override
     public IPage<GroupVO> pageSelectByClassId(int pageNo, int pageSize, int classroomId) {
-      IPage<GroupDO>groupDOIPage=groupDOMapper.selectPage(new Page<>(pageNo,pageSize),Wrappers.<GroupDO>query().eq("classroomId", classroomId));
+      IPage<GroupDO>groupDOIPage=groupMapper.selectPage(new Page<>(pageNo,pageSize),Wrappers.<GroupDO>query().eq("classroomId", classroomId));
       IPage<GroupVO>groupVOIPage=groupDOIPage.convert(ele->{
           GroupVO groupVO=new GroupVO();
           return (GroupVO)ConverterUtils.convertAndReturn(ele,groupVO);

@@ -16,6 +16,6 @@ import java.util.List;
 public interface GroupService extends BaseService<GroupDO> {
     public GroupVO selectGroupVOByGroupId(int groupId);
 
-    IPage<GroupVO> pageSelectByClassId(int pageNo,int pageSize,int groupId);
+    IPage<GroupVO> pageSelectByClassId(int pageNo,int pageSize,int classId);
     public List<Group> queryGroupByClassroomId(int classroomId);
 }
