@@ -24,7 +24,7 @@ export interface TableListData {
   pagination: Partial<TableListPagination>;
 }
 
-export interface TableListParams {
+export interface AddStudentParams {
   status?: string;
   name?: string;
   desc?: string;

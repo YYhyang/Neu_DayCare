@@ -8,6 +8,13 @@ server:
   port: 8080
 
 spring:
+  cors:
+    allowed-origins: "*"
+    allowed-methods: "*"
+    allowed-headers: "*"
+    exposed-headers: "Authorization,Link,X-Total-Count"
+    allow-credentials: true
+    max-age: 1800
   application:
     name:
       DayCare

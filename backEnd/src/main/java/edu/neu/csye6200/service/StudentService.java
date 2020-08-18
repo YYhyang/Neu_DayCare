@@ -30,4 +30,5 @@ public interface StudentService extends BaseService<StudentDO> {
   List<StudentDO> checkStatus(Date registrationDate);
 
   void addStudent(StudentDO studentDO);
+
 }

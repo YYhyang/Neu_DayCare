@@ -125,12 +125,13 @@ public class LogAspect {
     // 日志参数
     List<Object> afterReqArgs = new ArrayList<>();
     long startNs = System.nanoTime();
-    Object result = point.proceed();
     long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-    afterReqLog.append(" time ({} ms) Result:{}");
+    Object result = point.proceed();
+    afterReqLog.append(" time ({} ms) ");
     afterReqArgs.add(tookMs);
-    afterReqArgs.add(result);
     log.info(afterReqLog.toString(), afterReqArgs.toArray());
+    beforeReqArgs.clear();
+    afterReqArgs.clear();
     log.info("Finish request\n");
     return result;
   }

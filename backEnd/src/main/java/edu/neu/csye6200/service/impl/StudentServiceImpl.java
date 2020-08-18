@@ -105,6 +105,7 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
     ConverterUtils.convert(studentDO,student);
     enrollmentManager.enroll(student);
     studentDO.setGroupId(student.getGroupId());
+
   }
 
   public List<Student> getListStudentsByAgeState(int ageState) {

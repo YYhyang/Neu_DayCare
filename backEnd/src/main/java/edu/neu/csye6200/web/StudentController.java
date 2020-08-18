@@ -10,6 +10,8 @@ import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.manager.EnrollmentManager;
 import org.springframework.web.bind.annotation.*;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
 import edu.neu.csye6200.base.annotation.LogOperate;
@@ -62,6 +64,13 @@ public class StudentController extends BaseController {
     return Result.buildOkData(iPageStudentVO);
   }
 
+  @GetMapping(value = "/queryByGroup/{groupId}")
+  @LogOperate(value = "根据分组查询学生")
+  public Result<Object> queryByGroupId(@PathVariable int groupId) {
+    List<StudentVO> studentVOS = studentService.queryByGroupId(groupId);
+    return Result.buildOkData(studentVOS);
+  }
+
   @GetMapping(value = "/id/{id}")
   @LogOperate(value = "获取详情")
   public Result<Object> detail(@PathVariable int id) {
@@ -89,4 +98,34 @@ public class StudentController extends BaseController {
     ConverterUtils.convertList(studentDOS,studentVOS,StudentVO.class);
     return Result.buildOkData(studentVOS);
   }
+  @DeleteMapping("/{id}")
+  @LogOperate(value = "删")
+  public Result<Object> remove(@PathVariable String id) {
+    return Result.buildOkData(studentService.removeById(id));
+  }
+
+  @GetMapping("/list")
+  @LogOperate(value = "列")
+  public Result<Object> list() {
+    return Result.buildOkData(studentService.list());
+  }
+
+  @GetMapping("/{id}")
+  @LogOperate(value = "查")
+  public Result<Object> get(@PathVariable String id) {
+    return Result.buildOkData(studentService.selectOneById(Integer.parseInt(id)));
+  }
+
+//  @PostMapping(value = "")
+//  @LogOperate(value = "增改")
+//  public Result<Object> update2(@RequestBody StudentVO vo) {
+//    StudentDO student = studentService.getOne(Wrappers.<StudentDO>query().eq("studentId", vo.getStudentId()));
+//    if (student == null) {
+//      student = new StudentDO();
+//    }
+//    ConverterUtils.convert(vo, student);
+//    boolean b = studentService.saveOrUpdate(student);
+//    return b ? Result.buildOkData(student) : Result.buildFail();
+//  }
+  
 }
