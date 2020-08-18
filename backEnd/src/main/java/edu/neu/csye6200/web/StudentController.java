@@ -2,9 +2,12 @@ package edu.neu.csye6200.web;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import javax.annotation.Resource;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import edu.neu.csye6200.entity.Student;
+import edu.neu.csye6200.manager.EnrollmentManager;
 import org.springframework.web.bind.annotation.*;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -39,18 +42,13 @@ public class StudentController extends BaseController {
     StudentDO studentDO = new StudentDO();
     ConverterUtils.convert(studentVO, studentDO);
     // todo 计算 ageState
-    studentDO.setAgeState(StudentConverter.getAgeState(DateUtils.calculateAge(studentVO.getBirthday())));
-    studentDO.setRegistrationDate(new Date());
-    boolean insert = studentService.save(studentDO);
-    if (insert) {
-      return Result.buildOkData(studentDO);
-    }
-    return Result.buildFailData(studentDO);
+    studentService.addStudent(studentDO);
+    return Result.buildOkData(studentDO);
   }
 
   @GetMapping(value = "/state/{ageState}")
   @LogOperate(value = "根据年龄段查询")
-  public Result<Object> queryStudentByAgeState(@PathVariable int ageState) {
+  public Result<Object> queryStudentByAgeState(@PathVariable String ageState) {
     List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
     return Result.buildOkData(studentVOList);
   }
@@ -93,6 +91,13 @@ public class StudentController extends BaseController {
     return Result.buildFailData(studentDO);
   }
 
+  @PostMapping("/checkStatus")
+  public Result<Object> checkStatus(@RequestParam Date registrationDate){
+    List<StudentDO> studentDOS=studentService.checkStatus(registrationDate);
+    List<StudentVO> studentVOS=new Vector<>();
+    ConverterUtils.convertList(studentDOS,studentVOS,StudentVO.class);
+    return Result.buildOkData(studentVOS);
+  }
   @DeleteMapping("/{id}")
   @LogOperate(value = "删")
   public Result<Object> remove(@PathVariable String id) {
@@ -122,5 +127,5 @@ public class StudentController extends BaseController {
 //    boolean b = studentService.saveOrUpdate(student);
 //    return b ? Result.buildOkData(student) : Result.buildFail();
 //  }
-
+  
 }

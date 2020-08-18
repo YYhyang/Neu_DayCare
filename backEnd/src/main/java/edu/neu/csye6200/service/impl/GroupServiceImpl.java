@@ -1,6 +1,8 @@
 package edu.neu.csye6200.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import edu.neu.csye6200.base.BaseServiceImpl;
 import edu.neu.csye6200.dao.GroupMapper;
 import edu.neu.csye6200.dao.StudentMapper;
@@ -47,6 +49,16 @@ public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> impl
         GroupVO groupVO = new GroupVO();
         ConverterUtils.convert(group, groupVO);
         return groupVO;
+    }
+
+    @Override
+    public IPage<GroupVO> pageSelectByClassId(int pageNo, int pageSize, int classroomId) {
+      IPage<GroupDO>groupDOIPage=groupMapper.selectPage(new Page<>(pageNo,pageSize),Wrappers.<GroupDO>query().eq("classroomId", classroomId));
+      IPage<GroupVO>groupVOIPage=groupDOIPage.convert(ele->{
+          GroupVO groupVO=new GroupVO();
+          return (GroupVO)ConverterUtils.convertAndReturn(ele,groupVO);
+      });
+        return groupVOIPage;
     }
 
     public List<Student> getStudentListByGroupId(int groupId) {

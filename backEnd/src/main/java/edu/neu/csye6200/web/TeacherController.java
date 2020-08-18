@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import edu.neu.csye6200.utils.ConverterUtils;
 import org.springframework.web.bind.annotation.*;
 
 import edu.neu.csye6200.base.BaseController;
@@ -20,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @RestController
-@RequestMapping("teacher")
+@RequestMapping("/teacher")
 @Slf4j
 public class TeacherController extends BaseController {
   @Resource
@@ -31,9 +33,9 @@ public class TeacherController extends BaseController {
     TeacherDO teacherDO = TeacherConverter.Vo2Do(teacherVO);
     boolean insert = teacherService.save(teacherDO);
     if (insert) {
-      return Result.buildOkData(null);
+      return Result.buildOkData(teacherDO);
     }
-    return Result.buildFail();
+    return Result.buildFailData(teacherDO);
   }
 
   @PostMapping(value = "/listByTargetAge")
@@ -48,4 +50,27 @@ public class TeacherController extends BaseController {
     return Result.buildOkData(teacherVO);
   }
 
+  @PostMapping(value = "/page")
+  public Result<Object> pageAllTeacher(@RequestParam Integer pageNumber,@RequestParam Integer pageSize){
+    IPage<TeacherDO> teacherDOS=teacherService.pageAllTeacher(pageNumber,pageSize);
+    IPage<TeacherVO> teacherVOIPage=teacherDOS.convert((ele)->{
+      TeacherVO teacherVO=new TeacherVO();
+      return (TeacherVO) ConverterUtils.convertAndReturn(ele,teacherVO);
+            }
+            );
+    return Result.buildOkData(teacherVOIPage);
+  }
+
+  @PostMapping(value = "/update")
+  public Result<Object> updateTeacher(@RequestBody TeacherVO teacherVO){
+    TeacherDO teacherDO=new TeacherDO();
+    ConverterUtils.convert(teacherVO,teacherDO);
+    boolean update=teacherService.updateById(teacherDO);
+    if(update){
+      return Result.buildOkData(teacherDO);
+    }
+    else {
+      return Result.buildFailData(teacherDO);
+    }
+  }
 }
