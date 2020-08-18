@@ -117,6 +117,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
     public void addVaccination(VaccinationDO vaccinationDO) {
         ImmunizationDO immunizationDO = immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query()
                 .eq("name", vaccinationDO.getImmunizationName()));
+        StudentDO studentDO = studentMapper.selectById(vaccinationDO.getStudentId());
 
         vaccinationDO.setRecordDate(new Date());
 
@@ -164,6 +165,10 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
         List<VaccinationDO> vaccinationDOs = new Vector<>();
         List<Vaccination> list = new Vector<>();
         StudentDO studentDO = studentMapper.selectById(studentId);
+
+        if (null == studentDO) {
+            return list;
+        }
         Date studentBirth = studentDO.getBirthday();
 
         // get the list with newest immunization record of the student
@@ -287,7 +292,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
         for (VaccinationDO vaccinationDO : vaccinationDOs) {
             int studentId = vaccinationDO.getStudentId();
             StudentDO studentDO = studentMapper.selectById(studentId);
-            if (!studentIds.contains(studentId)) {
+            if (!studentIds.contains(studentId) && null != studentDO) {
                 studentIds.add(studentId);
 
                 // find the newest record of the chosen immunization of the student
