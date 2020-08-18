@@ -25,7 +25,7 @@ export interface Group {
 }
 
 export interface TableListData {
-  list: StudentListItem[];
+  list: GroupInfo[];
   pagination: Partial<TableListPagination>;
 }
 
@@ -63,9 +63,7 @@ export interface GroupInfo {
   teacherId: number;
   studentCount: number;
   ratio: number;
+  key: number;
 }
 
-export interface TableListData {
-  list: GroupInfo[];
-  pagination: Partial<TableListPagination>;
-}
+

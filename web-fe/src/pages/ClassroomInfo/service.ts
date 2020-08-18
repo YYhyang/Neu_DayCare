@@ -1,5 +1,5 @@
 import {request} from 'umi';
-import {StudentListItem} from './data.d';
+import {GroupInfo, StudentListItem} from './data.d';
 
 
 const classroomURL = 'http://39.108.233.164:8080' + '/v1/classroom';
@@ -11,7 +11,7 @@ export async function get(id: number) {
 }
 
 export async function list(id: number) {
-  return request(groupUrl + '/queryByGroup/'+id, {
+  return request(groupUrl + '/lists/'+id, {
     method: 'GET',
   });
 }
@@ -31,26 +31,13 @@ export async function update(student: Partial<StudentListItem>) {
   });
 }
 
-export async function add(student: Partial<StudentListItem>) {
-  return request(parentURL, {
+export async function add(group: Partial<GroupInfo>) {
+  return request(groupUrl, {
     method: 'POST',
     data: {
-      ...student
+      ...group
     }
   });
 }
 
-export async function queryStudentByAgeState(params: { ageState: number }) {
-  return request(parentURL + '/queryStudentByAgeState', {
-    params,
-  });
-}
 
-export async function removeStudent(params: { key: number[] }) {
-  return request(parentURL, {
-    method: 'POST',
-    data: {
-      ...params
-    },
-  });
-}

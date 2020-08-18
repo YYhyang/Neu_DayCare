@@ -4,8 +4,8 @@ import React, {useRef, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
 import ProTable, {ActionType, ProColumns} from '@ant-design/pro-table';
 
-import {GroupInfo} from './data.d';
-import {list, remove, update, add} from "@/pages/ClassroomInfo/service";
+import {VaccinationItem} from './data.d';
+import {list, remove, update, add} from "@/pages/VaccineInfo/service";
 import moment from 'moment';
 import CreateForm from "@/pages/components/CreateForm";
 
@@ -43,7 +43,7 @@ const TableList: React.FC = () => {
   const handleDelete = function (row: GroupInfo) {
     remove(row.groupId); // todo 回调
   };
-  const columns: ProColumns<GroupInfo>[] = [
+  const columns: ProColumns<VaccinationItem>[] = [
   //   groupId: number;
   // classroomId: number;
   // ageStage: string;
@@ -53,38 +53,32 @@ const TableList: React.FC = () => {
   // ratio: number;
     {
       title: 'ID',
-      key: 'groupId',
-      dataIndex: 'groupId',
+      key: 'id',
+      dataIndex: 'id',
     },
     {
-      title: 'Classroom Id',
-      dataIndex: 'classroomId',
+      title: 'Record Date',
+      dataIndex: 'recordDate',
     },
     {
-      title: 'Age Stage',
-      dataIndex: 'ageState',
-      hideInForm: true,
+      title: 'Time of Vaccination',
+      dataIndex: 'vaccinationNumber',
     },
     {
-      title: 'Full State',
-      dataIndex: 'fullState',
+      title: 'Required Time of Vaccination',
+      dataIndex: 'requiredNumber',
     },
     {
-      title: 'Teacher Id',
-      dataIndex: 'teacherId',
-      render: formatterTime
+      title: 'Complete Status',
+      dataIndex: 'completeStatus',
     },
     {
-      title: 'Student Count Number',
-      dataIndex: 'studentCount',
+      title: 'Immunization Name',
+      dataIndex: 'immunizationName',
     },
     {
-      title: 'Group Number',
-      dataIndex: 'groupId',
-    },
-    {
-      title: 'Ratio',
-      dataIndex: 'ratio',
+      title: 'Next Vaccination Date',
+      dataIndex: 'nextTime',
     },
     {
       title: '操作',
@@ -110,7 +104,7 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<GroupInfo>
+      <ProTable<VaccinationItem>
         headerTitle="Search by Group Ids"
         actionRef={actionRef}
         key={"groupId"}
@@ -121,13 +115,13 @@ const TableList: React.FC = () => {
           </Button>,
         ]}
         request={() => {
-          return list(1);
+          return list(30);
         }}
         columns={columns}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-        <ProTable<GroupInfo, GroupInfo>
-          onSubmit={async (value: GroupInfo) => {
+        <ProTable<VaccinationItem, VaccinationItem>
+          onSubmit={async (value: VaccinationItem) => {
             const success = await handleAdd(value);
             if (success) {
               handleModalVisible(false);
