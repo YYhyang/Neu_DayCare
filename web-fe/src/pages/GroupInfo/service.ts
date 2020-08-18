@@ -2,7 +2,7 @@ import {request} from 'umi';
 import {StudentListItem} from './data.d';
 
 
-const groupURL = 'http://39.108.233.164:8080' + '/v1/students';
+const groupURL = 'http://39.108.233.164:8080' + '/v1/group';
 const studentUrl = 'http://39.108.233.164:8080' + '/v1/students';
 
 
@@ -10,8 +10,8 @@ export async function get(id: number) {
   return request(parentURL + '/' + id);
 }
 
-export async function list(id: number) {
-  return request(studentUrl + '/queryByGroup/'+id, {
+export async function list() {
+  return request(groupURL + '/listAll', {
     method: 'GET',
   });
 }

@@ -79,7 +79,7 @@ public class TeacherController extends BaseController {
 
   @GetMapping("/csvAdd")
   public Result csvAdd(){
-    String filePath="I:\\360MoveData\\Users\\Administrator\\Desktop\\daycare\\daycare\\";
+    String filePath="/Users/channel/Desktop/csv/";
     String stuFileName="daycare_teacher.csv";
     List<Teacher> list = CsvUtils.buildObjects(filePath + stuFileName, Teacher.class);
     for(Teacher teacher:list) {

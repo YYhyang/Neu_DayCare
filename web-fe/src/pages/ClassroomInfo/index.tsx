@@ -69,23 +69,7 @@ const TableList: React.FC = () => {
       title: 'Full State',
       dataIndex: 'fullState',
     },
-    {
-      title: 'Teacher Id',
-      dataIndex: 'teacherId',
-      render: formatterTime
-    },
-    {
-      title: 'Student Count Number',
-      dataIndex: 'studentCount',
-    },
-    {
-      title: 'Group Number',
-      dataIndex: 'groupId',
-    },
-    {
-      title: 'Ratio',
-      dataIndex: 'ratio',
-    },
+
     {
       title: '操作',
       dataIndex: 'option',

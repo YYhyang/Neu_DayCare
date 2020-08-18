@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Caspar
@@ -40,7 +42,14 @@ public class ClassroomController extends BaseController {
         return Result.buildOkData(classroomVO);
     }
 
-
+    @GetMapping(value = "/lists")
+    @LogOperate(value = "获取教室内所有的group详情")
+    public Result<Object> lists() {
+        List<ClassroomDO> classroomDOS = classroomService.list();
+        List<ClassroomVO>  classrooms = new ArrayList<>();
+        ConverterUtils.convertList(classroomDOS, classrooms, ClassroomVO.class);
+        return Result.buildOkData(classrooms);
+    }
 
 
 }

@@ -6,9 +6,12 @@ import javax.annotation.Resource;
 
 import edu.neu.csye6200.dao.GroupMapper;
 import edu.neu.csye6200.entity.Group;
+import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.entity.Teacher;
 import edu.neu.csye6200.entity.dto.GroupDO;
 import edu.neu.csye6200.entity.dto.StudentDO;
+import edu.neu.csye6200.entity.dto.TeacherDO;
+import edu.neu.csye6200.service.TeacherService;
 import edu.neu.csye6200.utils.ConverterUtils;
 import edu.neu.csye6200.utils.CsvUtils;
 import org.junit.Test;
@@ -31,6 +34,8 @@ public class DayCareApplicationTests {
   StudentMapper studentMapper;
   @Resource
   GroupMapper groupMapper;
+  @Resource
+  TeacherService teacherService;
 
   @Test
   public void mapperTest() {
@@ -61,6 +66,30 @@ public class DayCareApplicationTests {
     Group group = new Group();
     ConverterUtils.convert(groupDO, group);
     System.out.println(group.toString());
+  }
+
+  @Test
+  public void parseTeachersCsvInBatch() {
+    String filePath="/Users/channel/Desktop/csv/";
+    String stuFileName="daycare_teacher.csv";
+    List<Teacher> list = CsvUtils.buildObjects(filePath + stuFileName, Teacher.class);
+    for(Teacher teacher:list) {
+      TeacherDO teacherDO=new TeacherDO();
+      ConverterUtils.convert(teacher,teacherDO);
+      teacherService.save(teacherDO);
+    }
+  }
+
+  @Test
+  public void parseStudentsCsvInBatch() {
+    String filePath="/Users/channel/Desktop/csv/";
+    String stuFileName="daycare_student.csv";
+    List<Student> list = CsvUtils.buildObjects(filePath + stuFileName, Student.class);
+    for(Student student:list) {
+      StudentDO studentDO=new StudentDO();
+      ConverterUtils.convert(student,studentDO);
+      studentService.save(studentDO);
+    }
   }
 
 

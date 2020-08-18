@@ -11,7 +11,7 @@ export async function get(id: number) {
 }
 
 export async function list(id: number) {
-  return request(groupUrl + '/lists/'+id, {
+  return request(classroomURL + '/lists', {
     method: 'GET',
   });
 }

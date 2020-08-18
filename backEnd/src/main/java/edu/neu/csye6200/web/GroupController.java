@@ -48,5 +48,14 @@ public class GroupController extends BaseController {
         return Result.buildOkData(groupVOs);
     }
 
+    @GetMapping(value = "/listAll")
+    @LogOperate(value = "获取教室内所有的group详情")
+    public Result<Object> lists() {
+        List<GroupDO> group = groupService.list();
+        List<GroupVO> groupVOs = new ArrayList<>();
+        ConverterUtils.convertList(group, groupVOs, GroupVO.class);
+        return Result.buildOkData(groupVOs);
+    }
+
 
 }

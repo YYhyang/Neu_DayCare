@@ -17,4 +17,5 @@ public interface GroupService extends BaseService<GroupDO> {
 
     IPage<GroupVO> pageSelectByClassId(int pageNo,int pageSize,int classId);
     public List<Group> queryGroupByClassroomId(int classroomId);
+    public List<Group> queryAll();
 }

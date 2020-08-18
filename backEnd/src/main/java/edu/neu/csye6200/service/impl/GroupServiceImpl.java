@@ -77,6 +77,13 @@ public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> impl
         return groupList;
     }
 
+    @Override
+    public List<Group> queryAll() {
+        List<GroupDO> groupDOList = groupMapper.selectList(null);
+        List<Group> groupList = new Vector<>();
+        ConverterUtils.convertList(groupDOList, groupList, Group.class);
+        return groupList;
+    }
 
 
 }

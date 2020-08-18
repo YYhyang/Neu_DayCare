@@ -45,36 +45,21 @@ const TableList: React.FC = () => {
   };
   const columns: ProColumns<StudentListItem>[] = [
     {
-      title: 'ID',
-      key: 'studentId',
-      dataIndex: 'studentId',
+      title: 'Group Number',
+      dataIndex: 'groupId',
     },
     {
-      title: 'name',
-      dataIndex: 'name',
+      title: 'Student Count',
+      dataIndex: 'studentCount',
       valueType: 'textarea',
     },
     {
-      title: 'Parent\'s Name',
-      dataIndex: 'parentName',
-      hideInForm: true,
+      title: 'Ratio',
+      dataIndex: 'ratio',
     },
     {
-      title: 'address',
-      dataIndex: 'address',
-    },
-    {
-      title: 'birthday',
-      dataIndex: 'birthday',
-      render: formatterTime
-    },
-    {
-      title: 'Contact Number',
-      dataIndex: 'phone',
-    },
-    {
-      title: 'Group Number',
-      dataIndex: 'groupId',
+      title: 'FullState',
+      dataIndex: 'fullState',
     },
     {
       title: '操作',
@@ -134,7 +119,7 @@ const TableList: React.FC = () => {
           </Button>,
         ]}
         request={() => {
-          return list(1);
+          return list();
         }}
         columns={columns}
       />

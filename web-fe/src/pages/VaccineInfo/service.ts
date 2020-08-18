@@ -15,7 +15,7 @@ export async function queryByStudentId(id: number) {
 }
 
 export async function list(id: number) {
-  return request(vaccinationUrl + '/listByStudentId/'+id, {
+  return request(vaccinationUrl + '/getall', {
     method: 'GET',
   });
 }
