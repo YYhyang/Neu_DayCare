@@ -26,7 +26,5 @@ public class Vaccination {
 
     private Immunization immunization;
 
-
-
-
+    private Date nextTime;
 }

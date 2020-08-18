@@ -1,15 +1,16 @@
 package edu.neu.csye6200.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import edu.neu.csye6200.base.enums.ResultCodeEnum;
 import edu.neu.csye6200.base.exceptions.DayCareException;
 
 /**
- * 时间工具类,用于字符串与Date类型转换
+ * Date Utilities, conversion between date and string
  *
- * @author flm
+ * @author flm, Yue Fang
  * @since 2019/8/23 15:39
  */
 
@@ -20,7 +21,7 @@ public class DateUtils {
   private static final SimpleDateFormat DATE_FORMAT_WITH_SECONDS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   /**
-   * 获取合适的格式日期类
+   * get date format
    *
    * @param withSeconds
    *          bool
@@ -35,30 +36,30 @@ public class DateUtils {
   }
 
   /**
-   * 字符串转时间
+   * Parse String to Date
    *
    * @param dates
-   *          日期字符串
+   *          String of date
    * @param withSeconds
-   *          是否带s
-   * @return 时间
+   *          bool, whether the format with second
+   * @return Date
    */
   public static Date string2Date(String dates, boolean withSeconds) {
     try {
       return getDateFormat(withSeconds).parse(dates);
     } catch (Exception e) {
-      throw new DayCareException("时间解析错误", ResultCodeEnum.DATE_FORMAT_ERROR);
+      throw new DayCareException("parse string to date error", ResultCodeEnum.DATE_FORMAT_ERROR);
     }
   }
 
   /**
-   * 校验日期是否符合格式
+   * Check the Format of Date
    *
    * @param strDate
-   *          时间字符串
+   *          String of date
    * @param withSeconds
-   *          是否带秒
-   * @return 是否符合格式
+   *          bool, whether the format with second
+   * @return bool
    */
   public static boolean isFormatDate(String strDate, boolean withSeconds) {
     try {
@@ -70,19 +71,19 @@ public class DateUtils {
   }
 
   /**
-   * 日期转字符串
+   * Convert Date to String
    *
    * @param date
-   *          日期
+   *          String of date
    * @param withSeconds
-   *          是否带秒
-   * @return 字符串
+   *          bool, whether the format with second
+   * @return String of date
    */
   public static String date2String(Date date, boolean withSeconds) {
     try {
       return getDateFormat(withSeconds).format(date);
     } catch (Exception e) {
-      throw new DayCareException("时间对象转换错误", ResultCodeEnum.DATE_FORMAT_ERROR);
+      throw new DayCareException("convert date to string error", ResultCodeEnum.DATE_FORMAT_ERROR);
     }
   }
 
@@ -103,4 +104,49 @@ public class DateUtils {
     }
   }
 
+  /**
+   * Calculate the date by adding months, if the result is out of date return the date of today
+   *
+   * @param inputDate
+   *          Date to Calculate
+   * @param monthToAdd
+   *          Month to add to the input date
+   * @return Date
+   */
+  public static Date addMonthOrCurrentDate(Date inputDate, int monthToAdd) {
+    Date today = new Date();
+    try {
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(inputDate);
+      calendar.add(Calendar.MONTH, monthToAdd);
+      Date resultDate = calendar.getTime();
+
+      if (1 == compareDate(today, resultDate)) {
+        return today;
+      }
+      return resultDate;
+    } catch (Exception e) {
+      throw new DayCareException("add month to date error", ResultCodeEnum.INVALID_DATE);
+    }
+  }
+
+  /**
+   * Compare two date
+   *
+   * @param d1
+   *          date to compare
+   * @param d2
+   *          date to compare
+   * @return boolen
+   *          return true 1 if d1 > d2, 0 if d1 == d2, -1 if d1 < d2
+   */
+  public static int compareDate(Date d1, Date d2) {
+    if (d1.getTime() > d2.getTime()) {
+      return 1;
+    } else if (d1.getTime() == d2.getTime()) {
+      return 0;
+    } else {
+      return -1;
+    }
+  }
 }

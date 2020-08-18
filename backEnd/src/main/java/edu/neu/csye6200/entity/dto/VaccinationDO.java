@@ -29,4 +29,5 @@ public class VaccinationDO implements Serializable {
 
   private String immunizationName;
 
+  private Date nextTime;
 }

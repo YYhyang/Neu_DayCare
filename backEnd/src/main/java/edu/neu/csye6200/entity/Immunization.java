@@ -11,7 +11,7 @@ public class Immunization {
 
     private Integer immunizationId;
 
-    private Integer targetAge;
+    private String targetAge;
 
     private Integer dose;
 
