@@ -1,13 +1,13 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Input } from 'antd';
-import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import {PlusOutlined} from '@ant-design/icons';
+import {Button, Divider, Input, message} from 'antd';
+import React, {useRef, useState} from 'react';
+import {FooterToolbar, PageContainer} from '@ant-design/pro-layout';
+import ProTable, {ActionType, ProColumns} from '@ant-design/pro-table';
 
-import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import CreateForm from '../components/CreateForm';
+import UpdateForm, {FormValueType} from '../components/UpdateForm';
+import {TableListItem} from './data.d';
+import {addRule, queryRule, removeRule, updateRule} from './service';
 
 /**
  * 添加节点
@@ -16,7 +16,7 @@ import { queryRule, updateRule, addRule, removeRule } from './service';
 const handleAdd = async (fields: TableListItem) => {
   const hide = message.loading('正在添加');
   try {
-    await addRule({ ...fields });
+    await addRule({...fields});
     hide();
     message.success('添加成功');
     return true;
@@ -105,10 +105,10 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
-        0: { text: '关闭', status: 'Default' },
-        1: { text: '运行中', status: 'Processing' },
-        2: { text: '已上线', status: 'Success' },
-        3: { text: '异常', status: 'Error' },
+        0: {text: '关闭', status: 'Default'},
+        1: {text: '运行中', status: 'Processing'},
+        2: {text: '已上线', status: 'Success'},
+        3: {text: '异常', status: 'Error'},
       },
     },
     {
@@ -117,13 +117,13 @@ const TableList: React.FC<{}> = () => {
       sorter: true,
       valueType: 'dateTime',
       hideInForm: true,
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
+      renderFormItem: (item, {defaultRender, ...rest}, form) => {
         const status = form.getFieldValue('status');
         if (`${status}` === '0') {
           return false;
         }
         if (`${status}` === '3') {
-          return <Input {...rest} placeholder="请输入异常原因！" />;
+          return <Input {...rest} placeholder="请输入异常原因！"/>;
         }
         return defaultRender(item);
       },
@@ -142,7 +142,7 @@ const TableList: React.FC<{}> = () => {
           >
             配置
           </a>
-          <Divider type="vertical" />
+          <Divider type="vertical"/>
           <a href="">订阅警报</a>
         </>
       ),
@@ -157,10 +157,10 @@ const TableList: React.FC<{}> = () => {
         rowKey="key"
         toolBarRender={() => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
+            <PlusOutlined/> 新建
           </Button>,
         ]}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => queryRule({...params, sorter, filter})}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
@@ -170,7 +170,7 @@ const TableList: React.FC<{}> = () => {
         <FooterToolbar
           extra={
             <div>
-              已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
+              已选择 <a style={{fontWeight: 600}}>{selectedRowsState.length}</a> 项&nbsp;&nbsp;
               <span>
                 服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre + item.callNo, 0)} 万
               </span>

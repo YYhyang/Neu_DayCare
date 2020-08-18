@@ -1,9 +1,9 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
+import {defineConfig} from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 
-const { REACT_APP_ENV } = process.env;
+const {REACT_APP_ENV} = process.env;
 
 export default defineConfig({
   hash: true,
@@ -32,17 +32,6 @@ export default defineConfig({
   // umi routes: https://umijs.org/docs/routing
   routes: [
     {
-      path: '/user',
-      layout: false,
-      routes: [
-        {
-          name: 'login',
-          path: '/user/login',
-          component: './user/login',
-        },
-      ],
-    },
-    {
       path: '/welcome',
       name: 'welcome',
       icon: 'smile',
@@ -62,6 +51,12 @@ export default defineConfig({
           component: './Welcome',
         },
       ],
+    },
+    {
+      path: '/student',
+      name: 'student',
+      icon: 'smile',
+      component: './ListStudentList'
     },
     {
       name: 'list.table-list',
