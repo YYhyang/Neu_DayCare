@@ -1,5 +1,6 @@
 package edu.neu.csye6200.entity.vo;
 
+import edu.neu.csye6200.entity.Immunization;
 import lombok.Data;
 
 import java.util.Date;
@@ -24,6 +25,8 @@ public class VaccinationVO {
     private String completeStatus;
 
     private String immunizationName;
+
+//    private Immunization immunization;
 
     private Date nextTime;
 }
