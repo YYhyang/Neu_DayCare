@@ -5,7 +5,9 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import edu.neu.csye6200.entity.Teacher;
 import edu.neu.csye6200.utils.ConverterUtils;
+import edu.neu.csye6200.utils.CsvUtils;
 import org.springframework.web.bind.annotation.*;
 
 import edu.neu.csye6200.base.BaseController;
@@ -72,5 +74,19 @@ public class TeacherController extends BaseController {
     else {
       return Result.buildFailData(teacherDO);
     }
+  }
+
+
+  @GetMapping("/csvAdd")
+  public Result csvAdd(){
+    String filePath="I:\\360MoveData\\Users\\Administrator\\Desktop\\daycare\\daycare\\";
+    String stuFileName="daycare_teacher.csv";
+    List<Teacher> list = CsvUtils.buildObjects(filePath + stuFileName, Teacher.class);
+    for(Teacher teacher:list) {
+      TeacherDO teacherDO=new TeacherDO();
+      ConverterUtils.convert(teacher,teacherDO);
+      teacherService.save(teacherDO);
+    }
+    return Result.buildOkData(list) ;
   }
 }

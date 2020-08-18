@@ -15,6 +15,8 @@ import org.springframework.util.CollectionUtils;
 public class CsvUtils {
   private static final int HEAD_ROWS = 2;
   private static final String COMMA = ",";
+  private static final String LEFT_CURLY_BRACKET = "{";
+  private static final String RIGHT_CURLY_BRACKET = "}";
   private static final String SEPARATOR = System.getProperty("line.separator");
 
   private static void invoke(Method setter, Object value, Object instance)
@@ -34,13 +36,54 @@ public class CsvUtils {
       case "java.lang.String":
         value = value.toString();
         break;
-      case "int":
+      case "java.lang.Integer":
         value = Integer.parseInt(String.valueOf(value));
+        break;
+      case "java.lang.Double":
+        value = Double.parseDouble(String.valueOf(value));
+        break;
+      case "java.util.Date":
+        value = DateUtils.string2Date(String.valueOf(value), true);
         break;
       default:
         break;
     }
     setter.invoke(instance, value);
+  }
+
+  private static List<int[]> getCurlyBracketIndex(String csvData) {
+    List<int[]> jsonIndex = new ArrayList<>(2);
+    if (csvData.contains(LEFT_CURLY_BRACKET)) {
+      int start = csvData.indexOf(LEFT_CURLY_BRACKET);
+      int end = csvData.lastIndexOf(RIGHT_CURLY_BRACKET);
+      int nextEnd = start;
+      for (int i = start; i <= end; i++) {
+        // 取出下一个{}
+        nextEnd = csvData.indexOf(RIGHT_CURLY_BRACKET, nextEnd + 1);
+        jsonIndex.add(new int[] {i, nextEnd});
+        if (nextEnd == end) {
+          break;
+        }
+        i = csvData.indexOf(LEFT_CURLY_BRACKET, nextEnd + 1);
+      }
+    }
+    return jsonIndex;
+  }
+
+  private static String[] splitContentWithJson(String csvData, String[] fieldValues) {
+    List<int[]> jsonIndex = getCurlyBracketIndex(csvData);
+    List<String> datas = new ArrayList<>();
+    jsonIndex.forEach(array -> {
+      int start = array[0];
+      int end = array[1];
+      String left = StringUtils.left(csvData, start - 2);
+      String mid = StringUtils.substring(csvData, start, end + 1);
+      String right = StringUtils.substring(csvData, end + 3, csvData.length());
+      datas.add(left);
+      datas.add(mid);
+      datas.add(right);
+    });
+    return datas.toArray(fieldValues);
   }
 
   public static <T> List<T> buildObjects(String filePath, Class<T> clz) {
@@ -63,9 +106,13 @@ public class CsvUtils {
         // 2. 如果fields中有name对应的header
         // 3. 拿到Field类进行set
         // 对每一行csv数据进行处理
-        for (int i1 = 1, datasSize = datas.size(); i1 < datasSize; i1++) {
-          String data = datas.get(i1);
-          String[] fieldValues = data.split(COMMA);
+        for (int row = 1, datasSize = datas.size(); row < datasSize; row++) {
+          String data = datas.get(row);
+          String[] fieldValues;
+          fieldValues = data.split(COMMA);
+          if (data.contains(LEFT_CURLY_BRACKET)) {
+            fieldValues = splitContentWithJson(data, fieldValues);
+          }
           try {
             T instance = clz.newInstance();
             // i 代表某一列
@@ -78,6 +125,7 @@ public class CsvUtils {
                 invoke(method, fieldValues[i], instance);
               }
             }
+            System.out.println(instance);
             dataObject.add(instance);
           } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();

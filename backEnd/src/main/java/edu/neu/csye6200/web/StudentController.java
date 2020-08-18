@@ -7,7 +7,10 @@ import java.util.Vector;
 import javax.annotation.Resource;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import edu.neu.csye6200.entity.Student;
+import edu.neu.csye6200.entity.Teacher;
+import edu.neu.csye6200.entity.dto.TeacherDO;
 import edu.neu.csye6200.manager.EnrollmentManager;
+import edu.neu.csye6200.utils.CsvUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -116,6 +119,20 @@ public class StudentController extends BaseController {
     return Result.buildOkData(studentService.selectOneById(Integer.parseInt(id)));
   }
 
+  @GetMapping("/csvAdd")
+  public Result csvAdd(){
+    String filePath="I:\\360MoveData\\Users\\Administrator\\Desktop\\daycare\\daycare\\";
+    String stuFileName="daycare_student.csv";
+    List<StudentVO> list = CsvUtils.buildObjects(filePath + stuFileName, StudentVO.class);
+    List<StudentDO>studentDOS= new Vector<>();
+    ConverterUtils.convertList(list,studentDOS,StudentDO.class);
+    for(StudentDO studentDO:studentDOS) {
+      studentService.addStudent(studentDO);
+    }
+    return Result.buildOkData(studentDOS) ;
+  }
+
+
 //  @PostMapping(value = "")
 //  @LogOperate(value = "增改")
 //  public Result<Object> update2(@RequestBody StudentVO vo) {
@@ -126,6 +143,11 @@ public class StudentController extends BaseController {
 //    ConverterUtils.convert(vo, student);
 //    boolean b = studentService.saveOrUpdate(student);
 //    return b ? Result.buildOkData(student) : Result.buildFail();
+//  }
+//
+//  @GetMapping("/csvAdd")
+//  public Result csvAdd(){
+//    String filePath="I:\\360MoveData\\Users\\Administrator\\Desktop\\daycare\\daycare\\daycare_student.csv";
 //  }
   
 }
