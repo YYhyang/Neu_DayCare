@@ -38,4 +38,12 @@ public class ClassroomServiceImpl extends BaseServiceImpl<ClassroomMapper, Class
         ConverterUtils.convertList(classroomDOList, classroomList, Classroom.class);
         return classroomList;
     }
+
+    @Override
+    public ClassroomVO selectOneClassroomVOByState(int id) {
+        ClassroomDO classroomDO = classroomMapper.selectById(id);
+        ClassroomVO classroomVO = new ClassroomVO();
+        ConverterUtils.convert(classroomDO, classroomVO);
+        return classroomVO;
+    }
 }

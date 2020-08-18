@@ -5,7 +5,6 @@ import edu.neu.csye6200.base.BaseService;
 import edu.neu.csye6200.entity.Group;
 import edu.neu.csye6200.entity.dto.GroupDO;
 import edu.neu.csye6200.entity.vo.GroupVO;
-import edu.neu.csye6200.entity.vo.StudentVO;
 
 import java.util.List;
 
