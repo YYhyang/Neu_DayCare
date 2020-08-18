@@ -1,6 +1,7 @@
 package edu.neu.csye6200.entity;
 
 
+import edu.neu.csye6200.base.enums.AgeStateEnum;
 import edu.neu.csye6200.base.enums.ClassroomStateEnum;
 import edu.neu.csye6200.base.enums.GroupStateEnum;
 import lombok.Data;
@@ -45,6 +46,7 @@ public class Group {
         setRatio(4);
         setFullState(GroupStateEnum.NOT_FULL.getCode());
         setStudentList(new Vector<>());
+        setAgeRatioTable(new Hashtable<>());
         populateAgeRatioTable();
     }
 
@@ -56,17 +58,18 @@ public class Group {
         setTeacherId(-1);
         setStudentCount(0);
         setStudentList(new Vector<>());
+        setAgeRatioTable(new Hashtable<>());
         populateAgeRatioTable();
     }
 
     public void populateAgeRatioTable(){
-        ageRatioTable.put("AGE_STATE_0", 4);
-        ageRatioTable.put("AGE_STATE_1", 4);
-        ageRatioTable.put("AGE_STATE_2", 5);
-        ageRatioTable.put("AGE_STATE_3", 6);
-        ageRatioTable.put("AGE_STATE_4", 8);
-        ageRatioTable.put("AGE_STATE_5", 12);
-        ageRatioTable.put("AGE_STATE_6", 15);
+        ageRatioTable.put(AgeStateEnum.AGE_STATE_0.getCode(), 4);
+        ageRatioTable.put(AgeStateEnum.AGE_STATE_1.getCode(), 4);
+        ageRatioTable.put(AgeStateEnum.AGE_STATE_2.getCode(), 5);
+        ageRatioTable.put(AgeStateEnum.AGE_STATE_3.getCode(), 6);
+        ageRatioTable.put(AgeStateEnum.AGE_STATE_4.getCode(), 8);
+        ageRatioTable.put(AgeStateEnum.AGE_STATE_5.getCode(), 12);
+        ageRatioTable.put(AgeStateEnum.AGE_STATE_6.getCode(), 15);
 
     }
 
@@ -82,28 +85,32 @@ public class Group {
         }
     }
 
-    public boolean addStudent(Student student) {
+    public boolean addStudent(Student student, Classroom classroom) {
         boolean success = false;
         if (getFullState().equals(GroupStateEnum.NOT_FULL.getCode())) {
             success = studentList.add(student);
-            updateStudentCount();
+            updateStudentCount(classroom);
         }
         return success;
     }
 
-    public void updateStudentCount() {
-        setStudentCount(studentList.size());
-        if (getStudentCount()>=getRatio()) {
+    public void updateStudentCount(Classroom classroom) {
+        setStudentCount(getStudentCount() + 1);
+        if (getStudentCount() >= getRatio()) {
             setFullState(GroupStateEnum.FULL.getCode());
+            if(classroom.getGroupNum() >= classroom.getMaxCapacity()){
+                classroom.setFullState(ClassroomStateEnum.FULL.getCode());
+            }
         }
+
     }
 
-    public boolean removeStudent(Student student) {
-        boolean success = false;
-        success = studentList.remove(student);
-        updateStudentCount();
-        return success;
-    }
+//    public boolean removeStudent(Student student) {
+//        boolean success = false;
+//        success = studentList.remove(student);
+//        updateStudentCount();
+//        return success;
+//    }
 
     public Student findStudentByStudentId(int studentId) {
         Student student = null;
@@ -116,9 +123,9 @@ public class Group {
         return student;
     }
 
-    public void removeStudentByStudentId(int studentId) {
-        studentList.remove(findStudentByStudentId(studentId));
-    }
+//    public void removeStudentByStudentId(int studentId) {
+//        studentList.remove(findStudentByStudentId(studentId));
+//    }
 
     
 }

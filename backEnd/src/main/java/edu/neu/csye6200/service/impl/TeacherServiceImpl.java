@@ -39,7 +39,7 @@ public class TeacherServiceImpl extends BaseServiceImpl<TeacherMapper, TeacherDO
 
     @Override
     public Teacher selectByGroupID(int groupId) {
-        TeacherDO teacherDO = teacherMapper.selectById(groupId);
+        TeacherDO teacherDO = teacherMapper.selectOne(Wrappers.<TeacherDO>query().eq("groupId", groupId));
         Teacher teacher = new Teacher();
         ConverterUtils.convert(teacherDO, teacher);
         return teacher;
@@ -49,7 +49,7 @@ public class TeacherServiceImpl extends BaseServiceImpl<TeacherMapper, TeacherDO
 
     @Override
     public List<Teacher> queryByAgeState(String ageState) {
-        List<TeacherDO> teacherDOList = teacherMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.TeacherDO>query().eq("ageState", ageState));
+        List<TeacherDO> teacherDOList = teacherMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.TeacherDO>query().eq("targetAgeState", ageState));
         List<Teacher> teacherList = new Vector<>();
         ConverterUtils.convertList(teacherDOList, teacherList, Teacher.class);
         return teacherList;

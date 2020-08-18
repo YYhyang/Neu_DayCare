@@ -17,7 +17,7 @@ public interface ClassroomService extends BaseService<ClassroomDO> {
      * @return
      */
 //    public Classroom selectOneClassroomByState(String ageState);
-    public List<Classroom> queryByAgeState(String ageState);
+    public List<Classroom> queryClassroomByAgeState(String ageState);
 
 
 }

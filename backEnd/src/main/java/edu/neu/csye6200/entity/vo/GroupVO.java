@@ -17,7 +17,7 @@ public class GroupVO {
 
     private Integer classroomId;
 
-    private Integer ageState;
+    private String ageState;
 
     private Integer teacherId;
 

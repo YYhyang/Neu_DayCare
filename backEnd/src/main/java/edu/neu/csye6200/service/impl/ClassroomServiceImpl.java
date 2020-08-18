@@ -32,7 +32,7 @@ public class ClassroomServiceImpl extends BaseServiceImpl<ClassroomMapper, Class
 //    }
 
     @Override
-    public List<Classroom> queryByAgeState(String ageState) {
+    public List<Classroom> queryClassroomByAgeState(String ageState) {
         List<ClassroomDO> classroomDOList = classroomMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.ClassroomDO>query().eq("ageState", ageState));
         List<Classroom> classroomList = new Vector<>();
         ConverterUtils.convertList(classroomDOList, classroomList, Classroom.class);

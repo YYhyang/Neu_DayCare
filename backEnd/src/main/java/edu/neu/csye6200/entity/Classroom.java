@@ -1,5 +1,6 @@
 package edu.neu.csye6200.entity;
 
+import edu.neu.csye6200.base.enums.AgeStateEnum;
 import edu.neu.csye6200.base.enums.ClassroomStateEnum;
 import edu.neu.csye6200.base.enums.GroupStateEnum;
 import lombok.Data;
@@ -48,6 +49,7 @@ public class Classroom {
         setAgeState("");
         setGroupNum(0);
         setFullState(GroupStateEnum.NOT_FULL.getCode());
+        setMaxCapacity(0);
         setGroupList(new Vector<>());
         setAgeCapacityTable(new Hashtable<>());
         populateAgeCapacityTable();
@@ -64,26 +66,23 @@ public class Classroom {
         boolean success = false;
         if (getFullState().equals(ClassroomStateEnum.NOT_FULL.getCode())) {
             success = groupList.add(group);
-            updateGroupCount();
+            updateGroupCount(group);
         }
         return success;
     }
 
-    public void updateGroupCount() {
-        setGroupNum(groupList.size());
-        if (getGroupNum()>=getMaxCapacity()) {
-            setFullState(ClassroomStateEnum.FULL.getCode());
-        }
+    public void updateGroupCount(Group group) {
+        setGroupNum(getGroupNum() + 1);
     }
 
     public void populateAgeCapacityTable(){
-        ageCapacityTable.put("AGE_STATE_0", 3);
-        ageCapacityTable.put("AGE_STATE_1", 3);
-        ageCapacityTable.put("AGE_STATE_2", 3);
-        ageCapacityTable.put("AGE_STATE_3", 3);
-        ageCapacityTable.put("AGE_STATE_4", 3);
-        ageCapacityTable.put("AGE_STATE_5", 2);
-        ageCapacityTable.put("AGE_STATE_6", 2);
+        ageCapacityTable.put(AgeStateEnum.AGE_STATE_0.getCode(), 3);
+        ageCapacityTable.put(AgeStateEnum.AGE_STATE_1.getCode(), 3);
+        ageCapacityTable.put(AgeStateEnum.AGE_STATE_2.getCode(), 3);
+        ageCapacityTable.put(AgeStateEnum.AGE_STATE_3.getCode(), 3);
+        ageCapacityTable.put(AgeStateEnum.AGE_STATE_4.getCode(), 3);
+        ageCapacityTable.put(AgeStateEnum.AGE_STATE_5.getCode(), 2);
+        ageCapacityTable.put(AgeStateEnum.AGE_STATE_6.getCode(), 2);
 
     }
 
