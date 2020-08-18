@@ -17,7 +17,7 @@ public class ClassroomDO implements Serializable {
   @TableId(value = "classroomId", type = IdType.AUTO)
   private Integer classroomId;
 
-  private Integer ageState;
+  private String ageState;
 
   private Integer groupNum;
 

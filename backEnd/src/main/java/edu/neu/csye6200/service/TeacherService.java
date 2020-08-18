@@ -1,6 +1,7 @@
 package edu.neu.csye6200.service;
 
 import edu.neu.csye6200.base.BaseService;
+import edu.neu.csye6200.entity.Teacher;
 import edu.neu.csye6200.entity.dto.TeacherDO;
 import edu.neu.csye6200.entity.vo.TeacherVO;
 
@@ -16,5 +17,7 @@ public interface TeacherService extends BaseService<TeacherDO> {
      * @return List<TeacherVO></>
      */
     List<TeacherVO> listByTargetAge(String targetAge);
-    TeacherVO selectById(Integer teacherId);
+    TeacherVO selectById(int teacherId);
+    Teacher selectByGroupID(int groupId);
+    List<Teacher> queryByAgeState(String ageState);
 }
