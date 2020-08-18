@@ -2,10 +2,15 @@ package edu.neu.csye6200.web;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import javax.annotation.Resource;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import edu.neu.csye6200.entity.Student;
+import edu.neu.csye6200.manager.EnrollmentManager;
 import org.springframework.web.bind.annotation.*;
+
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
@@ -37,18 +42,13 @@ public class StudentController extends BaseController {
     StudentDO studentDO = new StudentDO();
     ConverterUtils.convert(studentVO, studentDO);
     // todo 计算 ageState
-    studentDO.setAgeState(StudentConverter.getAgeState(DateUtils.calculateAge(studentVO.getBirthday())));
-    studentDO.setRegistrationDate(new Date());
-    boolean insert = studentService.save(studentDO);
-    if (insert) {
-      return Result.buildOkData(studentDO);
-    }
-    return Result.buildFailData(studentDO);
+    studentService.addStudent(studentDO);
+    return Result.buildOkData(studentDO);
   }
 
   @GetMapping(value = "/state/{ageState}")
   @LogOperate(value = "根据年龄段查询")
-  public Result<Object> queryStudentByAgeState(@PathVariable int ageState) {
+  public Result<Object> queryStudentByAgeState(@PathVariable String ageState) {
     List<StudentVO> studentVOList = studentService.queryByAgeState(ageState);
     return Result.buildOkData(studentVOList);
   }
@@ -62,6 +62,13 @@ public class StudentController extends BaseController {
       return (StudentVO)ConverterUtils.convertAndReturn(ele, studentVO);
     });
     return Result.buildOkData(iPageStudentVO);
+  }
+
+  @GetMapping(value = "/queryByGroup/{groupId}")
+  @LogOperate(value = "根据分组查询学生")
+  public Result<Object> queryByGroupId(@PathVariable int groupId) {
+    List<StudentVO> studentVOS = studentService.queryByGroupId(groupId);
+    return Result.buildOkData(studentVOS);
   }
 
   @GetMapping(value = "/id/{id}")
@@ -84,4 +91,41 @@ public class StudentController extends BaseController {
     return Result.buildFailData(studentDO);
   }
 
+  @PostMapping("/checkStatus")
+  public Result<Object> checkStatus(@RequestParam Date registrationDate){
+    List<StudentDO> studentDOS=studentService.checkStatus(registrationDate);
+    List<StudentVO> studentVOS=new Vector<>();
+    ConverterUtils.convertList(studentDOS,studentVOS,StudentVO.class);
+    return Result.buildOkData(studentVOS);
+  }
+  @DeleteMapping("/{id}")
+  @LogOperate(value = "删")
+  public Result<Object> remove(@PathVariable String id) {
+    return Result.buildOkData(studentService.removeById(id));
+  }
+
+  @GetMapping("/list")
+  @LogOperate(value = "列")
+  public Result<Object> list() {
+    return Result.buildOkData(studentService.list());
+  }
+
+  @GetMapping("/{id}")
+  @LogOperate(value = "查")
+  public Result<Object> get(@PathVariable String id) {
+    return Result.buildOkData(studentService.selectOneById(Integer.parseInt(id)));
+  }
+
+//  @PostMapping(value = "")
+//  @LogOperate(value = "增改")
+//  public Result<Object> update2(@RequestBody StudentVO vo) {
+//    StudentDO student = studentService.getOne(Wrappers.<StudentDO>query().eq("studentId", vo.getStudentId()));
+//    if (student == null) {
+//      student = new StudentDO();
+//    }
+//    ConverterUtils.convert(vo, student);
+//    boolean b = studentService.saveOrUpdate(student);
+//    return b ? Result.buildOkData(student) : Result.buildFail();
+//  }
+  
 }

@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 
 function getFakeCaptcha(req: Request, res: Response) {
   return res.json('captcha-xxx');
 }
 
-const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
+const {ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION} = process.env;
 
 /**
  * 当前用户的权限，如果为空代表没登录
@@ -21,17 +21,6 @@ const getAccess = () => {
 export default {
   // 支持值为 Object 和 Array
   'GET /api/currentUser': (req: Request, res: Response) => {
-    if (!getAccess()) {
-      res.status(401).send({
-        data: {
-          isLogin: false,
-        },
-        errorCode: '401',
-        errorMessage: '请先登录！',
-        success: true,
-      });
-      return;
-    }
     res.send({
       name: 'Serati Ma',
       avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
@@ -106,7 +95,7 @@ export default {
     },
   ],
   'POST /api/login/account': (req: Request, res: Response) => {
-    const { password, username, type } = req.body;
+    const {password, username, type} = req.body;
     if (password === 'ant.design' && username === 'admin') {
       res.send({
         status: 'ok',
@@ -143,10 +132,10 @@ export default {
   },
   'GET /api/login/outLogin': (req: Request, res: Response) => {
     access = '';
-    res.send({ data: {}, success: true });
+    res.send({data: {}, success: true});
   },
   'POST /api/register': (req: Request, res: Response) => {
-    res.send({ status: 'ok', currentAuthority: 'user', success: true });
+    res.send({status: 'ok', currentAuthority: 'user', success: true});
   },
   'GET /api/500': (req: Request, res: Response) => {
     res.status(500).send({

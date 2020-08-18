@@ -13,7 +13,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 @TableName(value = "daycare.immunization")
 public class ImmunizationDO implements Serializable {
-
   private static final long serialVersionUID = 1L;
 
   @TableId(value = "immunizationId", type = IdType.AUTO)
@@ -28,4 +27,5 @@ public class ImmunizationDO implements Serializable {
   private String description;
 
   private String name;
+
 }
