@@ -1,6 +1,7 @@
 package edu.neu.csye6200.entity;
 
 
+import edu.neu.csye6200.base.enums.AgeStateEnum;
 import edu.neu.csye6200.base.enums.GroupStateEnum;
 import lombok.Data;
 
@@ -17,7 +18,7 @@ public class Group {
 
     private Integer classroomId;
 
-    private Integer ageState;
+    private String ageState;
 
     private Integer teacherId;
 
@@ -35,7 +36,7 @@ public class Group {
         super();
         setGroupId(-1);
         setClassroomId(-1);
-        setAgeState(0);
+        setAgeState(AgeStateEnum.AGE_STATE_0.getCode());
         setTeacherId(-1);
         setStudentCount(0);
         setRatio(4);
@@ -43,7 +44,7 @@ public class Group {
         setStudentList(new Vector<>());
     }
 
-    public Group(int ageState, int ratio) {
+    public Group(String ageState, int ratio) {
         setAgeState(ageState);
         setRatio(ratio);
         setFullState(GroupStateEnum.NOT_FULL.getCode());

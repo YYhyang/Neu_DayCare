@@ -22,9 +22,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       max-lifetime: 30000
-    password: stkdsb
-    url: jdbc:mysql://localhost:3306/daycare?useUnicode=true&character_set_server=utf8mb4&useSSL=false
-    username: root
+    password: csye6200
+    url: jdbc:mysql://39.108.233.164:3308/daycare?useUnicode=true&character_set_server=utf8mb4&useSSL=false
+    username: neu
   resources:
     static-locations: classpath:/static/,classpath:/templates/
 

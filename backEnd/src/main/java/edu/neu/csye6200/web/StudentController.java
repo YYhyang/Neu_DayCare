@@ -66,6 +66,13 @@ public class StudentController extends BaseController {
     return Result.buildOkData(iPageStudentVO);
   }
 
+  @GetMapping(value = "/queryByGroup/{groupId}")
+  @LogOperate(value = "根据分组查询学生")
+  public Result<Object> queryByGroupId(@PathVariable int groupId) {
+    List<StudentVO> studentVOS = studentService.queryByGroupId(groupId);
+    return Result.buildOkData(studentVOS);
+  }
+
   @GetMapping(value = "/id/{id}")
   @LogOperate(value = "获取详情")
   public Result<Object> detail(@PathVariable int id) {
@@ -104,16 +111,16 @@ public class StudentController extends BaseController {
     return Result.buildOkData(studentService.selectOneById(Integer.parseInt(id)));
   }
 
-  @PostMapping(value = "")
-  @LogOperate(value = "增改")
-  public Result<Object> update2(@RequestBody StudentVO vo) {
-    StudentDO student = studentService.getOne(Wrappers.<StudentDO>query().eq("studentId", vo.getStudentId()));
-    if (student == null) {
-      student = new StudentDO();
-    }
-    BeanUtils.copyProperties(vo, student);
-    boolean b = studentService.saveOrUpdate(student);
-    return b ? Result.buildOkData(student) : Result.buildFail();
-  }
+//  @PostMapping(value = "")
+//  @LogOperate(value = "增改")
+//  public Result<Object> update2(@RequestBody StudentVO vo) {
+//    StudentDO student = studentService.getOne(Wrappers.<StudentDO>query().eq("studentId", vo.getStudentId()));
+//    if (student == null) {
+//      student = new StudentDO();
+//    }
+//    ConverterUtils.convert(vo, student);
+//    boolean b = studentService.saveOrUpdate(student);
+//    return b ? Result.buildOkData(student) : Result.buildFail();
+//  }
 
 }
