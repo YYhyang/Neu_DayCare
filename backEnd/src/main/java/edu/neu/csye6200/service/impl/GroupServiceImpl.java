@@ -26,17 +26,16 @@ import java.util.stream.Collectors;
 @Service
 public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> implements GroupService {
   @Resource
-  GroupMapper groupDOMapper;
+  GroupMapper groupMapper;
   @Resource
   StudentMapper studentMapper;
 
   public Group selectGroupByGroupId(int groupId) {
-    GroupDO groupDO = groupDOMapper.selectOne(Wrappers.<GroupDO>query().eq("groupId", groupId));
+    GroupDO groupDO = groupMapper.selectOne(Wrappers.<GroupDO>query().eq("groupId", groupId));
     List<Student> studentList = getStudentListByGroupId(groupId);
     Group group = new Group();
     BeanUtils.copyProperties(groupDO, group);
     group.setStudentList(new Vector<>(studentList));
-    group.updateStudentCount();
     // todo Assign Teacher
     return group;
 
@@ -57,6 +56,15 @@ public class GroupServiceImpl extends BaseServiceImpl<GroupMapper, GroupDO> impl
 
         return studentList;
     }
+
+    @Override
+    public List<Group> queryGroupByClassroomId(int classroomId) {
+        List<GroupDO> groupDOList = groupMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.GroupDO>query().eq("classroomId", classroomId));
+        List<Group> groupList = new Vector<>();
+        ConverterUtils.convertList(groupDOList, groupList, Group.class);
+        return groupList;
+    }
+
 
 
 }

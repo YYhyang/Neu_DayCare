@@ -12,7 +12,7 @@ public class ClassroomVO {
 
     private Integer classroomId;
 
-    private Integer ageState;
+    private String ageState;
 
     private Integer groupNum;
 
