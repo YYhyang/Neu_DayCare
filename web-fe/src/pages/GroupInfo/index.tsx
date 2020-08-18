@@ -5,14 +5,14 @@ import {PageContainer} from '@ant-design/pro-layout';
 import ProTable, {ActionType, ProColumns} from '@ant-design/pro-table';
 
 import {StudentListItem} from './data.d';
-import {list, remove, update, add} from "@/pages/ListStudentList/service";
+import {list, remove, update, add} from "@/pages/GroupInfo/service";
 import moment from 'moment';
 import CreateForm from "@/pages/components/CreateForm";
 
 
 import EditForm from "@/pages/components/EditForm";
-// import {addRule} from "@/pages/ListTableList/service";
-// import {TableListItem} from "@/pages/ListTableList/data";
+// import {addRule} from "@/pages/GroupInfo/service";
+// import {TableListItem} from "@/pages/GroupInfo/data";
 
 const TableList: React.FC = () => {
 
@@ -124,17 +124,17 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<StudentListItem>
-        headerTitle="查询"
+        headerTitle="Search by Group Ids"
         actionRef={actionRef}
-        key={"studentId"}
-        rowKey={"studentId"}
+        key={"groupId"}
+        rowKey={"groupId"}
         toolBarRender={() => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined/> 新建
           </Button>,
         ]}
         request={() => {
-          return list();
+          return list(1);
         }}
         columns={columns}
       />
