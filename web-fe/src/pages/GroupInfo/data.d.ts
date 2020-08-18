@@ -15,7 +15,13 @@ export interface StudentListItem {
 export interface TableListPagination {
   total: number;
   pageSize: number;
-  current: number; //todo 和后端对齐
+  current: number;
+}
+
+export interface Group {
+  groupId: number;
+  pageSize: number;
+  current: number;
 }
 
 export interface TableListData {

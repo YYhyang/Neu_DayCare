@@ -20,7 +20,7 @@ public class GroupDO implements Serializable {
 
   private Integer classroomId;
 
-  private Integer ageState;
+  private String ageState;
 
   private Integer teacherId;
 
