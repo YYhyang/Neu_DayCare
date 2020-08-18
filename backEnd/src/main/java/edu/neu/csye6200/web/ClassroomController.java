@@ -3,11 +3,13 @@ package edu.neu.csye6200.web;
 import edu.neu.csye6200.base.BaseController;
 import edu.neu.csye6200.base.Result;
 import edu.neu.csye6200.base.annotation.LogOperate;
-import edu.neu.csye6200.entity.Group;
+import edu.neu.csye6200.entity.Classroom;
+import edu.neu.csye6200.entity.dto.ClassroomDO;
 import edu.neu.csye6200.entity.dto.GroupDO;
+import edu.neu.csye6200.entity.vo.ClassroomVO;
 import edu.neu.csye6200.entity.vo.GroupVO;
-import edu.neu.csye6200.entity.vo.ImmunizationVO;
-import edu.neu.csye6200.service.GroupService;
+import edu.neu.csye6200.service.ClassroomService;
+import edu.neu.csye6200.utils.ConverterUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,29 +20,24 @@ import javax.annotation.Resource;
 
 /**
  * @author Caspar
- * @date 2020/8/18 16:41
+ * @date 2020/8/18 17:52
  */
-
 @RestController
-@RequestMapping("/v1/group")
+@RequestMapping("/v1/classroom")
 @Slf4j
-public class GroupController extends BaseController {
+public class ClassroomController extends BaseController {
 
     @Resource
-    GroupService groupService;
+    ClassroomService classroomService;
+
 
     @GetMapping(value = "/{id}")
-    @LogOperate(value = "获取group详情")
+    @LogOperate(value = "获取classroom详情")
     public Result<Object> detail(@PathVariable int id) {
-        GroupVO groupVO = groupService.selectGroupVOByGroupId(id);
-        return Result.buildOkData(groupVO);
-    }
-
-    @GetMapping(value = "/lists/{classroomId}")
-    @LogOperate(value = "获取教室内的group详情")
-    public Result<Object> lists(@PathVariable int classroomId) {
-        GroupVO groupVO = groupService.selectGroupVOByGroupId(classroomId);
-        return Result.buildOkData(groupVO);
+        ClassroomDO classroomDO = classroomService.getById(id);
+        ClassroomVO classroomVO = new ClassroomVO();
+        ConverterUtils.convert(classroomDO, classroomVO);
+        return Result.buildOkData(classroomVO);
     }
 
 

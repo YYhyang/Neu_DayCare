@@ -12,7 +12,8 @@ import java.util.List;
  * @date 2020/8/12 14:34
  */
 public interface GroupService extends BaseService<GroupDO> {
-    public GroupVO selectGroupVOByGroupId(int groupId);
 
+    public GroupVO selectGroupVOByGroupId(int groupId);
     public List<Group> queryGroupByClassroomId(int classroomId);
+
 }

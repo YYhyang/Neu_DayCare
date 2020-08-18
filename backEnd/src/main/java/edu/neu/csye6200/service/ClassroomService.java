@@ -16,8 +16,8 @@ public interface ClassroomService extends BaseService<ClassroomDO> {
      * find am available(whether is full) classroom according to the age state
      * @return
      */
-//    public Classroom selectOneClassroomByState(String ageState);
+
     public List<Classroom> queryClassroomByAgeState(String ageState);
 
-
+    public ClassroomVO selectOneClassroomVOByState(int id);
 }

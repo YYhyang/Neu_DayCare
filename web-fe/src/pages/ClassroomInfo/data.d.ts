@@ -24,13 +24,6 @@ export interface Group {
   current: number;
 }
 
-export interface ClassroomInfo{
-  classroomId: number;
-  ageStage: string;
-  groupNum: number;
-  fullState: string;
-}
-
 export interface TableListData {
   list: StudentListItem[];
   pagination: Partial<TableListPagination>;
@@ -52,4 +45,27 @@ export interface StudentAddParams { // add student
   grade: number,
   birthday: Date,
   address: string
+}
+
+export interface ClassroomInfo {
+  classroomId: number;
+  ageStage: string;
+  groupNum: number;
+  fullState: string;
+}
+
+
+export interface GroupInfo {
+  groupId: number;
+  classroomId: number;
+  ageStage: string;
+  fullState: string;
+  teacherId: number;
+  studentCount: number;
+  ratio: number;
+}
+
+export interface TableListData {
+  list: GroupInfo[];
+  pagination: Partial<TableListPagination>;
 }
