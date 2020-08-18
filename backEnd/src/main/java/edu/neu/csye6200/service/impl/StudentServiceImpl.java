@@ -89,9 +89,11 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
   public List<StudentDO> checkStatus(Date registrationDate) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(registrationDate);
+    calendar.add(Calendar.YEAR,-1);
+    Date resultDate=calendar.getTime();
     calendar.add(Calendar.MONTH, -1);
-    Date resultDate = calendar.getTime();
-    List<StudentDO>studentDOS=studentMapper.selectList(Wrappers.<StudentDO>query().between("registrationDate",resultDate,registrationDate));
+    Date resultDate1 = calendar.getTime();
+    List<StudentDO>studentDOS=studentMapper.selectList(Wrappers.<StudentDO>query().between("registrationDate",resultDate1,resultDate));
     return studentDOS;
   }
 
