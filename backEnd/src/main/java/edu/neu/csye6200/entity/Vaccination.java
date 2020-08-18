@@ -24,7 +24,5 @@ public class Vaccination {
 
     private String immunizationName;
 
-    private Immunization immunization;
-
     private Date nextTime;
 }

@@ -18,6 +18,7 @@ import edu.neu.csye6200.base.enums.VaccinationStatusEnum;
 import edu.neu.csye6200.dao.ImmunizationMapper;
 import edu.neu.csye6200.dao.StudentMapper;
 import edu.neu.csye6200.dao.VaccinationMapper;
+import edu.neu.csye6200.entity.Immunization;
 import edu.neu.csye6200.entity.Student;
 import edu.neu.csye6200.entity.Vaccination;
 import edu.neu.csye6200.entity.dto.ImmunizationDO;
@@ -35,7 +36,6 @@ import edu.neu.csye6200.utils.DateUtils;
 @Service
 public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, VaccinationDO>
   implements VaccinationService {
-
   @Resource
   private VaccinationMapper vaccinationMapper;
   @Resource
@@ -43,17 +43,24 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
   @Resource
   private StudentMapper studentMapper;
 
-  private final String NOT_TREATED = VaccinationStatusEnum.NOT_TREATED.getCode();
-  private final String UNCOMPLETED = VaccinationStatusEnum.UNCOMPLETED.getCode();
-  private final String COMPLETED = VaccinationStatusEnum.COMPLETED.getCode();
+    private final String NOT_TREATED = VaccinationStatusEnum.NOT_TREATED.getCode();
+    private final String UNCOMPLETED = VaccinationStatusEnum.UNCOMPLETED.getCode();
+    private final String COMPLETED = VaccinationStatusEnum.COMPLETED.getCode();
 
-  @Override
-  public List<Vaccination> getListVaccination(int studentId) {
-    List<VaccinationDO> vaccinationDOs =
-      vaccinationMapper.selectList(Wrappers.<VaccinationDO>query().eq("studentId", studentId));
-    List<Vaccination> list = new Vector<>();
-    ConverterUtils.convertList(vaccinationDOs, list, Vaccination.class);
-    return list;
+    @Override
+    public List<Vaccination> getAll() {
+        List<VaccinationDO> vaccinationDOs = vaccinationMapper.selectList(Wrappers.<VaccinationDO>query());
+        List<Vaccination> list = new Vector<>();
+        ConverterUtils.convertList(vaccinationDOs, list, Vaccination.class);
+        return list;
+    }
+
+    @Override
+    public List<Vaccination> getListVaccination(int studentId) {
+        List<VaccinationDO> vaccinationDOs = vaccinationMapper.selectList(Wrappers.<VaccinationDO>query().eq("studentId", studentId));
+        List<Vaccination> list = new Vector<>();
+        ConverterUtils.convertList(vaccinationDOs, list, Vaccination.class);
+        return list;
   }
 
   public List<Vaccination> getAll() {
@@ -86,7 +93,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
     Date recordDateLast = null;
 
     if (vaccinationDOs.isEmpty()) {
-      return null;
+      return vaccinationVO;
     }
 
     for (VaccinationDO vaccinationDO : vaccinationDOs) {
@@ -112,6 +119,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
         }
       }
     }
+
     ConverterUtils.convert(vaccinationMapper.selectById(id), vaccinationVO);
     return vaccinationVO;
   }
@@ -182,80 +190,97 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
         if (jsonImmunizationCycle.containsKey(String.valueOf(startPoint + 1))) {
           nextTime = DateUtils.addMonthOrCurrentDate(studentBirth,
             jsonImmunizationCycle.getIntValue(String.valueOf(startPoint + 1)));
+        } else {
+            // wrong record of vaccination number
+            vaccinationDO.setCompleteStatus(COMPLETED);
+            // nextTime still null;
         }
       }
+      /*
+      else {
+          nextTime still null;
+      }
+      */
       vaccinationDO.setNextTime(nextTime);
     }
-
-    ConverterUtils.convertList(vaccinationDOs, list, Vaccination.class);
-    return list;
+      ConverterUtils.convertList(vaccinationDOs, list, Vaccination.class);
+      return list;
   }
 
-  public List<Student> checkMonth() {
-    List<Student> students = new Vector<>();
-    ImmunizationNameEnum[] immunizationNameEnum = ImmunizationNameEnum.values();
-    for (ImmunizationNameEnum nameEnum : immunizationNameEnum) {
-      students.addAll(checkStudentNeedVaccinationMonth(nameEnum.getCode()));
-    }
+    @Override
+    public List<Student> checkMonth() {
+        List<Student> studentsResult = new Vector<>();
 
-    return students;
-  }
-
-  public List<Vaccination> checkNeedVaccinationMonth(int studentId) {
-    List<Vaccination> list = checkNextDateforVaccination(studentId);
-    Date dateForCheck = DateUtils.addMonthOrCurrentDate(new Date(), 1);
-    List<Vaccination> vaccinationResult = new Vector<>();
-
-    for (Vaccination v : list) {
-      Date vNextDate = v.getNextTime();
-      // compare the date for next injection and current date
-      if (1 == DateUtils.compareDate(dateForCheck, vNextDate)) {
-        vaccinationResult.add(v);
-      }
-    }
-
-    return vaccinationResult;
-  }
-
-  public List<Student> checkStudentNeedVaccinationMonth(String immunizationName) {
-    List<VaccinationDO> vaccinationDOs =
-      vaccinationMapper.selectList(Wrappers.<VaccinationDO>query().eq("immunizationName", immunizationName));
-    ImmunizationDO immunizationDO =
-      immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query().eq("name", immunizationName));
-    String immunizationCycle = immunizationDO.getCycle();
-    JSONObject jsonImmunizationCycle = JSONObject.parseObject(immunizationCycle);
-    Date dateForCheck = DateUtils.addMonthOrCurrentDate(new Date(), 1);
-
-    List<Integer> studentIds = new Vector<>();
-    List<StudentDO> studentDOs = new Vector<>();
-    List<Student> students = new Vector<>();
-
-    for (VaccinationDO vaccinationDO : vaccinationDOs) {
-      int studentId = vaccinationDO.getStudentId();
-      StudentDO studentDO = studentMapper.selectById(studentId);
-      if (!studentIds.contains(studentId) && null != studentDO) {
-        studentIds.add(studentId);
-
-        // find the newest record of the chosen immunization of the student
-        VaccinationVO vaccinationVOLast = getVaccinationLast(studentId, immunizationName);
-        // Number of injection
-        int vaccinationNum = vaccinationVOLast.getVaccinationNumber();
-        Date vNextDate = null;
-        if (!vaccinationVOLast.getCompleteStatus().equals(COMPLETED)) {
-          if (null != vaccinationVOLast.getNextTime()) {
-            vNextDate = vaccinationVOLast.getNextTime();
-          } else {
-            vNextDate = DateUtils.addMonthOrCurrentDate(studentDO.getBirthday(),
-              jsonImmunizationCycle.getIntValue(String.valueOf(vaccinationNum + 1)));
-          }
+        ImmunizationNameEnum[] immunizationNameEnum = ImmunizationNameEnum.values();
+        for (ImmunizationNameEnum nameEnum : immunizationNameEnum) {
+            List<Student> students = checkStudentNeedVaccinationMonth(nameEnum.getCode());
+            for (Student student : students) {
+                if (!studentsResult.contains(student)) {
+                    studentsResult.add(student);
+                }
+            }
         }
-        if (1 == DateUtils.compareDate(dateForCheck, vNextDate)) {
-          studentDOs.add(studentDO);
-        }
-      }
+
+        return studentsResult;
     }
 
-    ConverterUtils.convertList(studentDOs, students, Student.class);
-    return students;
-  }
+    @Override
+    public List<Vaccination> checkNeedVaccinationMonth(int studentId) {
+        List<Vaccination> list = checkNextDateforVaccination(studentId);
+        Date dateForCheck = DateUtils.addMonthOrCurrentDate(new Date(), 1);
+        List<Vaccination> vaccinationResult = new Vector<>();
+
+        for(Vaccination v : list) {
+            Date vNextDate = v.getNextTime();
+            // compare the date for next injection and current date
+            if (1 == DateUtils.compareDate(dateForCheck, vNextDate)) {
+                vaccinationResult.add(v);
+            }
+        }
+
+        return vaccinationResult;
+    }
+
+    @Override
+    public List<Student> checkStudentNeedVaccinationMonth(String immunizationName) {
+        List<VaccinationDO> vaccinationDOs = vaccinationMapper.selectList(Wrappers.<VaccinationDO>query()
+                .eq("immunizationName", immunizationName));
+        ImmunizationDO immunizationDO = immunizationMapper.selectOne(Wrappers.<ImmunizationDO>query()
+                .eq("name", immunizationName));
+        String immunizationCycle = immunizationDO.getCycle();
+        JSONObject jsonImmunizationCycle = JSONObject.parseObject(immunizationCycle);
+        Date dateForCheck = DateUtils.addMonthOrCurrentDate(new Date(), 1);
+
+        List<Integer> studentIds = new Vector<>();
+        List<StudentDO> studentDOs = new Vector<>();
+        List<Student> students = new Vector<>();
+
+        for (VaccinationDO vaccinationDO : vaccinationDOs) {
+            int studentId = vaccinationDO.getStudentId();
+            StudentDO studentDO = studentMapper.selectById(studentId);
+            if (!studentIds.contains(studentId) && null != studentDO) {
+                studentIds.add(studentId);
+
+                // find the newest record of the chosen immunization of the student
+                VaccinationVO vaccinationVOLast = getVaccinationLast(studentId, immunizationName);
+                // Number of injection
+                int vaccinationNum = vaccinationVOLast.getVaccinationNumber();
+                Date vNextDate = null;
+                if (!vaccinationVOLast.getCompleteStatus().equals(COMPLETED)) {
+                    if (null != vaccinationVOLast.getNextTime()) {
+                        vNextDate = vaccinationVOLast.getNextTime();
+                    } else {
+                        vNextDate = DateUtils.addMonthOrCurrentDate(studentDO.getBirthday(),
+                                jsonImmunizationCycle.getIntValue(String.valueOf(vaccinationNum + 1)));
+                    }
+                }
+                if (1 == DateUtils.compareDate(dateForCheck, vNextDate)) {
+                    studentDOs.add(studentDO);
+                }
+            }
+        }
+
+        ConverterUtils.convertList(studentDOs, students, Student.class);
+        return students;
+    }
 }

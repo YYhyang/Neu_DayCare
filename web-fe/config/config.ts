@@ -42,7 +42,7 @@ export default defineConfig({
       name: 'admin',
       icon: 'crown',
       access: 'canAdmin',
-      component: './Admin',
+
       routes: [
         {
           path: '/admin/sub-page',
@@ -54,15 +54,29 @@ export default defineConfig({
     },
     {
       path: '/student',
-      name: 'student',
+      name: 'Student Information',
       icon: 'smile',
       component: './ListStudentList'
     },
     {
       path: '/group',
-      name: 'group',
+      name: 'Group Management',
       icon: 'smile',
       component: './GroupInfo'
+    },
+
+    {
+      path: '/class',
+      name: 'Class Management',
+      icon: 'smile',
+      component: './ClassroomInfo'
+    },
+
+    {
+      path: '/vaccine',
+      name: 'Vaccine Management',
+      icon: 'smile',
+      component: './VaccineInfo'
     },
     {
       name: 'list.table-list',
