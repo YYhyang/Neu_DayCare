@@ -138,15 +138,9 @@ public class DateUtils {
    * @param d2
    *          date to compare
    * @return boolen
-   *          return true 1 if d1 > d2, 0 if d1 == d2, -1 if d1 < d2
+   *         return true 1 if d1 > d2, 0 if d1 == d2, -1 if d1 < d2
    */
   public static int compareDate(Date d1, Date d2) {
-    if (d1.getTime() > d2.getTime()) {
-      return 1;
-    } else if (d1.getTime() == d2.getTime()) {
-      return 0;
-    } else {
-      return -1;
-    }
+    return Long.compare(d1.getTime(), d2.getTime());
   }
 }

@@ -72,6 +72,12 @@ public class StudentServiceImpl extends BaseServiceImpl<StudentMapper, StudentDO
     return studentDOs;
   }
 
+  @Override
+  public IPage<StudentDO> queryByGroupByPage(int groupId, int pageNo, int pageSize) {
+    IPage<StudentDO> studentDOs=studentMapper.selectPage(new Page<>(pageNo,pageSize),Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("groupId", groupId));
+    return studentDOs;
+  }
+
   public List<Student> getListStudentsByAgeState(int ageState) {
     List<StudentDO> studentDOList = studentMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.StudentDO>query().eq("ageState", ageState));
     List<Student> studentList = new Vector<>();

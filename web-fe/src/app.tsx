@@ -12,19 +12,9 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   settings?: LayoutSettings;
 }> {
-  // 如果是登录页面，不执行
-  if (history.location.pathname !== '/user/login') {
-    try {
-      const currentUser = await queryCurrent();
-      return {
-        currentUser,
-        settings: defaultSettings,
-      };
-    } catch (error) {
-      history.push('/user/login');
-    }
-  }
+  const currentUser = await queryCurrent();
   return {
+    currentUser,
     settings: defaultSettings,
   };
 }
