@@ -1,86 +1,20 @@
 import {PlusOutlined} from '@ant-design/icons';
-import {Button, Divider, message} from 'antd';
+import {Button, Divider} from 'antd';
 import React, {useRef, useState} from 'react';
-import {FooterToolbar, PageContainer} from '@ant-design/pro-layout';
+import {PageContainer} from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import {update} from './service';
-import {list} from "@/pages/ListStudentList/service";
-import moment from "moment";
-
-/**
- * 添加节点
- * @param fields
- */
-
-const handleAdd = async fields => {
-  const hide = message.loading('正在添加');
-  try {
-    await add({...fields});
-    hide();
-    message.success('成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('失败请重试！');
-    return false;
-  }
-};
-/**
- * 更新节点
- * @param fields
- */
-
-const handleUpdate = async fields => {
-  const hide = message.loading('正在配置');
-
-  try {
-    await update({
-      parentName: fields.parentName,
-    });
-    hide();
-    message.success('成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('失败请重试！');
-    return false;
-  }
-};
-/**
- *  删除节点
- * @param selectedRows
- */
-
-const formatterTime = (val) => {
-  return val ? moment(val).format('YYYY-MM-DD HH:mm:ss') : ''
-}
-
-const handleRemove = async selectedRows => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-
-  try {
-    await remove({
-      key: selectedRows.map(row => row.key),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
+import {list} from "@/pages/GroupInfo/service";
+import Header from "@/pages/GroupInfo/components/PageHeader";
 
 const TableList = () => {
   const [createModalVisible, handleModalVisible] = useState(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef();
-  const [selectedRowsState, setSelectedRows] = useState([]);
+  const [, setSelectedRows] = useState([]);
+  const id = '1';
   const columns = [
     {
       title: 'ID',
@@ -96,19 +30,6 @@ const TableList = () => {
       title: 'Parent\'s Name',
       dataIndex: 'parentName',
       hideInForm: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-    },
-    {
-      title: 'birthday',
-      dataIndex: 'birthday',
-      render: formatterTime
-    },
-    {
-      title: 'Contact Number',
-      dataIndex: 'phone',
     },
     {
       title: 'Group Number',
@@ -134,67 +55,44 @@ const TableList = () => {
     },
   ];
   return (
-    <PageContainer>
+    <PageContainer
+      pageHeaderRender={() => {
+        return (
+          <Header groupId={id}/>
+        );
+      }}>
       <ProTable
+        search={false}
         headerTitle="查询表格"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey={(record) => {
+          return record.studentId;
+        }}
         toolBarRender={() => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined/> 新建
           </Button>,
         ]}
-        request={(params, sorter, filter) => list({...params, sorter, filter})}
+        request={(params, sorter, filter) => list(66)}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         }}
       />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              已选择{' '}
-              <a
-                style={{
-                  fontWeight: 600,
-                }}
-              >
-                {selectedRowsState.length}
-              </a>{' '}
-              项&nbsp;&nbsp;
-              <span>
-                服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre + item.callNo, 0)} 万
-              </span>
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest();
-            }}
-          >
-            批量删除
-          </Button>
-          <Button type="primary">批量审批</Button>
-        </FooterToolbar>
-      )}
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable
           onSubmit={async value => {
             const success = await handleAdd(value);
-
             if (success) {
               handleModalVisible(false);
-
               if (actionRef.current) {
                 actionRef.current.reload();
               }
             }
           }}
-          rowKey="key"
+          rowKey={(record) => {
+            return record.studentId;
+          }}
           type="form"
           columns={columns}
           rowSelection={{}}
