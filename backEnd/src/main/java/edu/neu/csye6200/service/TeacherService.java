@@ -2,6 +2,7 @@ package edu.neu.csye6200.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import edu.neu.csye6200.base.BaseService;
+import edu.neu.csye6200.entity.Teacher;
 import edu.neu.csye6200.entity.dto.TeacherDO;
 import edu.neu.csye6200.entity.vo.TeacherVO;
 
@@ -18,6 +19,7 @@ public interface TeacherService extends BaseService<TeacherDO> {
      */
     List<TeacherVO> listByTargetAge(String targetAge);
 
+
     /**
      * get one teacher by id
      * @param teacherId
@@ -31,4 +33,7 @@ public interface TeacherService extends BaseService<TeacherDO> {
      * @return
      */
     IPage<TeacherDO> pageAllTeacher(Integer pageNumber, Integer pageSize);
+    Teacher selectByGroupID(int groupId);
+    List<Teacher> queryByAgeState(String ageState);
+
 }

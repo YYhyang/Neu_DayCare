@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import edu.neu.csye6200.base.BaseServiceImpl;
 import edu.neu.csye6200.base.convertor.TeacherConverter;
 import edu.neu.csye6200.dao.TeacherMapper;
+import edu.neu.csye6200.entity.Teacher;
 import edu.neu.csye6200.entity.dto.TeacherDO;
 import edu.neu.csye6200.entity.vo.TeacherVO;
 import edu.neu.csye6200.service.TeacherService;
@@ -27,13 +28,13 @@ public class TeacherServiceImpl extends BaseServiceImpl<TeacherMapper, TeacherDO
 
     @Override
     public List<TeacherVO> listByTargetAge(String targetAge) {
-        List<TeacherDO>teacherDOList=teacherMapper.selectList(Wrappers.<TeacherDO>query().eq("targetAgeState",targetAge));
+        List<TeacherDO>teacherDOList = teacherMapper.selectList(Wrappers.<TeacherDO>query().eq("targetAgeState",targetAge));
         return TeacherConverter.listDo2Vo(teacherDOList);
     }
 
     @Override
     public TeacherVO selectById(Integer teacherId) {
-        TeacherDO teacherDO=teacherMapper.selectById(teacherId);
+        TeacherDO teacherDO = teacherMapper.selectById(teacherId);
         return TeacherConverter.Do2Vo(teacherDO);
     }
 
@@ -41,5 +42,22 @@ public class TeacherServiceImpl extends BaseServiceImpl<TeacherMapper, TeacherDO
     public IPage<TeacherDO> pageAllTeacher(Integer pageNumber, Integer pageSize) {
         IPage<TeacherDO> teacherDOS=teacherMapper.selectPage(new Page<>(pageNumber,pageSize),null);
         return teacherDOS;
+    }
+    @Override
+    public Teacher selectByGroupID(int groupId) {
+        TeacherDO teacherDO = teacherMapper.selectOne(Wrappers.<TeacherDO>query().eq("groupId", groupId));
+        Teacher teacher = new Teacher();
+        ConverterUtils.convert(teacherDO, teacher);
+        return teacher;
+
+
+    }
+
+    @Override
+    public List<Teacher> queryByAgeState(String ageState) {
+        List<TeacherDO> teacherDOList = teacherMapper.selectList(Wrappers.<edu.neu.csye6200.entity.dto.TeacherDO>query().eq("targetAgeState", ageState));
+        List<Teacher> teacherList = new Vector<>();
+        ConverterUtils.convertList(teacherDOList, teacherList, Teacher.class);
+        return teacherList;
     }
 }
