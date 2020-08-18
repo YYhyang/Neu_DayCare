@@ -3,6 +3,7 @@ package edu.neu.csye6200.entity.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import edu.neu.csye6200.entity.Immunization;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,6 +29,8 @@ public class VaccinationDO implements Serializable {
   private String completeStatus;
 
   private String immunizationName;
+
+//  private Immunization immunization;
 
   private Date nextTime;
 }
