@@ -160,7 +160,7 @@ public class VaccinationServiceImpl extends BaseServiceImpl<VaccinationMapper, V
     ImmunizationNameEnum[] immunizationNameEnum = ImmunizationNameEnum.values();
     for (ImmunizationNameEnum nameEnum : immunizationNameEnum) {
       VaccinationVO vaccinationVO = getVaccinationLast(studentId, nameEnum.getCode());
-      if (null != vaccinationVO) {
+      if (null != vaccinationVO.getId()) {
         VaccinationDO vaccinationDO = new VaccinationDO();
         ConverterUtils.convert(vaccinationVO, vaccinationDO);
         vaccinationDOs.add(vaccinationDO);
