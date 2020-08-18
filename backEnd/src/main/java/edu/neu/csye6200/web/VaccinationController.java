@@ -142,7 +142,7 @@ public class VaccinationController extends BaseController {
     }
 
     @GetMapping("/checkStudentNeedVaccinationMonth/{immunizationName}")
-    @LogOperate(value = "find all vaccination need injection for the student in next month")
+    @LogOperate(value = "Find all students who need to inject the vaccin in next month")
     public Result<Object> checkStudentNeedVaccinationMonth(@PathVariable String immunizationName) {
         List<StudentVO> list = new Vector<>();
 
